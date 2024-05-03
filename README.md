@@ -1,7 +1,4 @@
----
-enableToc: false
-title: "nf-core/rnaseq tutorial"
----
+# nf-core/rnaseq tutorial
 
 ## Welcome
 
