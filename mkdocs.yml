@@ -62,9 +62,6 @@ markdown_extensions:
     - pymdownx.arithmatex:
           generic: true
     - tables
-    - toc:
-          title: On this page
-          permalink: true
 
 extra_javascript:
     - javascripts/mathjax.js
