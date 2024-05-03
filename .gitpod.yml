@@ -23,12 +23,12 @@ tasks:
     - before: printf 'unset JAVA_TOOL_OPTIONS\n' >> $HOME/.bashrc && exit
 
     - name: Start web server
-      command: gp ports await 23000 && gp preview https://lescai-teaching.github.io/sarek-tutorial/
+      command: gp ports await 23000 && gp preview https://lescai-teaching.github.io/rnaseq-tutorial/
 
     - name: Load Nextflow Tutorial
       command: docker pull -q nextflow/rnaseq-nf
 
-    - name: Start Sarek Tutorial
+    - name: Start RNAseq Tutorial
       command: |
           cd training
           source $HOME/.bashrc
