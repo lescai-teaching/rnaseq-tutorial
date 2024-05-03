@@ -5,7 +5,7 @@ repo_name: lescai-teaching/rnaseq-tutorial
 
 nav:
     - Home: index.md
-    - Sarek Tutorial:
+    - RNAseq Tutorial:
             - theory.md
             - rnaseq.md
             - de_rstudio.md
