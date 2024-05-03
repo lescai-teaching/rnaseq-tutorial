@@ -8,10 +8,8 @@
       
       
       
-        <link rel="canonical" href="http://lescai-teaching.github.io/sarek-tutorial/interpretation/">
+        <link rel="canonical" href="http://lescai-teaching.github.io/sarek-tutorial/rnaseq/">
       
-      
-        <link rel="prev" href="../theory/">
       
       
       
@@ -20,7 +18,7 @@
     
     
       
-        <title>Interpretation - nf-core/sarek tutorial</title>
+        <title>The nf-core/rnaseq pipeline - nf-core/sarek tutorial</title>
       
     
     
@@ -72,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#interpretation" class="md-skip">
+        <a href="#the-nf-corernaseq-pipeline" class="md-skip">
           Skip to content
         </a>
       
@@ -106,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Interpretation
+              The nf-core/rnaseq pipeline
             
           </span>
         </div>
@@ -233,12 +231,10 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
+      <li class="md-tabs__item">
         <a href="../theory/" class="md-tabs__link">
           
   
@@ -319,28 +315,23 @@
       
   
   
-    
   
   
-  
     
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -351,7 +342,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Sarek Tutorial
@@ -404,30 +395,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Interpretation
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../interpretation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -436,55 +407,6 @@
   
 
       </a>
-      
-        
-
-  
-
-<nav class="md-nav md-nav--secondary" aria-label="On this page">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#enrichment-analysis-ora" class="md-nav__link">
-    <span class="md-ellipsis">
-      Enrichment Analysis (ORA)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conclusions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Conclusions
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -535,20 +457,95 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#enrichment-analysis-ora" class="md-nav__link">
+  <a href="#experimental-design" class="md-nav__link">
     <span class="md-ellipsis">
-      Enrichment Analysis (ORA)
+      Experimental Design
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Experimental Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#library-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Library design
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#conclusions" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#reference-genome" class="md-nav__link">
     <span class="md-ellipsis">
-      Conclusions
+      Reference genome
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#input-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input files
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-nf-corernaseq" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running nf-core/rnaseq
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running nf-core/rnaseq">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reference-and-annotation-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reference and annotation files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#computing-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Computing resources
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filtering-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filtering parameters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launching-the-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Launching the pipeline
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -567,7 +564,7 @@
                   
 
   
-    <a href="http://github.com/lescai-teaching/sarek-tutorial/edit/master/docs/interpretation.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="http://github.com/lescai-teaching/sarek-tutorial/edit/master/docs/rnaseq.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -575,10 +572,30 @@
   
 
 
-<h1 id="interpretation">Interpretation<a class="headerlink" href="#interpretation" title="Permanent link">&para;</a></h1>
+<h1 id="the-nf-corernaseq-pipeline">The nf-core/rnaseq pipeline<a class="headerlink" href="#the-nf-corernaseq-pipeline" title="Permanent link">&para;</a></h1>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<h2 id="enrichment-analysis-ora">Enrichment Analysis (ORA)<a class="headerlink" href="#enrichment-analysis-ora" title="Permanent link">&para;</a></h2>
-<h2 id="conclusions">Conclusions<a class="headerlink" href="#conclusions" title="Permanent link">&para;</a></h2>
+<p><img alt="rnaseq overview" src="../img/nf-core-rnaseq_metro_map_grey.png" /></p>
+<h2 id="experimental-design">Experimental Design<a class="headerlink" href="#experimental-design" title="Permanent link">&para;</a></h2>
+<h3 id="library-design">Library design<a class="headerlink" href="#library-design" title="Permanent link">&para;</a></h3>
+<h3 id="reference-genome">Reference genome<a class="headerlink" href="#reference-genome" title="Permanent link">&para;</a></h3>
+<h3 id="input-files">Input files<a class="headerlink" href="#input-files" title="Permanent link">&para;</a></h3>
+<h2 id="running-nf-corernaseq">Running nf-core/rnaseq<a class="headerlink" href="#running-nf-corernaseq" title="Permanent link">&para;</a></h2>
+<h3 id="reference-and-annotation-files">Reference and annotation files<a class="headerlink" href="#reference-and-annotation-files" title="Permanent link">&para;</a></h3>
+<h3 id="computing-resources">Computing resources<a class="headerlink" href="#computing-resources" title="Permanent link">&para;</a></h3>
+<p>Based on the choices we made when starting up the gitpod environment, we recommend to use the following additional parameters.
+They can also be added to the parameters directive in the config file we just edited.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">params</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="n">max_cpus</span><span class="w">                  </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">max_memory</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;6.5GB&#39;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="n">max_time</span><span class="w">                  </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2.h&#39;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="n">use_annotation_cache_keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="o">}</span>
+</code></pre></div>
+<h3 id="filtering-parameters">Filtering parameters<a class="headerlink" href="#filtering-parameters" title="Permanent link">&para;</a></h3>
+<h3 id="launching-the-pipeline">Launching the pipeline<a class="headerlink" href="#launching-the-pipeline" title="Permanent link">&para;</a></h3>
+<p>Now we are ready to launch the pipeline, and we can use the following command line:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>
+</code></pre></div>
 
 
 
@@ -609,28 +626,6 @@
       
         <footer class="md-footer">
   
-    
-      
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
-        
-          
-          <a href="../theory/" class="md-footer__link md-footer__link--prev" aria-label="Previous: RNAseq Analysis">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-            </div>
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              <div class="md-ellipsis">
-                RNAseq Analysis
-              </div>
-            </div>
-          </a>
-        
-        
-      </nav>
     
   
   <div class="md-footer-meta md-typeset">
