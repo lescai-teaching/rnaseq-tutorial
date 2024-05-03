@@ -1,13 +1,14 @@
-site_name: nf-core/sarek tutorial
-site_url: http://lescai-teaching.github.io/sarek-tutorial
-repo_url: http://github.com/lescai-teaching/sarek-tutorial
-repo_name: lescai-teaching/sarek-tutorial
+site_name: nf-core/rnaseq tutorial
+site_url: http://lescai-teaching.github.io/rnaseq-tutorial
+repo_url: http://github.com/lescai-teaching/rnaseq-tutorial
+repo_name: lescai-teaching/rnaseq-tutorial
 
 nav:
     - Home: index.md
     - Sarek Tutorial:
             - theory.md
-            - sarek.md
+            - rnaseq.md
+            - de_rstudio.md
             - interpretation.md
 
 theme:
