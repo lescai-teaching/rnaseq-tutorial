@@ -8,13 +8,11 @@ The pipeline is organised following the blocks we previously described: pre-proc
 
 ![rnaseq overview](./img/nf-core-rnaseq_metro_map_grey.png)
 
-In each process, the user can choose among a range of different options. Importantly, the user can decide to follow one of the two different routes in the alignment and quantification step:
+In each process, the users can choose among a range of different options. Importantly, the users can decide to follow one of the two different routes in the alignment and quantification step:
 - alignment and quantification (stage 2);
 - pseudoalignment and quantification (stage 3). 
 
 ## Experimental Design
-
-nf-core pipelines make use of the Illumina iGenomes collection as [reference genomes](https://nf-co.re/docs/usage/reference_genomes).
 
 
 ### Library design
@@ -22,6 +20,13 @@ nf-core pipelines make use of the Illumina iGenomes collection as [reference gen
 
 ### Reference genome
 
+nf-core pipelines make use of the Illumina iGenomes collection as [reference genomes](https://nf-co.re/docs/usage/reference_genomes).
+Before starting the analysis, the users might want to check whether the genome they need is part of this collection.
+They also might want to consider downloading the reference locally, when running on premises: this would be useful for multiple runs and to speed up the analysis. In this case the parameter `--igenomes_base` might be used to pass the root directory of the downloaded references. 
+
+One might also need to use custom files: in this case the users might either provide specific parameters at command line, or create a config file adding a new section to the `genome` object. See [here](https://nf-co.re/docs/usage/reference_genomes#custom-genomes) for more details.
+
+We will follow this specific approach in this tutorial, since the data we will be using have been simulated on chromosome 21 of the Human GRCh38 reference, and we have prepared fasta, indexes and annotation files containing only this chromosome locally.
 
 ### Input files
 
@@ -59,6 +64,19 @@ params {
 Now we are ready to launch the pipeline, and we can use the following command line:
 
 ```bash
-
+nextflow run nf-core/rnaseq -r 3.12.0 \
+--input  /workspace/gitpod/training//data/reads/rnaseq_samplesheet.csv \
+--outdir . \
+--genome GRCh38chr21 \
+--pseudo_aligner salmon \
+--skip_alignment \
+--skip_biotype_qc \
+-c rnaseq_nextflow.config \
+-profile gls \
+--skip_stringtie \
+--skip_bigwig \
+--skip_umi_extract \
+--skip_trimming \
+--skip_fastqc
 ```
 
