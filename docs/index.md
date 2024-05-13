@@ -7,7 +7,7 @@ title: "nf-core/rnaseq tutorial"
 
 These pages are a tutorial workshop for the [Nextflow](https://www.nextflow.io) pipeline [nf-core/rnaseq](https://nf-co.re/rnaseq).
 
-In this workshop, we will recap ---- TO DO -------
+In this workshop, we will recap the application of next generation sequencing to identify differentially expressed genes. You will learn how to use the rnaseq pipeline out this data-intensive workflow efficiently. We will cover topics such as configuration of the pipeline, code execution and data interpretation.
 
 Please note that this is not an introductory workshop, and we will assume some basic familiarity with Nextflow.
 
@@ -43,7 +43,7 @@ Now you're all set and can use the following button to launch the service:
 
 ## Credits & Copyright
 
-This training material has been written by --- TO DO ---- and aimed at anyone who is interested in using nf-core pipelines for their studies or research activities.
+This training material has been written by [Mariangela Santarsola](https://github.com/msantorsola) and [Lorenzo Sola](https://github.com/LorenzoS96) and aimed at anyone who is interested in using nf-core pipelines for their studies or research activities.
 
 The Docker image and Gitpod environment used in this repository have been created by [Seqera](https://seqera.io) but have been made open-source ([CC BY-NC-ND](https://creativecommons.org/licenses/by-nc-nd/4.0/)) for the community.
 
