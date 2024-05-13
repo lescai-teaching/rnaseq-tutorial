@@ -35,10 +35,25 @@ The format is described in the [rnaseq usage page](https://nf-co.re/rnaseq/3.14.
 
 ## Running nf-core/rnaseq
 
+In the following sections we will first prepare our references, then set our computational resources in order to be able to run the pipeline on a gitpod VM, edit the filtering settings and finally run the pipeline.
 
 ### Reference and annotation files
 
+Following the considerations above, we will first of all edit the `nextflow.config` file in our working directory to add a new genome.
+It is sufficient to add the following code to the `parameters` directive in the config.
 
+```groovy
+igenomes_base = '/workspace/gitpod/training/data/refs/'
+genomes {
+	'GRCh38chr21' {
+        fasta                 = "${params.igenomes_base}/sequence/Homo_sapiens_assembly38_chr21.fasta"
+        fasta_fai             = "${params.igenomes_base}/sequence/Homo_sapiens_assembly38_chr21.fasta.fai"
+        gff                   = "${params.igenomes_base}/trascriptome/gencode.v29.annotation_chr21_noversion.gff"
+        transcript_fasta      = "${params.igenomes_base}/trascriptome/gencode.v29.transcripts_chr21_annotated.fa"
+        salmon_index          = "${params.igenomes_base}/trascriptome/salmon_index_chr21.tar.gz"
+	}
+}
+```
 
 ### Computing resources
 
