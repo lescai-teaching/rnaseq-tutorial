@@ -43,3 +43,4 @@ The software also extracts all possible k-mers (fixed-length substring of nucleo
 ## Differential expression (DE) analysis
 
 The next step in a typical RNA-seq workflow is the differential expression analysis. It is used to compare gene expression levels between different experimental conditions such disease vs healthy (tumor tissue vs healthy tissue), treatment vs control (sample treated with a specific stimulus, drug or compound vs untreated sample), tissue vs tissue (brain vs heart)
+

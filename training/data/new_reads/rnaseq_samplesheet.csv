@@ -1,0 +1,7 @@
+sample,fastq_1,fastq_2,strandedness
+control_rep1,datasets_LABOS_exercise2/rnaseq/reads/sample_01_1.fastq.gz,datasets_LABOS_exercise2/rnaseq/reads/sample_01_2.fastq.gz,unstranded
+control_rep2,datasets_LABOS_exercise2/rnaseq/reads/sample_02_1.fastq.gz,datasets_LABOS_exercise2/rnaseq/reads/sample_02_2.fastq.gz,unstranded
+control_rep3,datasets_LABOS_exercise2/rnaseq/reads/sample_03_1.fastq.gz,datasets_LABOS_exercise2/rnaseq/reads/sample_03_2.fastq.gz,unstranded
+treatment_rep1,datasets_LABOS_exercise2/rnaseq/reads/sample_04_1.fastq.gz,datasets_LABOS_exercise2/rnaseq/reads/sample_04_2.fastq.gz,unstranded
+treatment_rep2,datasets_LABOS_exercise2/rnaseq/reads/sample_05_1.fastq.gz,datasets_LABOS_exercise2/rnaseq/reads/sample_05_2.fastq.gz,unstranded
+treatment_rep3,datasets_LABOS_exercise2/rnaseq/reads/sample_06_1.fastq.gz,datasets_LABOS_exercise2/rnaseq/reads/sample_06_2.fastq.gz,unstranded
