@@ -2,6 +2,7 @@ FROM ghcr.io/lescai-teaching/rstudio-docker:latest as build
 
 FROM ghcr.io/nextflow-io/training:latest as main
 
+RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 RUN brew install R
 
 ENV NB_USER=gitpod
