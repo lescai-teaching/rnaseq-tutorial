@@ -1,0 +1,12 @@
+docker buildx build \
+--label org.opencontainers.image.title=rstudio-bio-gitpod \
+--label org.opencontainers.image.description='container running RStudio on multiplatform to be used with UniPV course' \
+--label org.opencontainers.image.url=https://github.com/lescai-teaching/rnaseq-tutorial-gitpod \
+--label org.opencontainers.image.source=https://github.com/lescai-teaching/rnaseq-tutorial-gitpod \
+--label org.opencontainers.image.version=1.1.0 \
+--label org.opencontainers.image.created=2023-01-13T12:39:11.393Z \
+--label org.opencontainers.image.licenses=MIT \
+--platform linux/amd64 \
+--tag ghcr.io/lescai-teaching/rnaseq-tutorial-gitpod:1.0.0 \
+--tag ghcr.io/lescai-teaching/rnaseq-tutorial-gitpod:latest \
+--push .
