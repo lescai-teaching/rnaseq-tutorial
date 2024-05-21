@@ -2,10 +2,9 @@ FROM ghcr.io/lescai-teaching/rstudio-docker:latest as build
 
 FROM ghcr.io/nextflow-io/training:latest as main
 
-RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-RUN brew install R
-
-ENV NB_USER=gitpod
+RUN echo "\n" | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+RUN eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+RUN /home/linuxbrew/.linuxbrew/bin/brew install R
 
 COPY --from=build /usr/local/lib/R/site-library /usr/local/lib/R/site-library
 COPY --from=build /usr/local/lib/R/library /usr/local/lib/R/library
@@ -20,10 +19,10 @@ RUN apt-get update && \
 
 COPY .Rprofile /opt/conda/lib/R/.Rprofile
 
-USER ${NB_USER}
+USER gitpod
 
-COPY .Rprofile /home/${NB_USER}/.Rprofile
+COPY .Rprofile /home/gitpod/.Rprofile
 
-RUN echo "${USER}:pass" | sudo chpasswd
+RUN echo "gitpod:pass" | sudo chpasswd
 
-WORKDIR /home/${NB_USER}
+WORKDIR /home/gitpod
