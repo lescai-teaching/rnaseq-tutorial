@@ -1,6 +1,6 @@
 docker buildx build \
---label org.opencontainers.image.title=rstudio-bio-gitpod \
---label org.opencontainers.image.description='container running RStudio on multiplatform to be used with UniPV course' \
+--label org.opencontainers.image.title=rnaseq-tutorial-gitpod \
+--label org.opencontainers.image.description='container both nextflow rnaseq and RStudio DEseq2 in training tutorials' \
 --label org.opencontainers.image.url=https://github.com/lescai-teaching/rnaseq-tutorial-gitpod \
 --label org.opencontainers.image.source=https://github.com/lescai-teaching/rnaseq-tutorial-gitpod \
 --label org.opencontainers.image.version=1.1.0 \
