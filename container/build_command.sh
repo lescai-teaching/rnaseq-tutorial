@@ -6,6 +6,8 @@ docker buildx build \
 --label org.opencontainers.image.version=1.1.0 \
 --label org.opencontainers.image.created=2023-01-13T12:39:11.393Z \
 --label org.opencontainers.image.licenses=MIT \
+--cache-to=type=local,dest=/Users/path/build_caches \
+--cache-from=type=local,src=/Users/path/build_caches \
 --platform linux/amd64 \
 --tag ghcr.io/lescai-teaching/rnaseq-tutorial-gitpod:1.0.0 \
 --tag ghcr.io/lescai-teaching/rnaseq-tutorial-gitpod:latest \
