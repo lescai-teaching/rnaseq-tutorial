@@ -1,0 +1,6 @@
+install.packages("rvcheck_0.1.8.tar.gz", repos=NULL, type="source")
+install.packages("org.Hs.eg.db_3.12.0.tar.gz", repos = NULL)
+install.packages("AnnotationDbi_1.52.0.tar.gz", repos = NULL)
+install.packages("DO.db_2.9.tar.gz", repos = NULL)
+install.packages("DOSE_3.16.0.tar.gz", repos = NULL)
+install.packages("clusterProfiler_3.18.1.tar.gz", repos = NULL)
