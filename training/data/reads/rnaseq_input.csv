@@ -1,7 +1,0 @@
-sample,fastq_1,fastq_2,strandedness
-CONTROL_REP1,/workspace/gitpod/training/data/reads/sample_01_1.fasta.gz,/workspace/gitpod/training/data/reads/sample_01_2.fasta.gz,auto
-CONTROL_REP2,/workspace/gitpod/training/data/reads/sample_02_1.fasta.gz,/workspace/gitpod/training/data/reads/sample_02_2.fasta.gz,auto
-CONTROL_REP3,/workspace/gitpod/training/data/reads/sample_03_1.fasta.gz,/workspace/gitpod/training/data/reads/sample_03_2.fasta.gz,auto
-CASE_REP1,/workspace/gitpod/training/data/reads/sample_04_1.fasta.gz,/workspace/gitpod/training/data/reads/sample_04_2.fasta.gz,auto
-CASE_REP2,/workspace/gitpod/training/data/reads/sample_05_1.fasta.gz,/workspace/gitpod/training/data/reads/sample_05_2.fasta.gz,auto
-CASE_REP3,/workspace/gitpod/training/data/reads/sample_06_1.fasta.gz,/workspace/gitpod/training/data/reads/sample_06_2.fasta.gz,auto
