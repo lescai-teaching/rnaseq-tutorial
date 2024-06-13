@@ -30,7 +30,7 @@ In the context of RNA-seq analysis the alignmnet phase is often performed with s
 The alignment and the quantification steps can be also performed with lightweight alignment tools, which include [Kallisto](https://pachterlab.github.io/kallisto/about.html), [Sailfish](http://www.cs.cmu.edu/~ckingsf/software/sailfish) and Salmon. These tools avoid a base-to-base alignment of reads providing quantification estimates faster than the classical splice-aware algorithms but with a high accuracy. The resulting estimates are commonly referred to as “pseudocounts” or “abundance estimates”, that can be later utilized for downstream analysis.
 An example showing the differences between a reference-based aligner (STAR) and a pseudoaligner (Salmon) are represented in the scheme below:
 
-![alignment (or pseudoalignment) and quantification](./img/STAR_salmon_comparison.png)
+
 
 In the sketch we can see two typical examples of alignment/pseudoalignemnt and quantification performed with two classical software, STAR and Salmon:
 
@@ -42,5 +42,14 @@ The software also extracts all possible k-mers (fixed-length substring of nucleo
 
 ## Differential expression (DE) analysis
 
-The next step in a typical RNA-seq workflow is the differential expression analysis. It is used to compare gene expression levels between different experimental conditions such disease vs healthy (tumor tissue vs healthy tissue), treatment vs control (sample treated with a specific stimulus, drug or compound vs untreated sample), tissue vs tissue (brain vs heart)
+The next step in a typical RNA-seq workflow is the differential expression analysis. It is a statistical method to compare gene expression levels between different experimental conditions such disease vs healthy (tumor tissue vs healthy tissue), treatment vs control (sample treated with a specific stimulus, drug or compound vs untreated sample), tissue vs tissue (brain vs heart). This part of the analysis in typically performed in R utilizing different packages such as [DESeq2] (https://bioconductor.org/packages/release/bioc/html/DESeq2.html), [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html) and [limma](https://bioconductor.org/packages/release/bioc/html/limma.html). This tutorial is based on the use of DESeq2.
+Before getting into details, it is important to point some common characteristics of RNA-seq data that are essential in the choiche of the statistical model to utilize:
+
+
+
+
+
+Differential expression analysis is composed by different key steps:
+
+- the analysis starts with a matrix obtained in the alignment and quantification step that summarizes the expression levels of the different genes in each sample of the dataset. The rows of the matrix typically correspond to genes and the columns represent the samples. Each position of the matrix contains an integer value representing the number of reads associated to a particular gene in a specific sample. Another essential prerequisite is a metadata table describing the experimental conditions and replicates
 
