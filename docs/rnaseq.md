@@ -35,7 +35,11 @@ The format is described in the [rnaseq usage page](https://nf-co.re/rnaseq/3.14.
 
 ## Running nf-core/rnaseq
 
-In the following sections we will first prepare our references, then set our computational resources in order to be able to run the pipeline on a gitpod VM, edit the filtering settings and finally run the pipeline.
+In the following sections we will:
+- prepare our references;
+- set our computational resources in order to be able to run the pipeline on a gitpod VM;
+- edit the filtering settings;
+- run the pipeline.
 
 ### Reference and annotation files
 
@@ -45,12 +49,12 @@ It is sufficient to add the following code to the `parameters` directive in the 
 ```groovy
 igenomes_base = '/workspace/gitpod/training/data/refs/'
 genomes {
-	'GRCh38chr21' {
-        fasta                 = "${params.igenomes_base}/sequence/Homo_sapiens_assembly38_chr21.fasta"
-        fasta_fai             = "${params.igenomes_base}/sequence/Homo_sapiens_assembly38_chr21.fasta.fai"
-        gff                   = "${params.igenomes_base}/trascriptome/gencode.v29.annotation_chr21_noversion.gff"
-        transcript_fasta      = "${params.igenomes_base}/trascriptome/gencode.v29.transcripts_chr21_annotated.fa"
-        salmon_index          = "${params.igenomes_base}/trascriptome/salmon_index_chr21.tar.gz"
+        'GRCh38chr21' {
+            fasta                 = "${params.igenomes_base}/sequence/Homo_sapiens_assembly38_chr21.fasta"
+            fasta_fai             = "${params.igenomes_base}/sequence/Homo_sapiens_assembly38_chr21.fasta.fai"
+            gff                   = "${params.igenomes_base}/gencode_v29_chr21_parsed_noversion.gff"
+            transcript_fasta      = "${params.igenomes_base}/gencode.v29.transcripts_chr21.fa"
+            salmon_index          = "${params.igenomes_base}/salmon_index_chr21.tar.gz"
 	}
 }
 ```
@@ -62,10 +66,9 @@ They can also be added to the parameters directive in the config file we just ed
 
 ```groovy
 params {
-    max_cpus                  = 2
-    max_memory                = '6.5GB'
-    max_time                  = '2.h'
-    use_annotation_cache_keys = true
+    max_cpus      = 2
+    max_memory    = '6.5GB'
+    max_time      = '2.h'
 }
 ```
 
@@ -80,18 +83,20 @@ Now we are ready to launch the pipeline, and we can use the following command li
 
 ```bash
 nextflow run nf-core/rnaseq -r 3.12.0 \
---input  /workspace/gitpod/training//data/reads/rnaseq_samplesheet.csv \
---outdir . \
+--input /workspace/gitpod/training/data/new_reads/rnaseq_samplesheet.csv \
+--outdir ./results_star_salmon \
 --genome GRCh38chr21 \
+--aligner star_salmon \
 --pseudo_aligner salmon \
---skip_alignment \
 --skip_biotype_qc \
--c rnaseq_nextflow.config \
--profile gls \
 --skip_stringtie \
 --skip_bigwig \
 --skip_umi_extract \
 --skip_trimming \
---skip_fastqc
+--skip_fastqc \
+--skip_markduplicates \
+--skip_dupradar \
+--skip_rseqc \
+--skip_qualimap
 ```
 
