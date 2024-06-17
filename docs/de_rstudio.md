@@ -16,9 +16,105 @@ Username: gitpod
 Password: pass
 ```
 
-Now we are ready to performed the differential expression analysis.
+Now we are quite ready to perform the differential expression analysis.
 
 
 ## Differential Expression Analysis
 
+As in all analysis, firstly we need to create a new project:
 
+1) Go to the [File] menu and select [New Project];
+
+2) Select [New Directory], [New Project], named the new directory [/workspace/gitpod/training/DE_analysis/] and click on [Create Project];
+
+3) The new project will be automatically open in RStudio
+
+We can check whether we are in the correct working directory with [getwd()]. The path ["/workspace/gitpod/training/de_analysis/"] should appear on your console.
+
+Then, in order to store our results in an organized way, we will create a folder named [de_results] using the "New folder" button in the bottom right panel, in which we will save all our resulting tables and plots. Finally, by going in the [File] menu and selecting [New File] and then [R script], we create a script editor in which we will save all commands required to run the analysis. In the editor type:
+
+```r
+## Differential expression analysis with DESeq2
+```
+
+and save the file as [de_script.R]. From now on, each command described in the tutorial can be added to your script. The resulting working directory should look like this:
+
+![overview](./img/work_dir_RStudio.png)
+
+Thw analysis requires different R packages and to utilize them, we need to load the libraries:
+
+```r
+# Loading libraries ----
+
+library("tidyverse")
+library("DESeq2")
+library("pheatmap")
+library("RColorBrewer")
+```
+
+and the data:
+
+```r
+# Import the dds obtained from nfcore/rnaseq ----
+
+load("/workspace/gitpod/training/results_star_salmon/star_salmon/deseq2_qc/deseq2.dds.RData")
+```
+
+We are loading the DESeq2 object (ds) that the pipeline has already created for us. In DESEq2, the [dds] object is a central data structure that contains the following components: 
+- countData: a matrix of raw count data, where each row represents a gene, and each column represents a sample.
+- colData: a data frame containing information about the samples, such as the experimental design, treatment, and other relevant metadata.
+- design: a formula specifying the experimental design utilized to estimate the dispersion and the log2foldchange.
+
+All these components can be checked with specific command:
+
+```r
+# dds inspection ----
+
+counts(dds) # to check the raw counts
+
+colData(dds) # to check the sample info
+
+design(dds) # to check the design formula
+```
+
+The inspection of the dds revealed that the colData and the design must be re-organized prior to the analysis. Whit the following command we will rename the column of the colData, we will ensure that the rownames of the metadata are present in the same order as the column names and we reconstruct the colData. Notice that with this operation we also eliminate the sizeFactors already estimated by the [nfcore DESeq2 module](https://github.com/nf-core/rnaseq/blob/master/modules/local/deseq2_qc/main.nf) 
+
+```r
+# Creation of metadata starting from the dds colData ----
+metadata <- DataFrame(
+    sample = colData(dds)$sample,
+    condition = colData(dds)$Group1,
+    replica = colData(dds)$Group2
+)
+
+# Assign names to rows of metadata ----
+rownames(metadata) <- colnames(counts(dds))
+
+# Fill the dds colData with the generated metadata ---
+colData(dds) <- metadata
+```
+
+To avoid errors in DESeq2 is essential to check that sample names match between the colData and the countData, and that the sample are in the correct order:
+
+```r
+all(colnames(dds$counts) %in% rownames(metadata)) # Must be TRUE
+all(colnames(dds$counts) == rownames(metadata)) # Must be TRUE
+```
+
+Now that everything is organized, we can proceed to the generation of the DESeq2 object: 
+
+```r
+# Creation of a new dds ----
+
+dds_new  <- DESeqDataSet(dds, design = ~ condition)
+
+# dds inspection ----
+
+counts(dds_new) # to check the raw counts
+colData(dds_new) # to check the sample info
+design(dds_new) # to check the design formula
+```
+
+Analyzing the structure of the newly created dds is possible to observe the differences:
+
+![overview](./img/dds_comparison.png)
