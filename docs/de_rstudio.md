@@ -70,10 +70,8 @@ All these components can be checked with specific command:
 ```r
 # dds inspection ----
 
-counts(dds) # to check the raw counts
-
+head(counts(dds)) # to check the raw counts
 colData(dds) # to check the sample info
-
 design(dds) # to check the design formula
 ```
 
@@ -110,7 +108,7 @@ dds_new  <- DESeqDataSet(dds, design = ~ condition)
 
 # dds inspection ----
 
-counts(dds_new) # to check the raw counts
+head(counts(dds_new)) # to check the raw counts
 colData(dds_new) # to check the sample info
 design(dds_new) # to check the design formula
 ```
