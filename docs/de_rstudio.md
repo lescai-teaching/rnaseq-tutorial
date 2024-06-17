@@ -150,3 +150,4 @@ The normalized matrix counts can be saved in our results folder:
 
 write.table(normalized_counts, file = "de_results/normalized_counts.txt")
 ```
+
