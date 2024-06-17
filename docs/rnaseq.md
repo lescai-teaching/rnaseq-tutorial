@@ -76,11 +76,6 @@ params {
 }
 ```
 
-
-### Filtering parameters
-
-
-
 ### Launching the pipeline
 
 Now we are ready to launch the pipeline, and we can use the following command line:
@@ -103,4 +98,3 @@ nextflow run nf-core/rnaseq -r 3.12.0 \
 --skip_rseqc \
 --skip_qualimap
 ```
-
