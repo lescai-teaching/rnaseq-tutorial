@@ -1,5 +1,6 @@
-# Diffential Analysis with DESeq2
+# Differential Analysis with DESeq2
 
+In this section of the tutorial, we will guide you through the practical steps necessary to set up the RStudio environment and perform a differential expression analysis using DESeq2. Building on the theoretical foundations established earlier, we will now focus on the hands-on implementation of the DESeq2 workflow. We will cover all the necessary steps to prepare your RStudio environment, load the required libraries and data, and execute the DESeq2 analysis. By the end of this section, you will have a fully functional DESeq2 analysis pipeline set up in RStudio, ready to uncover the differentially expressed genes in your dataset.
 
 ## Launching the RStudio environment
 
