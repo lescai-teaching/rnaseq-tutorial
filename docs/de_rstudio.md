@@ -237,10 +237,19 @@ The normalized matrix counts can be saved in our results folder:
 ```r
 # Saving normalized counts ----
 
-write.table(normalized_counts, file = "de_results/normalized_counts.txt")
+write.table(normalized_counts, file = "de_results/normalized_counts.xlsx")
 ```
 
-The [results()] function in DESeq2 is used to extract the results of the differential expression analysis, including the log2 fold changes, p-values, and adjusted p-values for each gene. This function takes the [dds] object as input and returns a DataFrame containing the results of the analysis. The [results()] function can be customized to extract specific columns or rows of interest, and can also be used to filter the results based on certain criteria, such as a minimum log2 fold change or a maximum adjusted p-value. By default, the results() function returns the results for all genes in the analysis, but it can also be used to extract the results for a specific set of genes or a specific contrast. The [contrast] argument in the [results()] function is used to specify the contrast of interest for which the results should be extracted. A contrast is a specific comparison between two or more levels of a factor, such as the comparison between the treatment and control groups. By specifying a contrast, the [results()] function returns the results of the differential expression analysis for that specific comparison. The order of the contrast names determines the direction of the fold change that is reported in the results. Specifically, the first level of the contrast is the condition of interest, and the second level is the reference level. Notice that in the tutorial the contrast is already setted.
+The [results()] function in DESeq2 is used to extract the results of the differential expression analysis. This function takes the [dds] object as input and returns a DataFrame containing the results of the analysis:
+
+- baseMean: the average expression level of the gene across all samples;
+- log2FoldChange: the log2 fold change of the gene between the condition of interest and the reference level;
+- lfcSE: the standard error of the log2 fold change;
+- stat: the Wald statistic, which is used to calculate the p-value;
+- pvalue: the p-value associated with the Wald test, which indicates the probability of observing the log2 fold change by chance;
+- padj: the adjusted p-value, which takes into account multiple testing corrections;
+
+By default, the results() function returns the results for all genes in the analysis, but it can also be customized to extract specific columns or rows of interest, and can also be used to filter the results based on certain criteria, such as a minimum log2 fold change or a maximum adjusted p-value or to set a specific contrast. The [contrast] argument in the [results()] function is used to specify the contrast of interest for which the results should be extracted. A contrast is a specific comparison between two or more levels of a factor, such as the comparison between the treatment and control groups. The order of the contrast names determines the direction of the fold change that is reported in the results. Specifically, the first level of the contrast is the condition of interest, and the second level is the reference level. Notice that in the tutorial the contrast is already setted.
 
 ```r
 # Extract results table from the dds object ----
@@ -256,9 +265,23 @@ resultsNames(dds) # DESeq2 function to extract the name of the contrast
 write.table(res, file = "de_results/de_result_table.txt")
 ```
 
+In the "Experimental Design" section, we emphasized the importance of estimating the log2 fold change threshold using a statistical power calculation, rather than selecting it arbitrarily. This approach ensures that the chosen threshold is statistically appropriate and tailored to the specifics of the experiment. However, since we are working with simulated data for demonstration purposes, we will use a padj (adjusted p-value) threshold of 0.05 and consider genes with a log2 fold change greater than 1 or less than -1 as differentially expressed.
 
+```r
+# Extract results table from the dds object ----
 
+resSig <- subset(res, padj < 0.05 & abs(log2FoldChange) > 1)
 
+resSig$Gene <- rownames(resSig) 
+
+resSig <- as_tibble(resSig) %>% relocate(Gene, .before = baseMean)
+
+resSig <- resSig[order(resSig$padj),] # Ordering the significant genes according to padj
+
+# Saving the significant DE genes----
+
+write.table(res, file = "de_results/sig_de_genes.xlsx")
+```
 
 
 
