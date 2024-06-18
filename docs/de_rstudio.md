@@ -121,36 +121,6 @@ Analyzing the structure of the newly created dds, we can observe the differences
 
 ![overview](./img/dds_comparison.png)
 
-The next step is the determination of the "median ratio" to normalize the data. DESeq2 has a specific function, [estimateSizeFactors], to calculate the size factors. This function is usually called within the [DESeq()] function. We removed the size factors during the reconstruction of the colData, so we need to recalculate them. Assigning the results back to the [dds] object fills the [dds] slot with this information:
-
-```r
-# Size factors calculation ----
-dds_new <- estimateSizeFactors(dds_new)
-
-sizeFactors(dds_new) # Look at the normalization factors for each sample
-```
-
-The normalized counts stored in the [dds] can be expected with the [counts()] function
-
-```r
-# Inspect the normalized counts ----
-
-normalized_counts <- counts(dds_new, normalized = TRUE)
-
-# For curiosity, we can also inspect the differences between raw counts and normalized counts ----
-
-head(counts(dds_new, normalized = TRUE))
-head(counts(dds_new))
-```
-
-The normalized matrix counts can be saved in our results folder:
-
-```r
-# Saving normalized counts ----
-
-write.table(normalized_counts, file = "de_results/normalized_counts.txt")
-```
-
 The next step in the DESeq2 workflow is to perform quality control (QC) analysis on our data. This analysis is crucial for identifying potential issues or biases and ensuring the data is suitable for downstream analysis. For QC analysis, it is useful to work with transformed versions of the count data because raw count data are not suitable for these methods due to their discrete nature and the fact that their variance tends to increase with the mean. To address this, DESeq2 provides two types of transformations: variance stabilizing transformations (VST) and regularized logarithm (rlog). These transformations help to remove the dependence of the variance on the mean, making the data more suitable for visualization and exploratory analysis. While, the rlog is more robust to outliers and extreme values, vst is computationally faster and so preferred for larger dataset.
 It's important to remember that these transformations are used for visualization purposes, while DESeq2 itself operates on raw counts for differential expression analysis.
 
@@ -187,6 +157,7 @@ Next, we will extract the matrix of rlog-transformed counts from the rld object 
 
 ```r
 # Plot sample to sample distance (hierarchical clustering) ----
+
 # Extract the matrix of rlog-transformed counts from the rld object
 
 sampleDists <- dist(t(assay(rld)))  # Calculate pairwise distances between samples using the dist() function with Euclidean distance as the default method. By transposing the matrix with t(), we ensure that samples become rows and genes become columns, so that the dist function computes pairwise distances between samples.
@@ -202,7 +173,7 @@ colnames(sampleDistMatrix) <- paste(rld$condition, rld$replica, sep = "_")
 
 colors <- colorRampPalette(rev(brewer.pal(9, "Greens")))(255) # function from RColorBrewer package
 
-# Create the heatmap using pheatmap. It is possible also to personalize the heatmap different arguments. More info with ?pheatmap()
+# Create the heatmap
 
 pheatmap(sampleDistMatrix, 
         clustering_distance_rows = sampleDists, 
@@ -210,4 +181,107 @@ pheatmap(sampleDistMatrix,
         col = colors, 
         fontsize_col = 8, 
         fontsize_row = 8)
+```
+
+Before running the DESeq2 analysis, it's a good practice to pre-filter the genes to remove those with very low counts. This is useful tp reduce noie, improving computional efficiency and enhancing interpretability. In general it is reasonable to keep only genes with a counts of at least 10 for a minimal number of samples of 3:
+
+```r
+# Pre-filtering ---
+
+smallestGroupSize <- 3 # minimal number of samples = 3
+
+keep <- rowSums(counts(dds_new) >= 10) >= smallestGroupSize # genes with a sum counts of at least 10 in 3 samples
+
+dds <- dds[keep,] # keep only the genes that pass the threshold
+
+# Run the DESeq2 analysis ----
+
+dds_final <- DESeq(dds_new)
+```
+The [DESeq] function is a high-level wrapper that simplifies the process of differential expression analysis by combining multiple steps into a single function call:
+
+![overview](./img/DESeq_function.png)
+
+This makes the workflow more user-friendly and ensures that all necessary preprocessing and statistical steps are executed in the correct order. The key functions that [DESeq] calls include: 
+- estimateSizeFactors: to normalize the count data;
+- estimateDispersion: to estimate the dispersion;
+- nbinomWaldTest: to perform differential expression test.
+
+The individual functions can be carried out also singularly as shown below:
+
+```r
+# Differential expression analysis step-by-step ---
+
+dds <- estimateSizeFactors(dds)
+
+dds <- estimateDispersions(dds)
+
+dds <- nbinomWaldTest(dds)
+```
+
+The normalized counts stored in the [dds] can be inspected with the [counts()] function:
+
+```r
+# Inspect the normalized counts ----
+
+normalized_counts <- counts(dds_final, normalized = TRUE)
+
+# For curiosity, we can also inspect the differences between raw counts and normalized counts ----
+
+head(counts(dds_final, normalized = TRUE))
+head(counts(dds_final))
+```
+
+The normalized matrix counts can be saved in our results folder:
+
+```r
+# Saving normalized counts ----
+
+write.table(normalized_counts, file = "de_results/normalized_counts.txt")
+```
+
+The [results()] function in DESeq2 is used to extract the results of the differential expression analysis, including the log2 fold changes, p-values, and adjusted p-values for each gene. This function takes the [dds] object as input and returns a DataFrame containing the results of the analysis. The [results()] function can be customized to extract specific columns or rows of interest, and can also be used to filter the results based on certain criteria, such as a minimum log2 fold change or a maximum adjusted p-value. By default, the results() function returns the results for all genes in the analysis, but it can also be used to extract the results for a specific set of genes or a specific contrast. The [contrast] argument in the [results()] function is used to specify the contrast of interest for which the results should be extracted. A contrast is a specific comparison between two or more levels of a factor, such as the comparison between the treatment and control groups. By specifying a contrast, the [results()] function returns the results of the differential expression analysis for that specific comparison. The order of the contrast names determines the direction of the fold change that is reported in the results. Specifically, the first level of the contrast is the condition of interest, and the second level is the reference level. Notice that in the tutorial the contrast is already setted.
+
+```r
+# Extract results table from the dds object ----
+
+res <- results(dds)
+
+resultsNames(dds) # DESeq2 function to extract the name of the contrast
+
+#contrast <- c("name_of_design_formula", "condition_of_interest", "reference_level") # Command to set the contrast, if necessary
+
+# Saving the results table ----
+
+write.table(res, file = "de_results/de_result_table.txt")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Now that we have performed the differential expression analysis using DESeq2, it's time to graphically visualize the numerical results to gain insights into the biological processes and pathways affected by the experimental conditions. By creating informative plots, we can better explore and interpret our results. In the following sections, we will start with some basic plots and move on to more advanced visualizations.
+The first plot we will create uses the [plotCounts] function from DESeq2. This function plots the normalized counts for a single gene across the different conditions in your experiment. It’s particularly useful for visualizing the expression levels of specific genes of interest and comparing them across sample groups.
+
+```r
+# Plot a specific gene in this case ENSG00000142192 ----
+
+plotCounts(dds, gene = "ENSG00000142192")
 ```
