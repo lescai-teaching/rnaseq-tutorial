@@ -85,7 +85,6 @@ The inspection of the dds revealed that the colData and the design must be re-or
 ```r
 # Creation of metadata starting from the dds colData ----
 metadata <- DataFrame(
-    sample = colData(dds)$sample,
     condition = colData(dds)$Group1,
     replica = colData(dds)$Group2
 )
@@ -152,3 +151,63 @@ The normalized matrix counts can be saved in our results folder:
 write.table(normalized_counts, file = "de_results/normalized_counts.txt")
 ```
 
+The next step in the DESeq2 workflow is to perform quality control (QC) analysis on our data. This analysis is crucial for identifying potential issues or biases and ensuring the data is suitable for downstream analysis. For QC analysis, it is useful to work with transformed versions of the count data because raw count data are not suitable for these methods due to their discrete nature and the fact that their variance tends to increase with the mean. To address this, DESeq2 provides two types of transformations: variance stabilizing transformations (VST) and regularized logarithm (rlog). These transformations help to remove the dependence of the variance on the mean, making the data more suitable for visualization and exploratory analysis. While, the rlog is more robust to outliers and extreme values, vst is computationally faster and so preferred for larger dataset.
+It's important to remember that these transformations are used for visualization purposes, while DESeq2 itself operates on raw counts for differential expression analysis.
+
+```r
+# Transform normalized counts for data viz ----
+# A user can choose among vst and rlog. In this tutorial we will work with rlog transformed data.
+
+rld <- rlog(dds_new, blind = TRUE)
+```
+
+The rlog and the vst transformations have an argument, [blind] that can be set to:
+- TRUE (default): useful for QC analysis because it re-estimates the dispersion, allowing for comparison of samples in an unbiased manner with respect to experimental conditions;
+- FALSE: the function utilizes the already estimated dispersion, generally applied when differences in counts are expected to be due to the experimental design.
+
+Next, we perform Principal Component Analysis (PCA) to visualize the data. DESeq2 provides a built-in function, [plotPCA], which uses [ggplot2](https://ggplot2.tidyverse.org) for visualization, taking the [rld] object as input.
+We will use the [condition] information from our metadata to plot the PCA, since the [treatment] is the principal condition of interest in our metadata: 
+
+```r
+# Plot PCA ----
+
+plotPCA(rld, intgroup = "condition")
+```
+
+The second essential step in QC analysis is hierarchical clustering. Although DESeq2 does not have a built-in function for this analysis, we can use the [pheatmap()] function from the [pheatmap] package.
+First, we need to install the [pheatmap] package:
+
+```r
+# Install the pheatmap package ----
+
+install.packages("pheatmap")
+```
+
+Next, we will extract the matrix of rlog-transformed counts from the rld object (pheatmap input), compute pairwise correlations and plot the heatmap:
+
+```r
+# Plot sample to sample distance (hierarchical clustering) ----
+# Extract the matrix of rlog-transformed counts from the rld object
+
+sampleDists <- dist(t(assay(rld)))  # Calculate pairwise distances between samples using the dist() function with Euclidean distance as the default method. By transposing the matrix with t(), we ensure that samples become rows and genes become columns, so that the dist function computes pairwise distances between samples.
+
+sampleDistMatrix <- as.matrix(sampleDists)  # Convert distances to a matrix
+
+# Set the row and column names of the distance matrix
+
+rownames(sampleDistMatrix) <- paste(rld$condition, rld$replica, sep = "_")
+colnames(sampleDistMatrix) <- paste(rld$condition, rld$replica, sep = "_")
+
+# Define a color palette for the heatmap
+
+colors <- colorRampPalette(rev(brewer.pal(9, "Greens")))(255) # function from RColorBrewer package
+
+# Create the heatmap using pheatmap. It is possible also to personalize the heatmap different arguments. More info with ?pheatmap()
+
+pheatmap(sampleDistMatrix, 
+        clustering_distance_rows = sampleDists, 
+        clustering_distance_cols = sampleDists, 
+        col = colors, 
+        fontsize_col = 8, 
+        fontsize_row = 8)
+```
