@@ -276,9 +276,9 @@ In the "Experimental Design" section, we emphasized the importance of estimating
 
 resSig <- subset(res, padj < 0.05 & abs(log2FoldChange) > 1) # Filter the results to include only significantly differentially expressed genes with an adjusted p-value (padj) less than 0.05 and a log2foldchange greater than 1 or less than -1
 
-resSig$Gene <- rownames(resSig) # Add a new column to the results with the gene names
+resSig$gene <- rownames(resSig) # Add a new column to the results with the gene names
 
-resSig <- as_tibble(resSig) %>% relocate(Gene, .before = baseMean) # Convert the results to a tibble for easier manipulation and relocate the 'Gene' column to be the first column
+resSig <- as_tibble(resSig) %>% relocate(gene, .before = baseMean) # Convert the results to a tibble for easier manipulation and relocate the 'Gene' column to be the first column
 
 resSig <- resSig[order(resSig$padj),] # Order the significant genes by their adjusted p-value (padj) in ascending order
 
@@ -312,5 +312,46 @@ plotCounts(dds, gene = "ENSG00000142192")
 ```r
 # Volcano plot ----
 
-plotCounts(dds, gene = "ENSG00000142192")
+# Convert the results to a tibble and add a column indicating differential expression status
+
+res_tb <- as_tibble(res) %>% 
+  mutate(diffexpressed = case_when(
+    log2FoldChange > 1 & padj < 0.05 ~ 'upregulated', 
+    log2FoldChange < -1 & padj < 0.05 ~ 'downregulated',
+    TRUE ~ 'not_de'
+  ))
+
+# Add a new column with gene names
+
+res_tb$gene <- rownames(res) 
+
+# Relocate the 'gene' column to be the first column
+
+res_tb <-  res_tb %>% 
+  relocate(gene, .before = baseMean)
+
+# Order the table by adjusted p-value (padj) and add a new column for gene labels
+
+res_tb <- res_tb %>% arrange(padj) %>% mutate(genelabels = "")
+
+# Label the top 5 most significant genes
+
+res_tb$genelabels[1:5] <- res_tb$gene[1:5]
+
+# Create a volcano plot using ggplot2
+
+ggplot(data = res_tb, aes(x = log2FoldChange, y = -log10(padj), col = diffexpressed)) + 
+  geom_point(size = 0.6) + 
+  geom_text_repel(aes(label = genelabels), size = 2.5, max.overlaps = Inf) +
+  ggtitle("DE genes treatment versus control") + 
+  geom_vline(xintercept = c(-1, 1), col = "black", linetype = 'dashed', linewidth = 0.2) +
+  geom_hline(yintercept = -log10(0.05), col = "black", linetype = 'dashed', linewidth = 0.2) +
+  theme(plot.title = element_text(size = rel(1.25), hjust = 0.5),
+        axis.title = element_text(size = rel(1))) +
+  scale_color_manual(values = c("upregulated" = "red", 
+                                "downregulated" = "blue", 
+                                "not_de" = "grey")) +
+  labs(color = 'DE genes') +
+  xlim(-3,5)
+
 ```
