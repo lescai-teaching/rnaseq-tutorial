@@ -84,21 +84,27 @@ The inspection of the dds revealed that the colData and the design must be re-or
 
 ```r
 # Creation of metadata starting from the dds colData ----
+
 metadata <- DataFrame(
+    sample = colData(dds)$sample,
     condition = colData(dds)$Group1,
     replica = colData(dds)$Group2
 )
 
 # Assign names to rows of metadata ----
+
 rownames(metadata) <- colnames(counts(dds))
 
 # Fill the dds colData with the generated metadata ---
+
 colData(dds) <- metadata
 ```
 
 To avoid errors in DESeq2 is essential to check that sample names match between the colData and the countData, and that the sample are in the correct order:
 
 ```r
+# Check that sample names match in both files ----
+
 all(colnames(dds$counts) %in% rownames(metadata)) # Must be TRUE
 all(colnames(dds$counts) == rownames(metadata)) # Must be TRUE
 ```
@@ -121,14 +127,26 @@ Analyzing the structure of the newly created dds, we can observe the differences
 
 ![overview](./img/dds_comparison.png)
 
-The next step in the DESeq2 workflow is to perform quality control (QC) analysis on our data. This analysis is crucial for identifying potential issues or biases and ensuring the data is suitable for downstream analysis. For QC analysis, it is useful to work with transformed versions of the count data because raw count data are not suitable for these methods due to their discrete nature and the fact that their variance tends to increase with the mean. To address this, DESeq2 provides two types of transformations: variance stabilizing transformations (VST) and regularized logarithm (rlog). These transformations help to remove the dependence of the variance on the mean, making the data more suitable for visualization and exploratory analysis. While, the rlog is more robust to outliers and extreme values, vst is computationally faster and so preferred for larger dataset.
+Before running the differebt steps of the analysis, a good practice consists in pre-filtering the genes to remove those with very low counts. This is useful tp reduce noie, improving computional efficiency and enhancing interpretability. In general it is reasonable to keep only genes with a counts of at least 10 for a minimal number of samples of 3:
+
+```r
+# Pre-filtering ---
+
+smallestGroupSize <- 3 # minimal number of samples = 3
+
+keep <- rowSums(counts(dds_new) >= 10) >= smallestGroupSize # genes with a sum counts of at least 10 in 3 samples
+
+dds_filtered <- dds_new[keep,] # keep only the genes that pass the threshold
+```
+
+The next step in the DESeq2 workflow is to perform quality control (QC) analysis on our data. This analysis is crucial for identifying potential issues or biases and ensuring the data is suitable for downstream analysis. For QC analysis, it is useful to work with transformed versions of the count data because raw count data are not suitable for these methods due to their discrete nature and the fact that their variance tends to increase with the mean. To address this, DESeq2 provides two types of transformations: variance stabilizing transformations (vst) and regularized logarithm (rlog). These transformations help to remove the dependence of the variance on the mean, making the data more suitable for visualization and exploratory analysis. While, the rlog is more robust to outliers and extreme values, vst is computationally faster and so preferred for larger dataset.
 It's important to remember that these transformations are used for visualization purposes, while DESeq2 itself operates on raw counts for differential expression analysis.
 
 ```r
 # Transform normalized counts for data viz ----
 # A user can choose among vst and rlog. In this tutorial we will work with rlog transformed data.
 
-rld <- rlog(dds_new, blind = TRUE)
+rld <- rlog(dds_filtering, blind = TRUE)
 ```
 
 The rlog and the vst transformations have an argument, [blind] that can be set to:
@@ -183,21 +201,14 @@ pheatmap(sampleDistMatrix,
         fontsize_row = 8)
 ```
 
-Before running the DESeq2 analysis, it's a good practice to pre-filter the genes to remove those with very low counts. This is useful tp reduce noie, improving computional efficiency and enhancing interpretability. In general it is reasonable to keep only genes with a counts of at least 10 for a minimal number of samples of 3:
+Now, it is time to run the differential expression analysis with the [DESeq] function.
 
 ```r
-# Pre-filtering ---
-
-smallestGroupSize <- 3 # minimal number of samples = 3
-
-keep <- rowSums(counts(dds_new) >= 10) >= smallestGroupSize # genes with a sum counts of at least 10 in 3 samples
-
-dds <- dds[keep,] # keep only the genes that pass the threshold
-
 # Run the DESeq2 analysis ----
 
-dds_final <- DESeq(dds_new)
+dds_final <- DESeq(dds_filtered)
 ```
+
 The [DESeq] function is a high-level wrapper that simplifies the process of differential expression analysis by combining multiple steps into a single function call:
 
 ![overview](./img/DESeq_function.png)
@@ -213,31 +224,20 @@ The individual functions can be carried out also singularly as shown below:
 # Differential expression analysis step-by-step ---
 
 dds <- estimateSizeFactors(dds)
-
 dds <- estimateDispersions(dds)
-
 dds <- nbinomWaldTest(dds)
 ```
 
-The normalized counts stored in the [dds] can be inspected with the [counts()] function:
+The normalized counts stored in the [dds] can be inspected with the [counts()] function and saved in our results folder:
 
 ```r
 # Inspect the normalized counts ----
 
 normalized_counts <- counts(dds_final, normalized = TRUE)
 
-# For curiosity, we can also inspect the differences between raw counts and normalized counts ----
+# Save normalized counts ----
 
-head(counts(dds_final, normalized = TRUE))
-head(counts(dds_final))
-```
-
-The normalized matrix counts can be saved in our results folder:
-
-```r
-# Saving normalized counts ----
-
-write.table(normalized_counts, file = "de_results/normalized_counts.xlsx")
+write.csv(normalized_counts, file = "de_results/normalized_counts.csv")
 ```
 
 The [results()] function in DESeq2 is used to extract the results of the differential expression analysis. This function takes the [dds] object as input and returns a DataFrame containing the results of the analysis:
@@ -249,62 +249,68 @@ The [results()] function in DESeq2 is used to extract the results of the differe
 - pvalue: the p-value associated with the Wald test, which indicates the probability of observing the log2 fold change by chance;
 - padj: the adjusted p-value, which takes into account multiple testing corrections;
 
-By default, the results() function returns the results for all genes in the analysis, but it can also be customized to extract specific columns or rows of interest, and can also be used to filter the results based on certain criteria, such as a minimum log2 fold change or a maximum adjusted p-value or to set a specific contrast. The [contrast] argument in the [results()] function is used to specify the contrast of interest for which the results should be extracted. A contrast is a specific comparison between two or more levels of a factor, such as the comparison between the treatment and control groups. The order of the contrast names determines the direction of the fold change that is reported in the results. Specifically, the first level of the contrast is the condition of interest, and the second level is the reference level. Notice that in the tutorial the contrast is already setted.
+By default, the [results()] function returns the results for all genes in the analysis with an adjusted p-value below a specific FDR cutoff, set by the default to 0.1. This threshold can be modified with the parameter [alpha]. The [results()] function can also be customized to extract specific columns or rows of interest, and can also be used to filter the results based on certain criteria, such as a minimum log2 fold change or a maximum adjusted p-value or to set a specific contrast. The [contrast] argument in the [results()] function is used to specify the contrast of interest for which the results should be extracted. A contrast is a specific comparison between two or more levels of a factor, such as the comparison between the treatment and control groups. The order of the contrast names determines the direction of the fold change that is reported in the results. Specifically, the first level of the contrast is the condition of interest, and the second level is the reference level. Notice that in the tutorial the contrast is already setted.
 
 ```r
 # Extract results table from the dds object ----
 
 res <- results(dds)
 
+head(res) # Visualize the results
+
+summary(res) # Summarize the results showing the number of tested genes (genes with non-zero total read count), the genes up- and down-regulated at the selected threshold (alpha) and the number of genes excluded by the muòtiple testing due to a low mean count 
+
 resultsNames(dds) # DESeq2 function to extract the name of the contrast
 
 #contrast <- c("name_of_design_formula", "condition_of_interest", "reference_level") # Command to set the contrast, if necessary
 
-# Saving the results table ----
+# Save the results table ----
 
-write.table(res, file = "de_results/de_result_table.txt")
+write.csv(res, file = "de_results/de_result_table.csv")
 ```
 
 In the "Experimental Design" section, we emphasized the importance of estimating the log2 fold change threshold using a statistical power calculation, rather than selecting it arbitrarily. This approach ensures that the chosen threshold is statistically appropriate and tailored to the specifics of the experiment. However, since we are working with simulated data for demonstration purposes, we will use a padj (adjusted p-value) threshold of 0.05 and consider genes with a log2 fold change greater than 1 or less than -1 as differentially expressed.
 
 ```r
-# Extract results table from the dds object ----
+# Extract significant DE genes from the results ----
 
-resSig <- subset(res, padj < 0.05 & abs(log2FoldChange) > 1)
+resSig <- subset(res, padj < 0.05 & abs(log2FoldChange) > 1) # Filter the results to include only significantly differentially expressed genes with an adjusted p-value (padj) less than 0.05 and a log2foldchange greater than 1 or less than -1
 
-resSig$Gene <- rownames(resSig) 
+resSig$Gene <- rownames(resSig) # Add a new column to the results with the gene names
 
-resSig <- as_tibble(resSig) %>% relocate(Gene, .before = baseMean)
+resSig <- as_tibble(resSig) %>% relocate(Gene, .before = baseMean) # Convert the results to a tibble for easier manipulation and relocate the 'Gene' column to be the first column
 
-resSig <- resSig[order(resSig$padj),] # Ordering the significant genes according to padj
+resSig <- resSig[order(resSig$padj),] # Order the significant genes by their adjusted p-value (padj) in ascending order
 
-# Saving the significant DE genes----
+resSig # Display the final results table of significant genes
 
-write.table(res, file = "de_results/sig_de_genes.xlsx")
+# Save the significant DE genes ----
+
+write.csv(res, file = "de_results/sig_de_genes.csv")
 ```
 
+Now that we have obtained the results of the differential expression analysis, it's time to visualize the data to gain a deeper understanding of the biological processes that are affected by the experimental conditions. Visualization is a crucial step in RNA-seq analysis, as it allows us to identify patterns and trends in the data that may not be immediately apparent from the numerical results. In the following sections, we will explore different types of plots that are commonly used to visualize the results of RNA-seq analysis, including:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Now that we have performed the differential expression analysis using DESeq2, it's time to graphically visualize the numerical results to gain insights into the biological processes and pathways affected by the experimental conditions. By creating informative plots, we can better explore and interpret our results. In the following sections, we will start with some basic plots and move on to more advanced visualizations.
-The first plot we will create uses the [plotCounts] function from DESeq2. This function plots the normalized counts for a single gene across the different conditions in your experiment. It’s particularly useful for visualizing the expression levels of specific genes of interest and comparing them across sample groups.
+- MA plot: it is a type of scatter plot that is commonly used to visualize the results of differential expression analysis for all the samples. The plot displays the log2 fold change on the y-axis and the mean of the normalized counts on the x-axis. This allows for the visualization of the relationship between the magnitude of the fold change and the mean expression level of the genes. Genes that are highly differentially expressed will appear farthest from the horizontal axis, while genes with low expression levels will appear closer to the axis. MA plots are useful for identifying genes that are both highly expressed and highly differentially expressed between two conditions.
 
 ```r
-# Plot a specific gene in this case ENSG00000142192 ----
+# MA plot ----
+
+plotMA(res, ylim = c(-2,2))
+```
+ 
+- counts plot: it plots the normalized counts for a single gene across the different conditions in your experiment. It’s particularly useful for visualizing the expression levels of specific genes of interest and comparing them across sample groups.
+
+```r
+# Plot a specific gene in this case ENSG00000142192, a DE gene ----
+
+plotCounts(dds, gene = "ENSG00000142192")
+```
+
+- volcano plot: it is a type of scatter plot that displays the log2 fold change on the x-axis and the log transformed padj on the y-axis. This allows for the visualization of both the magnitude and significance of the changes in gene expression between two conditions. Genes that are highly differentially expressed (i.e., have a large log2 fold change) and are statistically significant (i.e., have a low p-value) will appear in the top-left or top-right corners of the plot, making it easy to identify the most biologically meaningful changes.
+
+```r
+# Volcano plot ----
 
 plotCounts(dds, gene = "ENSG00000142192")
 ```
