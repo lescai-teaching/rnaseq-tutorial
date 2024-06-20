@@ -357,3 +357,23 @@ ggplot(data = res_tb, aes(x = log2FoldChange, y = -log10(padj), col = diffexpres
   xlim(-3,5)
 
 ```
+
+heatmap: plot of the normalized counts for all the significant genes obtained with the [pheatmap()] function. The heatmap provides insights into genes and sample relationships that may not be apparent from individual gene plots alone. 
+
+```r
+# Heatmap ----
+
+# Extract significant genes from the result object
+significant_genes <- resSig$gene
+
+# Extract normalized counts for significant genes from the normalized_counts matrix
+significant_counts <- normalized_counts[significant_genes, ]
+
+# Create a heatmap using pheatmap
+pheatmap(significant_counts, 
+         cluster_rows = TRUE,
+         fontsize = 8,
+         scale = "row",
+         fontsize_row = 8,
+         height = 10)
+```

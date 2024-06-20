@@ -50,6 +50,9 @@ To gain a comprehensive overview of the transcriptional profile, the volcano plo
 
 The treatment induced differential expression in five genes, with one downregulated and four upregulated. This plot visually represents the numerical results reported in the table above.
 
+By extracting the normalized counts of all genes and subsetting only significant de genes, we can plot the heatmap
+
+![overview](./img/heatmap_de_genes.png)
 
 ## Enrichment Analysis (ORA)
 
