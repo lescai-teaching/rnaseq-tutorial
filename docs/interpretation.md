@@ -50,9 +50,11 @@ To gain a comprehensive overview of the transcriptional profile, the volcano plo
 
 The treatment induced differential expression in five genes, with one downregulated and four upregulated. This plot visually represents the numerical results reported in the table above.
 
-By extracting the normalized counts of all genes and subsetting only significant de genes, we can plot the heatmap
+Finally, we can create a heatmap using the normalized expression counts of genes identified as significantly differentially expressed. The resulting heatmap visualizes how the expression of significant genes varies across samples. Each row represents a gene, and each column represents a sample. The color intensity in the heatmap reflects the normalized expression levels: red colors indicate higher expression, while blue colors indicate lower expression.
 
 ![overview](./img/heatmap_de_genes.png)
+
+By examining the heatmap, we can visually identify the expression patterns of our five significant differentially expressed genes. This visualization allows us to identify how these genes respond to the treatment. The heatmap provides a clear and intuitive way to explore gene expression dynamics and can guide further investigation into the biological processes underlying observed changes.
 
 ## Enrichment Analysis (ORA)
 
