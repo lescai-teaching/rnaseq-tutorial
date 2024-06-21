@@ -54,7 +54,7 @@ Finally, we can create a heatmap using the normalized expression counts of genes
 
 ![overview](./img/heatmap_de_genes.png)
 
-By examining the heatmap, we can visually identify the expression patterns of our five significant differentially expressed genes. This visualization allows us to identify how these genes respond to the treatment. The heatmap provides a clear and intuitive way to explore gene expression dynamics and can guide further investigation into the biological processes underlying observed changes.
+By examining the heatmap, we can visually identify the expression patterns of our five significant differentially expressed genes. This visualization allows us to identify how these genes respond to the treatment. The heatmap provides a clear and intuitive way to explore gene expression dynamics and can guide further investigation into the *DESEq* processes underlying observed changes.
 
 ## Over Representation Analysis (ORA)
 
