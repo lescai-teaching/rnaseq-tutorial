@@ -8,8 +8,6 @@ Given the central role of the RNA in a variety of cellular and molecular functio
 
 After RNA extraction and reverse transcription into complementary DNA (cDNA), the biological material is sequenced with the generation of NGS “reads”, sequences corresponding to the RNA captured and sequenced in a specific cell, tissue or organ at a given time. Sequencing data are then bioinformatically processed with a typical workflow summarized in the diagram below:
 
-![overview](./img/RNA_seq_scheme_tutorial.png)
-
 In the scheme we can identify three different key phases in the workflow: pre-processing, alignment (or pseudoalignment) and quantification and finally differential expression analysis. In the pre-processing step, the raw reads are handled to remove adapters and contaminants and the quality is checked. Then, reads are mapped to a genome reference and the abundance of transcripts or genes is estimated. The workflow can also follow an additional route based on a pseudoalignment and quantification, reducing the amount of time required for the analysis. Finally, differentially expressed genes or transcripts are identified with statistical tests, annotated and visualized. Depending upon the user’s needs, the workflow can include additional downstream analysis such as functional enrichment analysis (to identify enriched biological pathways or processes), coexpression analysis (to identify hub genes and their relationships) and integration with other omics data (to produce a comprehensive understanding of biological systems).
 
 ## Pre-processing 
