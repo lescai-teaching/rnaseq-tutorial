@@ -377,3 +377,67 @@ pheatmap(significant_counts,
          fontsize_row = 8,
          height = 10)
 ```
+
+## Functional analysis
+
+The output of RNA-seq differential expression analysis is a list of significant differentially expressed genes (DEGs). To uncover the underlying biological mechanisms, various downstream analyses can be performed, such as functional enrichment analysis (identify overrepresented biological processes, molecular functions, or cellular components) and network analysis (group genes based on similar expression patterns and identify novel pathways or interactions). To facilitate interpretation of the resulting gene lists, a range of freely available web- and R-based tools can be employed.
+
+In this tutorial we will focus on the over Representation Analysis (ORA), also known as enrichment analysis, a powerful tool for identifying biological pathways or processes that are significantly enriched with differentially expressed genes. The underlying statistic behind ORA is the hypergeometric test, which calculates the probability of observing a certain number of genes from a particular pathway or process in the list of differentially expressed genes by chance. The hypergeometric test takes into account the total number of genes in the genome, the number of genes in the pathway or process, and the number of differentially expressed genes in the list. The resulting p-value represents the probability of observing the enrichment by chance, and a low p-value indicates that the enrichment is statistically significant. By applying the hypergeometric test to multiple pathways or processes, ORA provides a comprehensive view of the biological mechanisms underlying the differentially expressed genes, allowing researchers to identify key biological processes and pathways that are affected by the condition of interest.
+
+```r
+# Enrichment analysis (ORA) ----
+
+# Loading libraries
+# clusterProfiler: a package for enrichment analysis
+library(clusterProfiler)
+# org.Hs.eg.db: a package for the human gene annotation database
+library(org.Hs.eg.db)
+# cowplot: a package for combining multiple plots
+library(cowplot)
+
+# Prepare gene list
+# Extract the log2 fold change values from the results data frame
+
+gene_list <- res$log2FoldChange
+
+# Name the vector with the corresponding gene identifiers
+
+names(gene_list) <- res$gene
+
+# Sort the list in decreasing order (required for clusterProfiler)
+
+gene_list <- sort(gene_list, decreasing = TRUE)
+
+# Extract the significantly differentially expressed genes from the results data frame
+res_genes <- resSig$gene
+
+# Run GO enrichment analysis using the enrichGO function
+go_enrich <- enrichGO(
+  gene = res_genes,                # Genes of interest
+  universe = names(gene_list),     # Background gene set
+  OrgDb = org.Hs.eg.db,            # Annotation database
+  keyType = 'ENSEMBL',             # Key type for gene identifiers
+  readable = TRUE,                 # Convert gene IDs to gene names
+  ont = "ALL",                     # Ontology: can be "BP", "MF", "CC", or "ALL"
+  pvalueCutoff = 0.05,             # P-value cutoff for significance
+  qvalueCutoff = 0.10              # Q-value cutoff for significance
+)
+
+
+# Create a bar plot of the top enriched GO terms
+barplot <- barplot(
+  go_enrich, 
+  title = "Enrichment analysis barplot",
+  font.size = 8
+)
+
+# Create a dot plot of the top enriched GO terms
+dotplot <- dotplot(
+  go_enrich,
+  title = "Enrichment analysis dotplot",
+  font.size = 8
+)
+
+# Combine the bar plot and dot plot into a single plot grid
+plot_grid(barplot, dotplot, nrow = 2)
+```

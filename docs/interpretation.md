@@ -56,7 +56,14 @@ Finally, we can create a heatmap using the normalized expression counts of genes
 
 By examining the heatmap, we can visually identify the expression patterns of our five significant differentially expressed genes. This visualization allows us to identify how these genes respond to the treatment. The heatmap provides a clear and intuitive way to explore gene expression dynamics and can guide further investigation into the biological processes underlying observed changes.
 
-## Enrichment Analysis (ORA)
+## Over Representation Analysis (ORA)
 
+Finally, we can attempt to assign biological significance to our differentially expressed genes through Enrichment Analysis (ORA). The ORA analysis identifies specific biological pathways, molecular functions, and cellular processes that are enriched with our differentially expressed genes.
+
+![overview](./img/enrichment_plot.png)
+
+Based on the results of the ORA, we identified two differentially expressed genes that appear to be involved in redox reduction, specifically in the reduction of carbonyl groups. Furthermore, these genes seem to play a role in the endoplasmic reticulum during clathrin-mediated endocytosis and endosome recycling. This suggests that they may be involved in metabolic pathways related to detoxification and/or xenobiotic metabolism.
+
+Note that this analysis is based on simulated data and serves only as a demonstration to illustrate the classical workflow of the analysis.
 
 ## Conclusions
