@@ -135,7 +135,9 @@ dds_new  <- DESeqDataSet(dds, design = ~ condition)
 # dds inspection 
 
 head(counts(dds_new)) # to check the raw counts
+
 colData(dds_new) # to check the sample info
+
 design(dds_new) # to check the design formula
 ```
 
@@ -148,11 +150,17 @@ Before running the different steps of the analysis, a good practice consists in 
 ```r
 #### Pre-filtering ####
 
-smallestGroupSize <- 3 # minimal number of samples = 3
+# Select a minimal number of samples = 3
 
-keep <- rowSums(counts(dds_new) >= 10) >= smallestGroupSize # genes with a sum counts of at least 10 in 3 samples
+smallestGroupSize <- 3 
 
-dds_filtered <- dds_new[keep,] # keep only the genes that pass the threshold
+# Select genes with a sum counts of at least 10 in 3 samples
+
+keep <- rowSums(counts(dds_new) >= 10) >= smallestGroupSize 
+
+# Keep only the genes that pass the threshold
+
+dds_filtered <- dds_new[keep,] 
 ```
 
 The next step in the DESeq2 workflow is to perform quality control (QC) analysis on our data. This analysis is crucial for identifying potential issues or biases and ensuring the data is suitable for downstream analysis. For QC analysis, it is useful to work with transformed versions of the count data because raw count data are not suitable for these methods due to their discrete nature and the fact that their variance tends to increase with the mean. To address this, DESeq2 provides two types of transformations: variance stabilizing transformations (vst) and regularized logarithm (rlog). These transformations help to remove the dependence of the variance on the mean, making the data more suitable for visualization and exploratory analysis. While, the rlog is more robust to outliers and extreme values, vst is computationally faster and so preferred for larger dataset.
@@ -188,7 +196,9 @@ We will extract the matrix of rlog-transformed counts from the rld object (pheat
 
 sampleDists <- dist(t(assay(rld)))  # Calculate pairwise distances between samples using the dist() function with Euclidean distance as the default method. By transposing the matrix with t(), we ensure that samples become rows and genes become columns, so that the dist function computes pairwise distances between samples.
 
-sampleDistMatrix <- as.matrix(sampleDists)  # Convert distances to a matrix
+# Convert distances to a matrix
+
+sampleDistMatrix <- as.matrix(sampleDists)  
 
 # Set the row and column names of the distance matrix
 
@@ -286,11 +296,17 @@ By default, the **results()** function returns the results for all genes in the 
 
 res <- results(dds_final)
 
-head(res) # Visualize the results
+# Visualize the results
 
-summary(res) # Summarize the results showing the number of tested genes (genes with non-zero total read count), the genes up- and down-regulated at the selected threshold (alpha) and the number of genes excluded by the multiple testing due to a low mean count 
+head(res) 
 
-resultsNames(dds) # DESeq2 function to extract the name of the contrast
+ # Summarize the results showing the number of tested genes (genes with non-zero total read count), the genes up- and down-regulated at the selected threshold (alpha) and the number of genes excluded by the multiple testing due to a low mean count 
+
+summary(res)
+
+# DESeq2 function to extract the name of the contrast
+
+resultsNames(dds) 
 
 # contrast <- c("name_of_design_formula", "condition_of_interest", "reference_level") # Command to set the contrast, if necessary
 
@@ -312,15 +328,25 @@ In the *Experimental Design* section, we emphasized the importance of estimating
 ```r
 #### Extract significant DE genes from the results ####
 
-resSig <- subset(res, padj < 0.05 & abs(log2FoldChange) > 1) # Filter the results to include only significantly differentially expressed genes with an adjusted p-value (padj) less than 0.05 and a log2foldchange greater than 1 or less than -1
+# Filter the results to include only significantly differentially expressed genes with an adjusted p-value (padj) less than 0.05 and a log2foldchange greater than 1 or less than -1
 
-resSig$gene <- rownames(resSig) # Add a new column to the results with the gene names
+resSig <- subset(res, padj < 0.05 & abs(log2FoldChange) > 1) 
 
-resSig <- as_tibble(resSig) %>% relocate(gene, .before = baseMean) # Convert the results to a tibble for easier manipulation and relocate the 'Gene' column to be the first column
+# Add a new column to the results with the gene names
 
-resSig <- resSig[order(resSig$padj),] # Order the significant genes by their adjusted p-value (padj) in ascending order
+resSig$gene <- rownames(resSig) 
 
-resSig # Display the final results table of significant genes
+# Convert the results to a tibble for easier manipulation and relocate the 'Gene' column to be the first column
+
+resSig <- as_tibble(resSig) %>% relocate(gene, .before = baseMean) 
+
+# Order the significant genes by their adjusted p-value (padj) in ascending order
+
+resSig <- resSig[order(resSig$padj),] 
+
+# Display the final results table of significant genes
+
+resSig 
 
 # Save the significant DE genes 
 
@@ -427,6 +453,7 @@ In this tutorial we will focus on the over Representation Analysis (ORA), also k
 #### Enrichment analysis (ORA) ####
 
 # Loading libraries
+
 # clusterProfiler: a package for enrichment analysis
 
 library(clusterProfiler)
@@ -457,6 +484,7 @@ gene_list <- sort(gene_list, decreasing = TRUE)
 res_genes <- resSig$gene
 
 # Run GO enrichment analysis using the enrichGO function
+
 go_enrich <- enrichGO(
   gene = res_genes,                # Genes of interest
   universe = names(gene_list),     # Background gene set
