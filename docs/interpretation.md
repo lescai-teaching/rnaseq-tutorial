@@ -67,3 +67,5 @@ Based on the results of the ORA, we identified two differentially expressed gene
 Note that this analysis is based on simulated data and serves only as a demonstration to illustrate the classical workflow of the analysis.
 
 ## Conclusions
+
+In this tutorial, we have walked through the steps of performing differential expression analysis using DESeq2, from preparing the data to interpreting the results. We have seen how to identify differentially expressed genes, visualize the results, and perform enrichment analysis to gain insights into the biological significance of the results. By following this tutorial, you should now be able to perform differential expression analysis using DESeq2 and interpret the results in the context of your own research question. Remember to always carefully evaluate the quality of your data and the assumptions of the analysis, and to consider the biological relevance of the results in the context of your research.
