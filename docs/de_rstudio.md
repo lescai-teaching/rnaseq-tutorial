@@ -17,7 +17,15 @@ Username: gitpod
 Password: pass
 ```
 
-Now we are quite ready to perform the differential expression analysis.
+Now we are quite ready to perform the differential expression analysis. To prevent losing connection, open the **Terminal** and type:
+
+```bash
+sleep 5000
+```
+
+This command will keep the RStudio session active for about 1 hour and 23 minutes, providing sufficient time to complete our analysis without interruption.
+
+![overview](./img/sleep_5000.png)
 
 
 ## Differential Expression Analysis
