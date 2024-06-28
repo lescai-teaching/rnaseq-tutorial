@@ -43,7 +43,7 @@ Now you're all set and can use the following button to launch the service:
 
 ## Credits & Copyright
 
-This training material has been written by [Mariangela Santarsola](https://github.com/msantorsola) and [Lorenzo Sola](https://github.com/LorenzoS96) and aimed at anyone who is interested in using nf-core pipelines for their studies or research activities.
+This training material has been written --- and aimed at anyone who is interested in using nf-core pipelines for their studies or research activities.
 
 The Docker image and Gitpod environment used in this repository have been created by [Seqera](https://seqera.io) but have been made open-source ([CC BY-NC-ND](https://creativecommons.org/licenses/by-nc-nd/4.0/)) for the community.
 
