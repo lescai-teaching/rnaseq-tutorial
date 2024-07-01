@@ -45,6 +45,18 @@ In the following sections we will:
 - edit the filtering settings;
 - run the pipeline.
 
+To prevent losing connection, open the **Terminal** and type:
+
+```bash
+sleep 2h
+```
+
+This command will keep the gitpod session active for exactly 2 hours, providing sufficient time to complete our analysis without interruption.
+
+![overview](./img/sleep_2h.png)
+
+Now come back to our **Console**.
+
 ### Reference and annotation files
 
 Following the considerations above, we will first of all edit the `nextflow.config` file in our working directory to add a new genome.

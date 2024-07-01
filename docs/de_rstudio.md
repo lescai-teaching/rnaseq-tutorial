@@ -29,19 +29,6 @@ As in all analysis, firstly we need to create a new project:
 3) The new project will be automatically opened in RStudio
 
 We can check whether we are in the correct working directory with **getwd()**. The path **"/workspace/gitpod/training/DE_analysis/"** should appear on your console.
-
-To prevent losing connection, open the **Terminal** and type:
-
-```bash
-sleep 5000
-```
-
-This command will keep the RStudio session active for about 1 hour and 20 minutes, providing sufficient time to complete our analysis without interruption.
-
-![overview](./img/sleep_5000.png)
-
-Now come back to our **Console**.
-
 To store our results in an organized way, we will create a folder named **de_results** using the **New Folder** button in the bottom right panel. We will save all our resulting tables and plots in this folder. Next, go to the **File menu**, select **New File**, and then **R Script** to create a script editor in which we will save all commands required for the analysis. In the editor type:
 
 ```r
