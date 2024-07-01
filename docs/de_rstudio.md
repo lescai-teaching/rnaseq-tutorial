@@ -266,7 +266,7 @@ The normalized counts stored in the **dds** can be inspected with the **counts()
 
 # Convert the normalized counts from the DESeq2 object to a data frame
 
-normalized_counts <- as_data_frame(counts(dds_final, normalized = TRUE))
+normalized_counts <- as.data.frame(counts(dds_final, normalized = TRUE))
 
 # Add a column for gene names to the normalized counts data frame
 
@@ -316,7 +316,7 @@ summary(res)
 
 # DESeq2 function to extract the name of the contrast
 
-resultsNames(dds) 
+resultsNames(dds_final) 
 
 # contrast <- c("name_of_design_formula", "condition_of_interest", "reference_level") # Command to set the contrast, if necessary
 
@@ -475,6 +475,8 @@ library(clusterProfiler)
 library(org.Hs.eg.db)
 
 # cowplot: a package for combining multiple plots
+
+install.packages("cowplot") # To install the package missing in the current RStudio env
 
 library(cowplot)
 

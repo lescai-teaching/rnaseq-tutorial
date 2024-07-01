@@ -29,13 +29,13 @@ After filtering our genes of interest according to our threshold, let's have a l
 log2 fold change (MLE): condition treatment vs control 
 Wald test p-value: condition treatment vs control 
 DataFrame with 5 rows and 6 columns
-                  baseMean log2FoldChange     lfcSE      stat      pvalue        padj
-                 <numeric>      <numeric> <numeric> <numeric>   <numeric>   <numeric>
-ENSG00000205726 121443.148        2.89349  0.158852  18.21500 3.92402e-74 9.18221e-72
-ENSG00000142192  50948.182        3.02171  0.200662  15.05871 3.02628e-51 3.54075e-49
-ENSG00000142156  20743.964        2.97325  0.227338  13.07853 4.36799e-39 3.40703e-37
-ENSG00000159231    458.246       -1.19777  0.297935  -4.02023 5.81421e-05 3.40131e-03
-ENSG00000156282    481.094        1.09039  0.291188   3.74462 1.80664e-04 8.45506e-03
+gene            baseMean           log2FoldChange   lfcSE       stat        pvalue          padj
+ENSG00000205726 121327.64117       2.895280         0.1541075   18.787404   9.575085e-79    2.250145e-76
+ENSG00000142192  50890.47741       3.022320         0.1903195   15.880241   8.684467e-57    1.020425e-54
+ENSG00000142156  20724.00603       2.973611         0.2155937   13.792657   2.821715e-43    2.210344e-41
+ENSG00000230212     18.75964       7.669083         1.7225366   4.452204    8.499355e-06    4.993371e-04
+ENSG00000159231    457.76932      -1.199839         0.3031198   -3.958299   7.548530e-05    3.547809e-03
+ENSG00000156282    480.49035       1.089841         0.2952199   3.691625    2.228257e-04    8.727341e-03
 ```
 
 After the identification of DE genes, it's informative to visualize the expression of specific genes of interest. Using the [plotCounts()] function directly on the [dds] object allows us to examine individual gene expression profiles without accessing the full [res] object.
