@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.20">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.28">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.66ac8b77.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -176,7 +176,7 @@
       
     </form>
     <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
             Initializing search
@@ -423,6 +423,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#pre-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-processing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alignment-or-lightweight-alignment-and-quantification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alignment (or lightweight alignment) and quantification
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#differential-expression-de-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differential expression (DE) analysis
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -464,7 +491,7 @@
         
   
   <span class="md-ellipsis">
-    Diffential Analysis with DESeq2
+    Differential Analysis with DESeq2
   </span>
   
 
@@ -539,6 +566,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#pre-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-processing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alignment-or-lightweight-alignment-and-quantification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alignment (or lightweight alignment) and quantification
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#differential-expression-de-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differential expression (DE) analysis
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -563,8 +617,58 @@
 
 
 <h1 id="rnaseq-analysis">RNAseq Analysis<a class="headerlink" href="#rnaseq-analysis" title="Permanent link">&para;</a></h1>
+<p>Before we dive into the nf-core pipeline used for the analysis of RNA-sequencing data, it's worth looking at some theoretical aspects of RNA-seq.</p>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>T</p>
+<p>Given the central role of RNA in a variety of cellular and molecular functions, RNA-seq has emerged as a powerful tool to measure the presence and levels of RNA species in biological samples. The technique is based on next-generation sequencing (NGS) technologies and is now considered the gold standard in the transcriptomic field.</p>
+<p>After RNA extraction and reverse transcription into complementary DNA (cDNA), the biological material is sequenced, generating NGS "reads" that correspond to the RNA captured and sequenced in a specific cell, tissue, or organ at a given time. The sequencing data are then bioinformatically processed through a typical workflow summarized in the diagram below:</p>
+<p>In the scheme, we can identify three different key phases in the workflow: data preprocessing, alignment and quantification, and finally, differential expression analysis. In the data preprocessing step, the raw reads are handled to remove adapters and contaminants, and their quality is checked. Then, reads are mapped to a genome reference, and the abundance of transcripts or genes is estimated. The workflow can also follow an additional route based on lightweight alignment and quantification, reducing the amount of time required for the analysis. Finally, differentially expressed genes or transcripts are identified using statistical tests, annotated, and visualized. Depending on the user's needs, the workflow can include additional downstream analyses such as functional enrichment analysis, coexpression analysis, and integration with other omics data.</p>
+<h2 id="pre-processing">Pre-processing<a class="headerlink" href="#pre-processing" title="Permanent link">&para;</a></h2>
+<p>The pre-processing of sequencing reads from RNA-seq data is a critical step to ensure the quality and accuracy of downstream analysis. The raw reads obtained from the sequencer are stored as <a href="https://en.wikipedia.org/wiki/FASTQ_format">FASTQ</a> files, which contain both the sequence data and quality scores. The initial processing step involves evaluating the quality of the reads and identifying potential issues such as sequencing errors, adapter contamination, or low-quality bases. Reads with low-quality bases or overall poor sequencing quality are removed to prevent them from affecting the accuracy of downstream analysis. Next, the presence of adapters (short DNA sequences ligated to the ends of DNA fragments during library preparation) is detected through comparison with known adapter sequences or using algorithms that identify adapter-like sequences, and removed in a process known as <strong>read trimming</strong>. Finally, reads containing contaminants (genomic DNA and/or rRNA) are filtered out, and the quality of the filtered reads is checked again to ensure their suitability for downstream processing.</p>
+<h2 id="alignment-or-lightweight-alignment-and-quantification">Alignment (or lightweight alignment) and quantification<a class="headerlink" href="#alignment-or-lightweight-alignment-and-quantification" title="Permanent link">&para;</a></h2>
+<p>In the RNA-seq workflow, the alignment step refers to the process of mapping sequencing reads to a reference genome or transcriptome with the goal of determining the position and orientation of each read relative to the reference sequence and allowing the subsequent gene expression quantification.</p>
+<p>Errors, gaps, or poor sequence quality regions, as well as insertions/deletions (INDELs), duplicated and repetitive regions make this step challenging. Addressing these issues during the alignment step, by choosing a high-quality reference and an appropriate aligner, is essential for obtaining accurate and reliable results. A crucial component in the RNA-seq workflow is the <a href="https://www.ncbi.nlm.nih.gov/genbank/genomes_gff">annotation</a> file, either in form of General Feature Format file (GFF) or in form of Gene Transfer Format file (GTF). These file formats contain key information about the location and structure of genes and transcripts and are essential for both mapping sequencing reads accurately during the alignment step and to quantify genes expression in the quantification step. Additionally, RNA-seq data often include reads that span exon-exon junctions and the annotation files provide information about splice junctions allowing the inference of different isoforms.</p>
+<p>The aligment and quantification steps can follow two different routes according to user preferences:
+- alignment and quantification;
+- lightweight alignment and quantification.</p>
+<p>In the context of RNA-seq analysis, the alignment phase is often performed with splice-aware aligners that are utilized to take into account the splicing process. In addition to aligning reads across known splice junctions, splice-aware aligners also aim to detect novel splice junctions and alternative splicing events. Splice-aware aligners are optimized for speed and memory efficiency to handle the large volumes of RNA-seq data generated in modern sequencing experiments. They employ sophisticated algorithms and various optimization techniques, such as indexing the reference genome, parallel processing, and memory-mapping, to achieve fast and scalable alignment. Popular splice-aware aligners include <a href="https://github.com/alexdobin/STAR">STAR</a> and <a href="https://github.com/DaehwanKimLab/hisat2">HISAT2</a>. The following step is typically the quantification, which involves estimating the abundance of genes or transcripts in the samples. The workflow involves the generation of a index from the reference genome and the annotation file (GFF/GTF). This index will be used by the quantification software to map aligned reads to annotated transcripts and quantify their expression levels. The resulting expression counts or abundance estimates represent the number of reads assigned to each transcript in the samples. Several tools are available to perform the quantification step, such as <a href="https://subread.sourceforge.net/featureCounts.html">featureCounts</a>, <a href="https://htseq.readthedocs.io">HTSeq</a>, <a href="http://combine-lab.github.io/salmon">Salmon</a> and <a href="http://deweylab.github.io/RSEM">RSEM</a>.
+The alignment and the quantification steps can be also performed with lightweight alignment tools, which include <a href="https://pachterlab.github.io/kallisto/about.html">Kallisto</a>, <a href="http://www.cs.cmu.edu/~ckingsf/software/sailfish">Sailfish</a> and Salmon. These tools avoid a base-to-base alignment of reads providing quantification estimates faster than the classical splice-aware algorithms but with a high accuracy. The resulting estimates are commonly referred to as <strong>pseudocounts</strong> or <strong>abundance estimates</strong>, that can be later utilized for downstream analysis.
+An example showing the differences between a reference-based aligner (STAR) and a pseudoaligner (Salmon) are represented in the scheme below:</p>
+<p>The figure illustrates the two typical examples of alignment/lightweight alignment and quantification performed with two classical software, STAR and Salmon:</p>
+<p>1) The STAR seed finding process begins by searching for the longest continuous portions of the reads that exactly match one location of the reference genome (Maximal Mappable Prefix, MMP). The fragments of the reads that mapped separately are defined as <strong>seeds</strong>. If the reads comprise a splice junction (as shown in the example), the first seed will be mapped to a donor splice site. The MMP search is then applied to the unmapped portion of the read, which will be mapped to an acceptor splice site. The MMP search allows read alignment even in cases of mismatches and indels, utilizing the MMP as an anchor for the extension. If the extension procedure results in a poor genomic alignment (presence of library adapters or poor sequencing quality tails), the read is soft clipped. In the next step, the <strong>anchor</strong> alignments are selected, and all the alignments located within a user-defined genomic window around the anchors are stitched together to find the best <strong>linear</strong> alignment. STAR assigns scores to each alignment based on various factors, including the number of mismatches, the presence of splice junctions, and the overall quality of alignment. The stitched combination with the highest score will result in the best alignment of a read. Through this stitching procedure, even reads with a large number of mismatches, indels, and gaps can be aligned. Finally, gene expression levels can be quantified with different quantification tools like the ones cited above;</p>
+<p>2) Salmon begins by building a transcriptome index, which combines a <strong>suffix array</strong> for efficient substring matching and alignment with a <strong>hash table</strong> for rapid retrieval of transcript-specific information based on k-mer sequences. The index is constructed by concatenating all transcripts into a single string, separated by unique delimiters, and generating all possible suffixes in lexicographical order. Salmon then extracts k-mers from the transcriptome and reads, and uses a hash function to map each k-mer to a numerical index in the hash table. By querying the hash table, Salmon identifies candidate transcripts containing the k-mer sequences and quantifies their abundance. This approach enables fast and accurate lightweight alignment and quantification of RNA-seq reads.</p>
+<h2 id="differential-expression-de-analysis">Differential expression (DE) analysis<a class="headerlink" href="#differential-expression-de-analysis" title="Permanent link">&para;</a></h2>
+<p>The next step in a typical RNA-seq workflow is the differential expression analysis. It is a statistical method to compare gene expression levels between different experimental conditions such disease vs. healthy (e.g., tumor tissue vs. healthy tissue), treatment vs control (e.g., sample treated with a specific stimulus, drug or compound vs untreated sample), tissue vs tissue (e.g., brain vs heart). The objective of differential expression analysis is to assess, for each gene, whether the observed differences in expression (counts) between groups are statistically significant, taking into account the variation observed within groups (replicates).
+Before delving into details, it is important to point out some common characteristics of RNA-seq data that are essential to take in account in the choiche of the statistical model to utilize:</p>
+<p>1) <strong>Low Counts and Long Right Tail</strong>: RNA-seq data often exhibit a large number of genes with low counts, indicating that many genes are expressed at very low levels across samples. Simultaneously, RNA-seq data exhibit a long right tail in their distribution due to the absence of an upper limit for gene expression levels. Consequently, some genes are expressed at high levels, resulting in a distribution where most genes have low to moderate expression levels, while a few genes have very high counts. This combination of many low-count genes and a few highly expressed genes presents challenges for differential expression analysis, introducing high variability and potential skewness into the data. Accurate statistical modeling must therefore account for this distribution to avoid misleading conclusions;</p>
+<p><img alt="overview" src="../img/count_distribution.png" /></p>
+<p>2) <strong>Overdispersion</strong>: RNA-seq data are characterized by overdispersion, where the variance in gene expression levels often exceeds the mean (variance &gt; mean). In typical RNA-seq experiments, this variability is not constant and can be much higher than expected under a Poisson distribution, which assumes that the mean equals the variance (mean = variance). Overdispersion in RNA-seq data stems from biological variability, technical noise, and variations in sequencing depth across samples. Effective modeling of RNA-seq data requires statistical methods capable of handling this additional variability. The negative binomial distribution, which generalizes the Poisson distribution, addresses overdispersion by introducing an additional parameter, the dispersion parameter. This parameter allows the negative binomial distribution to capture the excess variability present in RNA-seq data, providing a more flexible and realistic representation compared to the Poisson distribution. </p>
+<p><img alt="overview" src="../img/overdispersion.png" /></p>
+<p>To model counts data with robust statistical methods, there are different software that have been developed. This part of the analysis is typically performed in R utilizing different packages such as [DESeq2] (https://bioconductor.org/packages/release/bioc/html/DESeq2.html), <a href="https://bioconductor.org/packages/release/bioc/html/edgeR.html">edgeR</a> and <a href="https://bioconductor.org/packages/release/bioc/html/limma.html">limma</a>. This tutorial focuses on DESeq2, a popular R package known for its robustness. The typical workflow is outlined in the flowchart below. For more detailed information and details refer to the <a href="https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2 vignette</a>.</p>
+<p>Differential expression analysis is composed by different key steps:</p>
+<ul>
+<li>
+<p><strong>Input data</strong>: the analysis starts with a matrix obtained in the alignment and quantification step that summarizes the expression levels of the different genes in each sample of the dataset. The rows of the matrix typically correspond to genes and the columns represent the samples. Each position of the matrix contains an integer value representing the number of reads associated to a particular gene in a specific sample. Another essential prerequisite is a metadata table describing the samples;</p>
+</li>
+<li>
+<p><strong>Normalization</strong>: since differential expression analysis tools compare counts between sample groups for the same gene, they do not need to account for gene length. However, it is crucial to account for sequencing depth and RNA composition. DESeq2 addresses these factors using size factors, which correct for variations in library sizes and RNA composition across samples. Specifically, DESeq2 calculates size factors (in general a number aroun 1) using the "median ratio" method. This involves calculating the geometric mean of each gene's counts across all samples (row-wise geometric mean), dividing each gene's count by the geometric mean, and then taking the median of these ratios for each sample (column-wise). Finally each raw count is dived by the normalization factor to generate normalized counts.
+The median ratio method assumes that not all genes are differentially expressed. Large outlier genes will not disproportionately influence the median ratio values. This approach is robust to imbalances in up-/down-regulation and can handle large numbers of differentially expressed genes. By minimizing the impact of library size differences and accounting for RNA composition, this method ensures that expression levels are comparable across samples.
+It is important to understand that DESeq2 does not directly use normalized counts for the actual analysis. Instead, it utilizes raw counts and incorporates the normalization process within the Generalized Linear Model (GLM). While these normalized counts are beneficial for downstream visualization of results, they should not be used as input for DESeq2 or any other differential expression analysis tools that rely on the negative binomial model;</p>
+</li>
+<li>
+<p><strong>Quality Control (QC)</strong>: Ensuring the quality of RNA-seq data before proceeding with differential expression analysis is crucial. DESeq2 provides tools for quality control, including Principal Component Analysis (PCA) and hierarchical clustering. PCA is used to reduce the dimensionality of the data, allowing visualization of the samples in a lower-dimensional space. On the other hand, hierarchical clustering displays the correlation of gene expression for all pairwise combinations of samples in the dataset. These methods can reveal group of samples that behave similarly and can highlight potential outliers or unexpected sample patterns. For these quality control steps, DESeq2 typically uses variance-stabilized (vst) counts or regularized log-transformed (rlog) counts. RNA-seq count data follow a discrete distribution which is not suitable for many statistical and machine learning algorithms that assume continuous distributions. These transformations stabilize the variance across the range of mean values. This means that genes with low expression and genes with high expression will have variances that are more comparable to each other after transformation. These transformed counts are used to ensure that the quality control analyses are robust and informative, aiding in the detection of any issues that could affect the downstream differential expression analysis.
+Finally, prior to differential expression analysis, it is beneficial to filter out genes that are unlikely to be detected as differentially expressed. This filtering enhances the sensitivity to detect truly differentially expressed genes. These include genes with zero counts across all samples, genes with extreme count outliers, and genes with consistently low mean normalized counts across samples;</p>
+</li>
+<li>
+<p><strong>Differential expression analysis with DESeq2</strong>: the process begins by modeling the raw counts, where normalization factors (also known as <strong>size factors</strong>) are applied to adjust for differences in library depth between samples. Next, DESeq2 estimates gene-wise dispersions and then shrinks these estimates to produce more accurate and reliable dispersion values, which are used to model the count data. The final steps involve fitting a negative binomial model to the data and performing hypothesis testing using either the Wald test or Likelihood Ratio Test to identify differentially expressed genes.
+So we can sum-up the different steps:</p>
+</li>
+</ul>
+<p>1) <strong>Estimate the size factors</strong> (normalization of the raw counts described above);</p>
+<p>2) <strong>Estimate gene-wise dispersion</strong>: to quantify dispersion DESeq2 utilizes the dispersion parameter (α) is closely tied to the mean (μ) and variance of the data, as described by the equation Var = μ + α * μ^2. This relationship has important implications: for genes with moderate to high count values, the square root of dispersion is equivalent to the coefficient of variation (Var / μ), which represents the relative variability around the mean. A key feature of DESeq2's dispersion estimates is that they are negatively correlated with the mean and positively correlated with variance, resulting in higher dispersion values for genes with low expression levels and lower dispersion values for genes with high expression levels. In addition, genes with the same mean expression levels can exhibit different dispersion estimates based on their variance. To refine these estimates, DESeq2 shares information from genes with similar expression profiles, assuming that they exhibit similar dispersion patterns. By doing so, DESeq2 generates more accurate estimates of variation that are specifically tailored to the mean expression level of each gene;</p>
+<p>3) <strong>Fit curve to gene-wise dispersion estimates</strong>: this process, known as dispersion fitting, aims to model the relationship between the mean expression level of a gene and its dispersion. By doing so, DESeq2 can identify a trend in the dispersion estimates across genes, which is essential for accurate variance estimation. The fitted curve, typically a smooth curve, describes how dispersion changes as a function of the mean expression level;</p>
+<p>4) <strong>Shrink gene-wise dispersion estimates</strong>: the gene-wise dispersion estimates are shrunk towards the fitted curve, a process known as shrinkage. By pooling information across genes, DESeq2 can generate more accurate and reliable estimates of dispersion, even for genes with limited sample sizes or noisy data. The shrinkage step adjusts the gene-wise dispersion estimates, moving them closer to the fitted curve, which represents the average dispersion pattern across all genes. This adjustment helps to reduce the variability and noise associated with individual gene-wise estimates, resulting in more robust and consistent dispersion values. However, genes with exceptionally high dispersion values are not shrinked because they probably deviate from the modelling assumption, exhibiting elevated variability due to biological or technical factors. Shrinking these values could lead to false positives. By shrinking the dispersion estimates, DESeq2 can improve the accuracy of downstream analyses and reduce the number of false positives;</p>
+<p>5) <strong>Generalized Linear Model (GLM), Wald test and multiple test</strong>: DESeq2 fits a generalized linear model (GLM) to the count data for each gene, using a negative binomial distribution to account for overdispersion (variance &gt; mean). The GLM fit is then used to perform hypothesis testing for differential expression using the Wald test. The Wald test is a statistical test that evaluates the significance of the regression coefficients in the GLM, and is used to determine whether the gene is differentially expressed between conditions. However, when performing multiple tests, such as in the case of RNA-seq data where thousands of genes are tested, the risk of false positives increases. To account for this, DESeq2 employs multiple test correction methods (Benjamini-Hochberg procedure is the default) to adjust the p-values and control the false discovery rate (FDR). For example by setting the FDR cutoff to &lt; 0.05, 5% of genes identified as differentially expressed are expected to be false positive. For instance, if 400 genes are identified as differentially expressed with an FDR cutoff of 0.05, you would expect 20 of them to be false positives. This ensures that the results are truly significant and biologically relevant. By combining the GLM, Wald test, and multiple test correction, DESeq2 provides a powerful and accurate approach for identifying differentially expressed genes in RNA-seq data.</p>
+<p>After identifying differentially expressed genes using DESeq2, the next step is to interpret the biological significance of these genes through functional analysis. This involves examining the roles of the differentially expressed genes in various biological processes, pathways, and molecular functions, providing insights into the underlying mechanisms driving the observed changes in gene expression. By integrating the results from DESeq2 with functional analysis, researchers can gain a deeper understanding of the biological context and potential impact of the differential expression, leading to more informed hypotheses and further experimental validation. Different tools are available to carry out these functional analyses such as <a href="https://geneontology.org">Gene Ontology</a>, <a href="https://reactome.org/">Reactome</a>, <a href="https://www.genome.jp/kegg">KEGG</a>, <a href="https://bioconductor.org/packages/release/bioc/html/clusterProfiler.html">clusterProfiler</a>, <a href="https://biit.cs.ut.ee/gprofiler">g:Profiler</a>, and <a href="https://www.wikipathways.org">WikiPathways</a>.</p>
 
 
 
@@ -660,7 +764,7 @@
     <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.code.annotate", "content.code.copy", "navigation.footer", "navigation.tabs", "navigation.top", "navigation.tracking", "search.share", "toc.follow"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.dd8806f2.min.js"></script>
+      <script src="../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
       
         <script src="../javascripts/mathjax.js"></script>
       

@@ -2,27 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>http://lescai-teaching.github.io/rnaseq-tutorial/</loc>
-         <lastmod>2024-05-03</lastmod>
+         <lastmod>2024-07-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://lescai-teaching.github.io/rnaseq-tutorial/de_rstudio/</loc>
-         <lastmod>2024-05-03</lastmod>
+         <lastmod>2024-07-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://lescai-teaching.github.io/rnaseq-tutorial/interpretation/</loc>
-         <lastmod>2024-05-03</lastmod>
+         <lastmod>2024-07-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://lescai-teaching.github.io/rnaseq-tutorial/rnaseq/</loc>
-         <lastmod>2024-05-03</lastmod>
+         <lastmod>2024-07-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>http://lescai-teaching.github.io/rnaseq-tutorial/theory/</loc>
-         <lastmod>2024-05-03</lastmod>
+         <lastmod>2024-07-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

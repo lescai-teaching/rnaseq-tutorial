@@ -18,15 +18,15 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.20">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.28">
     
     
       
-        <title>Diffential Analysis with DESeq2 - nf-core/rnaseq tutorial</title>
+        <title>Differential Analysis with DESeq2 - nf-core/rnaseq tutorial</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.66ac8b77.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#diffential-analysis-with-deseq2" class="md-skip">
+        <a href="#differential-analysis-with-deseq2" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Diffential Analysis with DESeq2
+              Differential Analysis with DESeq2
             
           </span>
         </div>
@@ -176,7 +176,7 @@
       
     </form>
     <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
             Initializing search
@@ -422,7 +422,7 @@
           
   
   <span class="md-ellipsis">
-    Diffential Analysis with DESeq2
+    Differential Analysis with DESeq2
   </span>
   
 
@@ -433,7 +433,7 @@
         
   
   <span class="md-ellipsis">
-    Diffential Analysis with DESeq2
+    Differential Analysis with DESeq2
   </span>
   
 
@@ -469,6 +469,15 @@
   <a href="#differential-expression-analysis" class="md-nav__link">
     <span class="md-ellipsis">
       Differential Expression Analysis
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functional-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functional analysis
     </span>
   </a>
   
@@ -557,6 +566,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#functional-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functional analysis
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -580,9 +598,447 @@
   
 
 
-<h1 id="diffential-analysis-with-deseq2">Diffential Analysis with DESeq2<a class="headerlink" href="#diffential-analysis-with-deseq2" title="Permanent link">&para;</a></h1>
+<h1 id="differential-analysis-with-deseq2">Differential Analysis with DESeq2<a class="headerlink" href="#differential-analysis-with-deseq2" title="Permanent link">&para;</a></h1>
+<p>In this section of the tutorial, we will guide you through the practical steps necessary to set up the RStudio environment and perform a differential expression analysis using DESeq2. Building on the theoretical foundations established earlier, we will now focus on the hands-on implementation of the DESeq2 workflow. We will cover all the necessary steps to prepare your RStudio environment, load the required libraries and data, and execute the DESeq2 analysis. By the end of this section, you will have a fully functional DESeq2 analysis pipeline set up in RStudio, ready to uncover the differentially expressed genes in your dataset.</p>
 <h2 id="launching-the-rstudio-environment">Launching the RStudio environment<a class="headerlink" href="#launching-the-rstudio-environment" title="Permanent link">&para;</a></h2>
+<p>Once the nf-core/rnaseq pipeline is terminated, the resulting data are stored in the folder <strong>results_star_salmon</strong>. No we can analyze the results by running DESeq2 on RStudio. First of all, we need to launch it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>rstudio-server<span class="w"> </span>start
+</code></pre></div>
+<p>A pop-up will appear and by clicking on <strong>Open</strong>, we will be redirected to the RStudio login page. By inserting the username and the password reported below, we will be able to connect to RStudio:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Username:<span class="w"> </span>gitpod
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Password:<span class="w"> </span>pass
+</code></pre></div>
+<p>To prevent losing connection, go back to gitpod and type on the <strong>Terminal</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sleep<span class="w"> </span>2h
+</code></pre></div>
+<p>This command will keep the gitpod session active for exactly 2 hours, providing sufficient time to complete our analysis without interruption.</p>
+<p><img alt="overview" src="../img/sleep_2h.png" /></p>
+<p>Now come back to our <strong>RStudio session</strong>.</p>
 <h2 id="differential-expression-analysis">Differential Expression Analysis<a class="headerlink" href="#differential-expression-analysis" title="Permanent link">&para;</a></h2>
+<p>As in all analysis, firstly we need to create a new project:</p>
+<p>1) Go to the <strong>File</strong> menu and select <strong>New Project</strong>;</p>
+<p>2) Select <strong>New Directory</strong>, <strong>New Project</strong>, name the new directory <strong>/workspace/gitpod/training/DE_analysis/</strong> and click on <strong>Create Project</strong>;</p>
+<p>3) The new project will be automatically opened in RStudio</p>
+<p>We can check whether we are in the correct working directory with <strong>getwd()</strong>. The path <strong>"/workspace/gitpod/training/DE_analysis/"</strong> should appear on your console.
+To store our results in an organized way, we will create a folder named <strong>de_results</strong> using the <strong>New Folder</strong> button in the bottom right panel. We will save all our resulting tables and plots in this folder. Next, go to the <strong>File menu</strong>, select <strong>New File</strong>, and then <strong>R Script</strong> to create a script editor in which we will save all commands required for the analysis. In the editor type:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">#### Differential expression analysis with DESeq2 ####</span>
+</code></pre></div>
+<p>and save the file as <strong>de_script.R</strong>. From now on, each command described in the tutorial can be added to your script. The resulting working directory should look like this:</p>
+<p><img alt="overview" src="../img/workdir_RStudio.png" /></p>
+<p>The analysis requires several R packages. To utilize them, we need to load the following libraries:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">#### Loading libraries ####</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># tidyverse: a collection of R packages for data manipulation, visualization and modeling</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nf">library</span><span class="p">(</span><span class="s">&quot;tidyverse&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># DESeq2: package for differential gene expression analysis</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nf">library</span><span class="p">(</span><span class="s">&quot;DESeq2&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c1"># pheatmap: a package for creating heatmaps, which will be used to visualize the results</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="nf">install.packages</span><span class="p">(</span><span class="s">&quot;pheatmap&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1"># To install the package missing in the current RStudio env</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="nf">library</span><span class="p">(</span><span class="s">&quot;pheatmap&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="c1"># RColorBrewer: a package for creating color palettes, which will be used to customize the heatmaps</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="nf">library</span><span class="p">(</span><span class="s">&quot;RColorBrewer&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="c1"># ggrepel: a package that provides a geom for ggplot2 to create repulsive text labels, which can be useful for avoiding overlapping labels in plots</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="nf">library</span><span class="p">(</span><span class="s">&quot;ggrepel&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>and the pre-computed DESeq2 object (<strong>dds</strong>) generated by the nfcore/rnaseq pipeline:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">#### Import the dds obtained from nfcore/rnaseq ####</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nf">load</span><span class="p">(</span><span class="s">&quot;/workspace/gitpod/training/results_star_salmon/star_salmon/deseq2_qc/deseq2.dds.RData&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>In this tutorial we will analyze the <strong>dds</strong> object generated by running the alignment with <strong>STAR</strong> and the quantification with <strong>Salmon</strong>. Alternatively, a user could choose to analyze the the <strong>dds</strong> object obtained by the <strong>nfcore rnaseq</strong> pipeline running only <strong>Salmon</strong> for both pseudoalignment and quantification. The file is stored in <strong>/workspace/gitpod/training/results_star_salmon/salmon/deseq2_qc/deseq2.dds.RData</strong></p>
+<p>In DESEq2, the <strong>dds</strong> object is a central data structure that contains the following components: 
+- <strong>countData</strong>: a matrix of raw count data, where each row represents a gene, and each column represents a sample.
+- <strong>colData</strong>: a data frame containing information about the samples, such as the experimental design, treatment, and other relevant metadata.
+- <strong>design</strong>: a formula specifying the experimental design utilized to estimate the dispersion and the log2foldchange.</p>
+<p>All these components can be checked with specific command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">#### dds inspection ####</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nf">head</span><span class="p">(</span><span class="nf">counts</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span><span class="w"> </span><span class="c1"># to check the raw counts</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span><span class="w"> </span><span class="c1"># to check the sample info</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="nf">design</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span><span class="w"> </span><span class="c1"># to check the design formula</span>
+</code></pre></div>
+<p>The inspection of the dds revealed that the colData and the design must be re-organized prior to the analysis. With the following commands we will rename the column of the colData, we will ensure that the rownames of the metadata are present in the same order as the column names and we reconstruct the colData. Notice that with this operation we also eliminate the sizeFactors already estimated by the <strong>nfcore DESeq2 module</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">#### Creation of metadata starting from the dds colData ####</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">metadata</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">DataFrame</span><span class="p">(</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="n">sample</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span><span class="o">$</span><span class="n">sample</span><span class="p">,</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="n">condition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span><span class="o">$</span><span class="n">Group1</span><span class="p">,</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="n">replica</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span><span class="o">$</span><span class="n">Group2</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="p">)</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="c1"># Assign names to rows of metadata</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="nf">rownames</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">colnames</span><span class="p">(</span><span class="nf">counts</span><span class="p">(</span><span class="n">dds</span><span class="p">))</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="c1"># Fill the dds colData with the generated metadata</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">metadata</span>
+</code></pre></div>
+<p>To avoid errors in DESeq2 is essential to check that sample names match between the colData and the countData, and that the sample are in the correct order:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">#### Check that sample names match in both files ####</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nf">all</span><span class="p">(</span><span class="nf">colnames</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">counts</span><span class="p">)</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">rownames</span><span class="p">(</span><span class="n">metadata</span><span class="p">))</span><span class="w"> </span><span class="c1"># Must be TRUE</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nf">all</span><span class="p">(</span><span class="nf">colnames</span><span class="p">(</span><span class="n">dds</span><span class="o">$</span><span class="n">counts</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nf">rownames</span><span class="p">(</span><span class="n">metadata</span><span class="p">))</span><span class="w"> </span><span class="c1"># Must be TRUE</span>
+</code></pre></div>
+<p>Now that everything is setted up, we can proceed to generate a new DESeq2 object with the corrected metadata and the right design:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1">#### Creation of a new dds ####</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">dds_new</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">DESeqDataSet</span><span class="p">(</span><span class="n">dds</span><span class="p">,</span><span class="w"> </span><span class="n">design</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="n">condition</span><span class="p">)</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># dds inspection </span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="nf">head</span><span class="p">(</span><span class="nf">counts</span><span class="p">(</span><span class="n">dds_new</span><span class="p">))</span><span class="w"> </span><span class="c1"># to check the raw counts</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="nf">colData</span><span class="p">(</span><span class="n">dds_new</span><span class="p">)</span><span class="w"> </span><span class="c1"># to check the sample info</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="nf">design</span><span class="p">(</span><span class="n">dds_new</span><span class="p">)</span><span class="w"> </span><span class="c1"># to check the design formula</span>
+</code></pre></div>
+<p>Analyzing the structure of the newly created dds, we can observe the differences:</p>
+<p><img alt="overview" src="../img/dds_comparison.png" /></p>
+<p>Before running the different steps of the analysis, a good practice consists in pre-filtering the genes to remove those with very low counts. This is useful to improve computional efficiency and enhance interpretability. In general, it is reasonable to keep only genes with a counts of at least 10 for a minimal number of samples of 3:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1">#### Pre-filtering ####</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="c1"># Select a minimal number of samples = 3</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">smallestGroupSize</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">3</span><span class="w"> </span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># Select genes with a sum counts of at least 10 in 3 samples</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="n">keep</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rowSums</span><span class="p">(</span><span class="nf">counts</span><span class="p">(</span><span class="n">dds_new</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="m">10</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">smallestGroupSize</span><span class="w"> </span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="c1"># Keep only the genes that pass the threshold</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="n">dds_filtered</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dds_new</span><span class="p">[</span><span class="n">keep</span><span class="p">,]</span><span class="w"> </span>
+</code></pre></div>
+<p>The next step in the DESeq2 workflow is to perform quality control (QC) analysis on our data. This analysis is crucial for identifying potential issues or biases and ensuring the data are suitable for downstream analysis. For QC analysis, it is useful to work with transformed versions of the count data. Raw count data are not suitable for these methods due to their discrete nature and the fact that their variance tends to increase with the mean. To address this, DESeq2 provides two types of transformations: variance stabilizing transformations (vst) and regularized logarithm (rlog). These transformations help to remove the dependence of the variance on the mean, making the data more suitable for visualization and exploratory analysis. While, the rlog is more robust to outliers and extreme values, vst is computationally faster and so preferred for larger dataset.
+It's important to remember that these transformations are used for visualization purposes, while DESeq2 itself operates on raw counts for differential expression analysis.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1">#### Transform normalized counts for data viz ####</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="c1"># A user can choose among vst and rlog. In this tutorial we will work with rlog transformed data.</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="n">rld</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rlog</span><span class="p">(</span><span class="n">dds_filtered</span><span class="p">,</span><span class="w"> </span><span class="n">blind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+</code></pre></div>
+<p>The rlog and the vst transformations have an argument, <strong>blind</strong> that can be set to:
+- <strong>TRUE</strong> (default): useful for QC analysis because it re-estimates the dispersion, allowing for comparison of samples in an unbiased manner with respect to experimental conditions;
+- <strong>FALSE</strong>: the function utilizes the already estimated dispersion, generally applied when differences in counts are expected to be due to the experimental design.</p>
+<p>Next, we perform Principal Component Analysis (PCA) to visualize the data. DESeq2 provides a built-in function, <strong>plotPCA</strong>, which uses <a href="https://ggplot2.tidyverse.org">ggplot2</a> for visualization, taking the <strong>rld</strong> object as input.
+Since the <strong>treatment</strong> is the principal condition of interest in our metadata, we will use the <strong>condition</strong> information from our metadata to plot the PCA: </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1">#### Plot PCA ####</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nf">plotPCA</span><span class="p">(</span><span class="n">rld</span><span class="p">,</span><span class="w"> </span><span class="n">intgroup</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;condition&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>The second essential step in QC analysis is hierarchical clustering. Although DESeq2 does not have a built-in function for this analysis, we can use the <strong>pheatmap()</strong> function from the <strong>pheatmap</strong> package.
+We will extract the matrix of rlog-transformed counts from the rld object (pheatmap input), compute pairwise correlations and plot the heatmap:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1">#### Plot sample to sample distance (hierarchical clustering) ####</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1"># Extract the matrix of rlog-transformed counts from the rld object</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="n">sampleDists</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">dist</span><span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="nf">assay</span><span class="p">(</span><span class="n">rld</span><span class="p">)))</span><span class="w">  </span><span class="c1"># Calculate pairwise distances between samples using the dist() function with Euclidean distance as the default method. By transposing the matrix with t(), we ensure that samples become rows and genes become columns, so that the dist function computes pairwise distances between samples.</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c1"># Convert distances to a matrix</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="n">sampleDistMatrix</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.matrix</span><span class="p">(</span><span class="n">sampleDists</span><span class="p">)</span><span class="w">  </span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="c1"># Set the row and column names of the distance matrix</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="nf">rownames</span><span class="p">(</span><span class="n">sampleDistMatrix</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">rld</span><span class="o">$</span><span class="n">condition</span><span class="p">,</span><span class="w"> </span><span class="n">rld</span><span class="o">$</span><span class="n">replica</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;_&quot;</span><span class="p">)</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="nf">colnames</span><span class="p">(</span><span class="n">sampleDistMatrix</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">rld</span><span class="o">$</span><span class="n">condition</span><span class="p">,</span><span class="w"> </span><span class="n">rld</span><span class="o">$</span><span class="n">replica</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;_&quot;</span><span class="p">)</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="c1"># Define a color palette for the heatmap</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="n">colors</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">colorRampPalette</span><span class="p">(</span><span class="nf">rev</span><span class="p">(</span><span class="nf">brewer.pal</span><span class="p">(</span><span class="m">9</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Greens&quot;</span><span class="p">)))(</span><span class="m">255</span><span class="p">)</span><span class="w"> </span><span class="c1"># function from RColorBrewer package</span>
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="c1"># Create the heatmap</span>
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="nf">pheatmap</span><span class="p">(</span><span class="n">sampleDistMatrix</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="w">        </span><span class="n">clustering_distance_rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sampleDists</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="w">        </span><span class="n">clustering_distance_cols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sampleDists</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="w">        </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">colors</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a><span class="w">        </span><span class="n">fontsize_col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a><span class="w">        </span><span class="n">fontsize_row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span><span class="p">)</span>
+</code></pre></div>
+<p>Now, it is time to run the differential expression analysis with the <strong>DESeq()</strong> function:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1">#### Run the DESeq2 analysis ####</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="n">dds_final</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">DESeq</span><span class="p">(</span><span class="n">dds_filtered</span><span class="p">)</span>
+</code></pre></div>
+<p>The <strong>DESeq()</strong> function is a high-level wrapper that simplifies the process of differential expression analysis by combining multiple steps into a single function call:</p>
+<p><img alt="overview" src="../img/DESeq_function.png" /></p>
+<p>This makes the workflow more user-friendly and ensures that all necessary preprocessing and statistical steps are executed in the correct order. The key functions that <strong>DESeq2</strong> calls include: 
+- estimateSizeFactors: to normalize the count data;
+- estimateDispersion: to estimate the dispersion;
+- nbinomWaldTest: to perform differential expression test.</p>
+<p>The individual functions can be carried out also singularly as shown below:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1">#### Differential expression analysis step-by-step ####</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">dds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">estimateSizeFactors</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="n">dds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">estimateDispersions</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="n">dds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">nbinomWaldTest</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span>
+</code></pre></div>
+<p>The normalized counts stored in the <strong>dds</strong> can be inspected with the <strong>counts()</strong> function and saved in our results folder:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1">#### Inspect the normalized counts ####</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="c1"># Convert the normalized counts from the DESeq2 object to a data frame</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">normalized_counts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.data.frame</span><span class="p">(</span><span class="nf">counts</span><span class="p">(</span><span class="n">dds_final</span><span class="p">,</span><span class="w"> </span><span class="n">normalized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="c1"># Add a column for gene names to the normalized counts data frame</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="n">normalized_counts</span><span class="o">$</span><span class="n">gene</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rownames</span><span class="p">(</span><span class="nf">counts</span><span class="p">(</span><span class="n">dds_final</span><span class="p">))</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="c1"># Convert the data frame to a tibble for easier manipulation and relocate the gene column to the first position</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="n">normalized_counts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as_tibble</span><span class="p">(</span><span class="n">normalized_counts</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="w">  </span><span class="nf">relocate</span><span class="p">(</span><span class="n">gene</span><span class="p">,</span><span class="w"> </span><span class="n">.before</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">control_rep1</span><span class="p">)</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="c1"># Display the first few rows of the normalized counts to inspect the data</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="nf">head</span><span class="p">(</span><span class="nf">counts</span><span class="p">(</span><span class="n">dds_final</span><span class="p">,</span><span class="w"> </span><span class="n">normalized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span>
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a><span class="c1"># Display the first few rows of the raw counts (not normalized) to compare with the normalized counts</span>
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>
+<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a><span class="nf">head</span><span class="p">(</span><span class="nf">counts</span><span class="p">(</span><span class="n">dds_final</span><span class="p">))</span>
+<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>
+<a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a><span class="c1"># Save normalized counts </span>
+<a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a>
+<a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a><span class="nf">write.csv</span><span class="p">(</span><span class="n">normalized_counts</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;de_results/normalized_counts.csv&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>The <strong>results()</strong> function in DESeq2 is used to extract the results of the differential expression analysis. This function takes the <strong>dds</strong> object as input and returns a DataFrame containing the results of the analysis:</p>
+<ul>
+<li><strong>baseMean</strong>: the average expression level of the gene across all samples;</li>
+<li><strong>log2FoldChange</strong>: the log2 fold change of the gene between the condition of interest and the reference level;</li>
+<li><strong>lfcSE</strong>: the standard error of the log2 fold change;</li>
+<li><strong>stat</strong>: the Wald statistic, which is used to calculate the p-value;</li>
+<li><strong>pvalue</strong>: the p-value associated with the Wald test, which indicates the probability of observing the log2 fold change by chance;</li>
+<li><strong>padj</strong>: the adjusted p-value, which takes into account multiple testing corrections;</li>
+</ul>
+<p>By default, the <strong>results()</strong> function returns the results for all genes in the analysis with an adjusted p-value below a specific FDR (false discovery rate) cutoff, set by the default to 0.1. This threshold can be modified with the parameter <strong>alpha</strong>. The <strong>results()</strong> function can also be customized to extract specific columns or rows of interest, and can also be used to filter the results based on certain criteria, such as a minimum log2 fold change or a maximum adjusted p-value or to set a specific contrast. The <strong>contrast</strong> argument in the <strong>results()</strong> function is used to specify the contrast of interest for which the results should be extracted. A contrast is a specific comparison between two or more levels of a factor, such as the comparison between the treatment and control groups. The order of the contrast names determines the direction of the fold change that is reported in the results. Specifically, the first level of the contrast is the condition of interest, and the second level is the reference level. Notice that in the tutorial the contrast is already correct.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1">#### Extract results table from the dds object ####</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="n">res</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">results</span><span class="p">(</span><span class="n">dds_final</span><span class="p">)</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="c1"># Visualize the results</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="nf">head</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="w"> </span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="w"> </span><span class="c1"># Summarize the results showing the number of tested genes (genes with non-zero total read count), the genes up- and down-regulated at the selected threshold (alpha) and the number of genes excluded by the multiple testing due to a low mean count </span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="nf">summary</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="c1"># DESeq2 function to extract the name of the contrast</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="nf">resultsNames</span><span class="p">(</span><span class="n">dds_final</span><span class="p">)</span><span class="w"> </span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="c1"># contrast &lt;- c(&quot;name_of_design_formula&quot;, &quot;condition_of_interest&quot;, &quot;reference_level&quot;) # Command to set the contrast, if necessary</span>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="c1"># Store the res object inside another variable because the original res file will be required for other functions</span>
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="n">res_viz</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res</span>
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a>
+<a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a><span class="c1"># Add gene names as a new column to the results table</span>
+<a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a>
+<a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a><span class="n">res_viz</span><span class="o">$</span><span class="n">gene</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rownames</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a>
+<a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a><span class="c1"># Convert the results to a tibble for easier manipulation and relocate the gene column to the first position</span>
+<a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a>
+<a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a><span class="n">res_viz</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as_tibble</span><span class="p">(</span><span class="n">res_viz</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">relocate</span><span class="p">(</span><span class="n">gene</span><span class="p">,</span><span class="w"> </span><span class="n">.before</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">baseMean</span><span class="p">)</span>
+<a id="__codelineno-17-30" name="__codelineno-17-30" href="#__codelineno-17-30"></a>
+<a id="__codelineno-17-31" name="__codelineno-17-31" href="#__codelineno-17-31"></a><span class="c1"># Save the results table </span>
+<a id="__codelineno-17-32" name="__codelineno-17-32" href="#__codelineno-17-32"></a>
+<a id="__codelineno-17-33" name="__codelineno-17-33" href="#__codelineno-17-33"></a><span class="nf">write.csv</span><span class="p">(</span><span class="n">res_viz</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;de_results/de_result_table.csv&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>In the <em>Experimental Design</em> section, we emphasized the importance of estimating the log2 fold change threshold using a statistical power calculation, rather than selecting it arbitrarily. This approach ensures that the chosen threshold is statistically appropriate and tailored to the specifics of the experiment. However, since we are working with simulated data for demonstration purposes, we will use a padj (adjusted p-value) threshold of 0.05 and consider genes with a log2 fold change greater than 1 or lower than -1 as differentially expressed.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1">#### Extract significant DE genes from the results ####</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="c1"># Filter the results to include only significantly differentially expressed genes with an adjusted p-value (padj) less than 0.05 and a log2foldchange greater than 1 or less than -1</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="n">resSig</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">subset</span><span class="p">(</span><span class="n">res_viz</span><span class="p">,</span><span class="w"> </span><span class="n">padj</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">0.05</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nf">abs</span><span class="p">(</span><span class="n">log2FoldChange</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="c1"># Convert the results to a tibble for easier manipulation and relocate the &#39;Gene&#39; column to be the first column</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="n">resSig</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as_tibble</span><span class="p">(</span><span class="n">resSig</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">relocate</span><span class="p">(</span><span class="n">gene</span><span class="p">,</span><span class="w"> </span><span class="n">.before</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">baseMean</span><span class="p">)</span><span class="w"> </span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="c1"># Order the significant genes by their adjusted p-value (padj) in ascending order</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="n">resSig</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">resSig</span><span class="p">[</span><span class="nf">order</span><span class="p">(</span><span class="n">resSig</span><span class="o">$</span><span class="n">padj</span><span class="p">),]</span><span class="w"> </span>
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="c1"># Display the final results table of significant genes</span>
+<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>
+<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="n">resSig</span><span class="w"> </span>
+<a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>
+<a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="c1"># Save the significant DE genes </span>
+<a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a>
+<a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="nf">write.csv</span><span class="p">(</span><span class="n">resSig</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;de_results/sig_de_genes.csv&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Now that we have obtained the results of the differential expression analysis, it's time to visualize the data to gain a deeper understanding of the biological processes that are affected by the experimental conditions. Visualization is a crucial step in RNA-seq analysis, as it allows us to identify patterns and trends in the data that may not be immediately apparent from the numerical results. In the following sections, we will explore different types of plots that are commonly used to visualize the results of RNA-seq analysis, including:</p>
+<ul>
+<li><strong>MA plot</strong>: it is a type of scatter plot that is commonly used to visualize the results of differential expression analysis for all the samples. The plot displays the log2 fold change on the y-axis and the mean of the normalized counts on the x-axis. This allows for the visualization of the relationship between the magnitude of the fold change and the mean expression level of the genes. Genes that are highly differentially expressed will appear farthest from the horizontal axis, while genes with low expression levels will appear closer to the axis. MA plots are useful for identifying genes that are both highly expressed and highly differentially expressed between two conditions.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1">#### MA plot ####</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="nf">plotMA</span><span class="p">(</span><span class="n">res</span><span class="p">,</span><span class="w"> </span><span class="n">ylim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-2</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
+</code></pre></div>
+<ul>
+<li><strong>counts plot</strong>: it plots the normalized counts for a single gene across the different conditions in your experiment. It’s particularly useful for visualizing the expression levels of specific genes of interest and comparing them across sample groups.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1">#### Plot a specific gene in this case ENSG00000142192, a DE gene ####</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="nf">plotCounts</span><span class="p">(</span><span class="n">dds_new</span><span class="p">,</span><span class="w"> </span><span class="n">gene</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ENSG00000142192&quot;</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li><strong>volcano plot</strong>: it is a type of scatter plot that displays the log2 fold change on the x-axis and the log transformed padj on the y-axis. This allows for the visualization of both the magnitude and significance of the changes in gene expression between two conditions. Genes that are highly differentially expressed (i.e., have a large log2 fold change) and are statistically significant (i.e., have a low padj) will appear in the top-left or top-right corners of the plot, making it easy to identify the most biologically meaningful changes.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1">#### Volcano plot ####</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="c1"># Convert the results to a tibble and add a column indicating differential expression status</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="n">res_tb</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as_tibble</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">diffexpressed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">case_when</span><span class="p">(</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">    </span><span class="n">log2FoldChange</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">padj</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">0.05</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="s">&#39;upregulated&#39;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">    </span><span class="n">log2FoldChange</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">-1</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">padj</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m">0.05</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="s">&#39;downregulated&#39;</span><span class="p">,</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">    </span><span class="kc">TRUE</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="s">&#39;not_de&#39;</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">  </span><span class="p">))</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="c1"># Add a new column with gene names</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="n">res_tb</span><span class="o">$</span><span class="n">gene</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rownames</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="w"> </span>
+<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a>
+<a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a><span class="c1"># Relocate the &#39;gene&#39; column to be the first column</span>
+<a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a>
+<a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a><span class="n">res_tb</span><span class="w"> </span><span class="o">&lt;-</span><span class="w">  </span><span class="n">res_tb</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a><span class="w">  </span><span class="nf">relocate</span><span class="p">(</span><span class="n">gene</span><span class="p">,</span><span class="w"> </span><span class="n">.before</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">baseMean</span><span class="p">)</span>
+<a id="__codelineno-21-20" name="__codelineno-21-20" href="#__codelineno-21-20"></a>
+<a id="__codelineno-21-21" name="__codelineno-21-21" href="#__codelineno-21-21"></a><span class="c1"># Order the table by adjusted p-value (padj) and add a new column for gene labels</span>
+<a id="__codelineno-21-22" name="__codelineno-21-22" href="#__codelineno-21-22"></a>
+<a id="__codelineno-21-23" name="__codelineno-21-23" href="#__codelineno-21-23"></a><span class="n">res_tb</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res_tb</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">arrange</span><span class="p">(</span><span class="n">padj</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate</span><span class="p">(</span><span class="n">genelabels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">)</span>
+<a id="__codelineno-21-24" name="__codelineno-21-24" href="#__codelineno-21-24"></a>
+<a id="__codelineno-21-25" name="__codelineno-21-25" href="#__codelineno-21-25"></a><span class="c1"># Label the top 5 most significant genes</span>
+<a id="__codelineno-21-26" name="__codelineno-21-26" href="#__codelineno-21-26"></a>
+<a id="__codelineno-21-27" name="__codelineno-21-27" href="#__codelineno-21-27"></a><span class="n">res_tb</span><span class="o">$</span><span class="n">genelabels</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res_tb</span><span class="o">$</span><span class="n">gene</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">]</span>
+<a id="__codelineno-21-28" name="__codelineno-21-28" href="#__codelineno-21-28"></a>
+<a id="__codelineno-21-29" name="__codelineno-21-29" href="#__codelineno-21-29"></a><span class="c1"># Create a volcano plot using ggplot2</span>
+<a id="__codelineno-21-30" name="__codelineno-21-30" href="#__codelineno-21-30"></a>
+<a id="__codelineno-21-31" name="__codelineno-21-31" href="#__codelineno-21-31"></a><span class="nf">ggplot</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res_tb</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">log2FoldChange</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="n">padj</span><span class="p">),</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">diffexpressed</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<a id="__codelineno-21-32" name="__codelineno-21-32" href="#__codelineno-21-32"></a><span class="w">  </span><span class="nf">geom_point</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.6</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<a id="__codelineno-21-33" name="__codelineno-21-33" href="#__codelineno-21-33"></a><span class="w">  </span><span class="nf">geom_text_repel</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">genelabels</span><span class="p">),</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2.5</span><span class="p">,</span><span class="w"> </span><span class="n">max.overlaps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">Inf</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-21-34" name="__codelineno-21-34" href="#__codelineno-21-34"></a><span class="w">  </span><span class="nf">ggtitle</span><span class="p">(</span><span class="s">&quot;DE genes treatment versus control&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<a id="__codelineno-21-35" name="__codelineno-21-35" href="#__codelineno-21-35"></a><span class="w">  </span><span class="nf">geom_vline</span><span class="p">(</span><span class="n">xintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">),</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;dashed&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-21-36" name="__codelineno-21-36" href="#__codelineno-21-36"></a><span class="w">  </span><span class="nf">geom_hline</span><span class="p">(</span><span class="n">yintercept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="m">0.05</span><span class="p">),</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;black&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;dashed&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-21-37" name="__codelineno-21-37" href="#__codelineno-21-37"></a><span class="w">  </span><span class="nf">theme</span><span class="p">(</span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rel</span><span class="p">(</span><span class="m">1.25</span><span class="p">),</span><span class="w"> </span><span class="n">hjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">),</span>
+<a id="__codelineno-21-38" name="__codelineno-21-38" href="#__codelineno-21-38"></a><span class="w">        </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rel</span><span class="p">(</span><span class="m">1</span><span class="p">)))</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-21-39" name="__codelineno-21-39" href="#__codelineno-21-39"></a><span class="w">  </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;upregulated&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-21-40" name="__codelineno-21-40" href="#__codelineno-21-40"></a><span class="w">                                </span><span class="s">&quot;downregulated&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-21-41" name="__codelineno-21-41" href="#__codelineno-21-41"></a><span class="w">                                </span><span class="s">&quot;not_de&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;grey&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-21-42" name="__codelineno-21-42" href="#__codelineno-21-42"></a><span class="w">  </span><span class="nf">labs</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;DE genes&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<a id="__codelineno-21-43" name="__codelineno-21-43" href="#__codelineno-21-43"></a><span class="w">  </span><span class="nf">xlim</span><span class="p">(</span><span class="m">-3</span><span class="p">,</span><span class="m">5</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>heatmap</strong>: plot of the normalized counts for all the significant genes obtained with the <strong>pheatmap()</strong> function. The heatmap provides insights into genes and sample relationships that may not be apparent from individual gene plots alone. </p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1">#### Heatmap ####</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="c1"># Extract only the first column (gene names) from the result object containing the significant genes</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="n">significant_genes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">resSig</span><span class="p">[,</span><span class="w"> </span><span class="m">1</span><span class="p">]</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="c1"># Extract normalized counts for significant genes from the normalized counts matrix and convert the &quot;gene&quot; column to row names </span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="n">significant_counts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">inner_join</span><span class="p">(</span><span class="n">normalized_counts</span><span class="p">,</span><span class="w"> </span><span class="n">significant_genes</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gene&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">  </span><span class="nf">column_to_rownames</span><span class="p">(</span><span class="s">&quot;gene&quot;</span><span class="p">)</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="c1"># Create the heatmap using pheatmap</span>
+<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>
+<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="nf">pheatmap</span><span class="p">(</span><span class="n">significant_counts</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a><span class="w">         </span><span class="n">cluster_rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span>
+<a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="w">         </span><span class="n">fontsize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span><span class="p">,</span>
+<a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a><span class="w">         </span><span class="n">scale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;row&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a><span class="w">         </span><span class="n">fontsize_row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span><span class="p">,</span>
+<a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a><span class="w">         </span><span class="n">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="functional-analysis">Functional analysis<a class="headerlink" href="#functional-analysis" title="Permanent link">&para;</a></h2>
+<p>The output of the differential expression analysis is a list of significant differentially expressed genes (DEGs). To uncover the underlying biological mechanisms, various downstream analyses can be performed, such as functional enrichment analysis (identify overrepresented biological processes, molecular functions, or cellular components) and network analysis (group genes based on similar expression patterns and identify novel pathways or interactions). To facilitate interpretation of the resulting gene lists, a range of freely available web- and R-based tools can be employed.</p>
+<p>In this tutorial we will focus on the over Representation Analysis (ORA), also known as enrichment analysis, a powerful tool for identifying biological pathways or processes that are significantly enriched with differentially expressed genes. The underlying statistic behind ORA is the hypergeometric test, which calculates the probability of observing a certain number of genes from a particular pathway or process in the list of differentially expressed genes by chance. The hypergeometric test takes into account the total number of genes in the genome, the number of genes in the pathway or process, and the number of differentially expressed genes in the list. The resulting p-value represents the probability of observing the enrichment by chance, and a low p-value indicates that the enrichment is statistically significant. By applying the hypergeometric test to multiple pathways or processes, ORA provides a comprehensive view of the biological mechanisms underlying the differentially expressed genes, allowing researchers to identify key biological processes and pathways that are affected by the condition of interest.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1">#### Enrichment analysis (ORA) ####</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="c1"># Loading libraries</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="c1"># clusterProfiler: a package for enrichment analysis</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="nf">library</span><span class="p">(</span><span class="n">clusterProfiler</span><span class="p">)</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="c1"># org.Hs.eg.db: a package for the human gene annotation database</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="nf">library</span><span class="p">(</span><span class="n">org.Hs.eg.db</span><span class="p">)</span>
+<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a>
+<a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="c1"># cowplot: a package for combining multiple plots</span>
+<a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>
+<a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a><span class="nf">install.packages</span><span class="p">(</span><span class="s">&quot;cowplot&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1"># To install the package missing in the current RStudio env</span>
+<a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a>
+<a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a><span class="nf">library</span><span class="p">(</span><span class="n">cowplot</span><span class="p">)</span>
+<a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a>
+<a id="__codelineno-23-19" name="__codelineno-23-19" href="#__codelineno-23-19"></a><span class="c1"># Prepare gene list</span>
+<a id="__codelineno-23-20" name="__codelineno-23-20" href="#__codelineno-23-20"></a><span class="c1"># Extract the log2 fold change values from the results data frame</span>
+<a id="__codelineno-23-21" name="__codelineno-23-21" href="#__codelineno-23-21"></a>
+<a id="__codelineno-23-22" name="__codelineno-23-22" href="#__codelineno-23-22"></a><span class="n">gene_list</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res</span><span class="o">$</span><span class="n">log2FoldChange</span>
+<a id="__codelineno-23-23" name="__codelineno-23-23" href="#__codelineno-23-23"></a>
+<a id="__codelineno-23-24" name="__codelineno-23-24" href="#__codelineno-23-24"></a><span class="c1"># Name the vector with the corresponding gene identifiers</span>
+<a id="__codelineno-23-25" name="__codelineno-23-25" href="#__codelineno-23-25"></a>
+<a id="__codelineno-23-26" name="__codelineno-23-26" href="#__codelineno-23-26"></a><span class="nf">names</span><span class="p">(</span><span class="n">gene_list</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res</span><span class="o">$</span><span class="n">gene</span>
+<a id="__codelineno-23-27" name="__codelineno-23-27" href="#__codelineno-23-27"></a>
+<a id="__codelineno-23-28" name="__codelineno-23-28" href="#__codelineno-23-28"></a><span class="c1"># Sort the list in decreasing order (required for clusterProfiler)</span>
+<a id="__codelineno-23-29" name="__codelineno-23-29" href="#__codelineno-23-29"></a>
+<a id="__codelineno-23-30" name="__codelineno-23-30" href="#__codelineno-23-30"></a><span class="n">gene_list</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sort</span><span class="p">(</span><span class="n">gene_list</span><span class="p">,</span><span class="w"> </span><span class="n">decreasing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<a id="__codelineno-23-31" name="__codelineno-23-31" href="#__codelineno-23-31"></a>
+<a id="__codelineno-23-32" name="__codelineno-23-32" href="#__codelineno-23-32"></a><span class="c1"># Extract the significantly differentially expressed genes from the results data frame</span>
+<a id="__codelineno-23-33" name="__codelineno-23-33" href="#__codelineno-23-33"></a>
+<a id="__codelineno-23-34" name="__codelineno-23-34" href="#__codelineno-23-34"></a><span class="n">res_genes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">resSig</span><span class="o">$</span><span class="n">gene</span>
+<a id="__codelineno-23-35" name="__codelineno-23-35" href="#__codelineno-23-35"></a>
+<a id="__codelineno-23-36" name="__codelineno-23-36" href="#__codelineno-23-36"></a><span class="c1"># Run GO enrichment analysis using the enrichGO function</span>
+<a id="__codelineno-23-37" name="__codelineno-23-37" href="#__codelineno-23-37"></a>
+<a id="__codelineno-23-38" name="__codelineno-23-38" href="#__codelineno-23-38"></a><span class="n">go_enrich</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">enrichGO</span><span class="p">(</span>
+<a id="__codelineno-23-39" name="__codelineno-23-39" href="#__codelineno-23-39"></a><span class="w">  </span><span class="n">gene</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res_genes</span><span class="p">,</span><span class="w">                </span><span class="c1"># Genes of interest</span>
+<a id="__codelineno-23-40" name="__codelineno-23-40" href="#__codelineno-23-40"></a><span class="w">  </span><span class="n">universe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="n">gene_list</span><span class="p">),</span><span class="w">     </span><span class="c1"># Background gene set</span>
+<a id="__codelineno-23-41" name="__codelineno-23-41" href="#__codelineno-23-41"></a><span class="w">  </span><span class="n">OrgDb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">org.Hs.eg.db</span><span class="p">,</span><span class="w">            </span><span class="c1"># Annotation database</span>
+<a id="__codelineno-23-42" name="__codelineno-23-42" href="#__codelineno-23-42"></a><span class="w">  </span><span class="n">keyType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;ENSEMBL&#39;</span><span class="p">,</span><span class="w">             </span><span class="c1"># Key type for gene identifiers</span>
+<a id="__codelineno-23-43" name="__codelineno-23-43" href="#__codelineno-23-43"></a><span class="w">  </span><span class="n">readable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w">                 </span><span class="c1"># Convert gene IDs to gene names</span>
+<a id="__codelineno-23-44" name="__codelineno-23-44" href="#__codelineno-23-44"></a><span class="w">  </span><span class="n">ont</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ALL&quot;</span><span class="p">,</span><span class="w">                     </span><span class="c1"># Ontology: can be &quot;BP&quot;, &quot;MF&quot;, &quot;CC&quot;, or &quot;ALL&quot;</span>
+<a id="__codelineno-23-45" name="__codelineno-23-45" href="#__codelineno-23-45"></a><span class="w">  </span><span class="n">pvalueCutoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.05</span><span class="p">,</span><span class="w">             </span><span class="c1"># P-value cutoff for significance</span>
+<a id="__codelineno-23-46" name="__codelineno-23-46" href="#__codelineno-23-46"></a><span class="w">  </span><span class="n">qvalueCutoff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.10</span><span class="w">              </span><span class="c1"># Q-value cutoff for significance</span>
+<a id="__codelineno-23-47" name="__codelineno-23-47" href="#__codelineno-23-47"></a><span class="p">)</span>
+<a id="__codelineno-23-48" name="__codelineno-23-48" href="#__codelineno-23-48"></a>
+<a id="__codelineno-23-49" name="__codelineno-23-49" href="#__codelineno-23-49"></a><span class="c1"># Create a bar plot of the top enriched GO terms</span>
+<a id="__codelineno-23-50" name="__codelineno-23-50" href="#__codelineno-23-50"></a>
+<a id="__codelineno-23-51" name="__codelineno-23-51" href="#__codelineno-23-51"></a><span class="n">barplot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">barplot</span><span class="p">(</span>
+<a id="__codelineno-23-52" name="__codelineno-23-52" href="#__codelineno-23-52"></a><span class="w">  </span><span class="n">go_enrich</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-23-53" name="__codelineno-23-53" href="#__codelineno-23-53"></a><span class="w">  </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Enrichment analysis barplot&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-54" name="__codelineno-23-54" href="#__codelineno-23-54"></a><span class="w">  </span><span class="n">font.size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span>
+<a id="__codelineno-23-55" name="__codelineno-23-55" href="#__codelineno-23-55"></a><span class="p">)</span>
+<a id="__codelineno-23-56" name="__codelineno-23-56" href="#__codelineno-23-56"></a>
+<a id="__codelineno-23-57" name="__codelineno-23-57" href="#__codelineno-23-57"></a><span class="c1"># Create a dot plot of the top enriched GO terms</span>
+<a id="__codelineno-23-58" name="__codelineno-23-58" href="#__codelineno-23-58"></a>
+<a id="__codelineno-23-59" name="__codelineno-23-59" href="#__codelineno-23-59"></a><span class="n">dotplot</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">dotplot</span><span class="p">(</span>
+<a id="__codelineno-23-60" name="__codelineno-23-60" href="#__codelineno-23-60"></a><span class="w">  </span><span class="n">go_enrich</span><span class="p">,</span>
+<a id="__codelineno-23-61" name="__codelineno-23-61" href="#__codelineno-23-61"></a><span class="w">  </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Enrichment analysis dotplot&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-62" name="__codelineno-23-62" href="#__codelineno-23-62"></a><span class="w">  </span><span class="n">font.size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">8</span>
+<a id="__codelineno-23-63" name="__codelineno-23-63" href="#__codelineno-23-63"></a><span class="p">)</span>
+<a id="__codelineno-23-64" name="__codelineno-23-64" href="#__codelineno-23-64"></a>
+<a id="__codelineno-23-65" name="__codelineno-23-65" href="#__codelineno-23-65"></a><span class="c1"># Combine the bar plot and dot plot into a single plot grid</span>
+<a id="__codelineno-23-66" name="__codelineno-23-66" href="#__codelineno-23-66"></a>
+<a id="__codelineno-23-67" name="__codelineno-23-67" href="#__codelineno-23-67"></a><span class="nf">plot_grid</span><span class="p">(</span><span class="n">barplot</span><span class="p">,</span><span class="w"> </span><span class="n">dotplot</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
+</code></pre></div>
 
 
 
@@ -678,7 +1134,7 @@
     <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.code.annotate", "content.code.copy", "navigation.footer", "navigation.tabs", "navigation.top", "navigation.tracking", "search.share", "toc.follow"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.dd8806f2.min.js"></script>
+      <script src="../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
       
         <script src="../javascripts/mathjax.js"></script>
       

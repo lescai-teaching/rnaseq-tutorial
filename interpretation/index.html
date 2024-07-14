@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.20">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.28">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.66ac8b77.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -174,7 +174,7 @@
       
     </form>
     <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
             Initializing search
@@ -411,7 +411,7 @@
         
   
   <span class="md-ellipsis">
-    Diffential Analysis with DESeq2
+    Differential Analysis with DESeq2
   </span>
   
 
@@ -476,18 +476,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#over-representation-analysis-ora" class="md-nav__link">
     <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#enrichment-analysis-ora" class="md-nav__link">
-    <span class="md-ellipsis">
-      Enrichment Analysis (ORA)
+      Over Representation Analysis (ORA)
     </span>
   </a>
   
@@ -547,18 +538,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#over-representation-analysis-ora" class="md-nav__link">
     <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#enrichment-analysis-ora" class="md-nav__link">
-    <span class="md-ellipsis">
-      Enrichment Analysis (ORA)
+      Over Representation Analysis (ORA)
     </span>
   </a>
   
@@ -597,9 +579,46 @@
 
 
 <h1 id="interpretation">Interpretation<a class="headerlink" href="#interpretation" title="Permanent link">&para;</a></h1>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<h2 id="enrichment-analysis-ora">Enrichment Analysis (ORA)<a class="headerlink" href="#enrichment-analysis-ora" title="Permanent link">&para;</a></h2>
+<p>Once the differential expression genes have been identified, the next crucial step is to interpret the results. This involves examining the tables and plots generated during the analysis to understand the biological implications of the data. In this part of the tutorial, we will delve into the results by discussing the significant genes identified, their expression patterns, and the visual representations of these findings. We will explore various tables and plots, such as volcano plots, MA plots, and heatmaps, to gain insights into the underlying biological processes and validate the reliability of our results.</p>
+<blockquote>
+<p>[!NOTE]
+The results illustrated in this section might show slight variations compared to your runs due to randomness in the STAR algorithm. This randomness arises from using variable seed values and parallel processing, leading to minor differences in results between runs on the same data. These small discrepancies are not biologically significant and may affect counts and subsequent plots (such as PCA and count plots). However, the overall patterns and main findings should remain consistent. While exact reproducibility is ideal, minor variations are acceptable in practice, as long as they do not impact the main conclusions of the study.</p>
+</blockquote>
+<p>The first plot we will examine is the Principal Component Analysis (PCA) plot. Since we're working with simulated data, our metadata is relatively simple, consisting of just three variables: sample, condition, and replica. In a typical RNA-seq experiment, however, metadata can be complex and encompass a wide range of variables that could contribute to sample variation, such as sex, age and developmental stage. </p>
+<p><img alt="overview" src="../img/PCA.png" /></p>
+<p>By plotting the PCA on the PC1 and PC2 axes, using [condition] as the main variable of interest, we can quickly identify the primary source of variation in our data. By accounting for this variation in our design model, we should be able to detect more differentially expressed genes related to [condition]. When working with real data, it's often useful to plot the data using different variables to explore how much variation is explained by the first two PCs. Depending on the results, it may be informative to examine variation on additional PC axes, such as PC3 and PC4, to gain a more comprehensive understanding of the data.</p>
+<p>Next, we will examine the hierarchical clustering plot to explore the relationships between samples based on their gene expression profiles. The heatmap is organized such that samples with similar expression profiles are close to each other, allowing us to identify patterns and structures in the data.</p>
+<p><img alt="overview" src="../img/hierarchical_clustering.png" /></p>
+<p>We can observe a high degree of correlation in the plot. Remember that to create this plot, we utilized the [dist()] function, so in the legend on the right, a value of 0 corresponds to high correlation, while a value of 5 corresponds to very low correlation. Similar to PCA, we can see that samples tend to cluster together according to [condition].</p>
+<p>Overall, the integration of these plots suggests that we are working with high-quality data and can confidently proceed to the differential expression analysis.</p>
+<p>From this point, we will examine plots that are generated after running the differential expression analysis. These plots are not quality control (QC) plots, but rather plots that help us interpret the results of the differential expression analysis. 
+After running the [results()] function, a good way to start to have an idea about the results of our differential expression analysis is to look at the MA plot. </p>
+<p><img alt="overview" src="../img/MA_plot.png" /></p>
+<p>By default, genes are coloured in blue if the padj is less than 0.1 and the log2foldchange greater than or less than 0. Genes that fall outside the plotting region are represented as open triangles. Note that we have not yet applied a filter to select only significant, which we define as those with a padj value less than 0.5 and a log2 fold change of at least 1 or -1.</p>
+<p>After filtering our genes of interest according to our threshold, let's have a look to our significatnt genes</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>gene<span class="w">                </span>baseMean<span class="w">        </span>log2FoldChange<span class="w">     </span>lfcSE<span class="w">          </span>stat<span class="w">            </span>pvalue<span class="w">              </span>padj
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ENSG00000205726<span class="w">     </span><span class="m">121645</span>.5908<span class="w">     </span><span class="m">2</span>.894480<span class="w">           </span><span class="m">0</span>.1515387<span class="w">      </span><span class="m">19</span>.100600<span class="w">       </span><span class="m">2</span>.496005e-81<span class="w">        </span><span class="m">5</span>.840651e-79
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>ENSG00000142192<span class="w">     </span><span class="m">51065</span>.3192<span class="w">      </span><span class="m">3</span>.025489<span class="w">           </span><span class="m">0</span>.1891258<span class="w">      </span><span class="m">15</span>.997230<span class="w">       </span><span class="m">1</span>.335883e-57<span class="w">        </span><span class="m">1</span>.562983e-55
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>ENSG00000142156<span class="w">     </span><span class="m">20805</span>.8078<span class="w">      </span><span class="m">2</span>.977705<span class="w">           </span><span class="m">0</span>.2159277<span class="w">      </span><span class="m">13</span>.790287<span class="w">       </span><span class="m">2</span>.915972e-43<span class="w">        </span><span class="m">2</span>.274458e-41
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>ENSG00000159231<span class="w">     </span><span class="m">458</span>.9277<span class="w">        </span>-1.194777<span class="w">          </span><span class="m">0</span>.3058100<span class="w">      </span>-3.906926<span class="w">       </span><span class="m">9</span>.347790e-05<span class="w">        </span><span class="m">5</span>.468457e-03
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>ENSG00000156282<span class="w">     </span><span class="m">481</span>.7624<span class="w">        </span><span class="m">1</span>.095272<span class="w">           </span><span class="m">0</span>.2969594<span class="w">      </span><span class="m">3</span>.688289<span class="w">        </span><span class="m">2</span>.257672e-04<span class="w">        </span><span class="m">1</span>.056590e-02
+</code></pre></div>
+<p>After the identification of DE genes, it's informative to visualize the expression of specific genes of interest. Using the [plotCounts()] function directly on the [dds] object allows us to examine individual gene expression profiles without accessing the full [res] object.</p>
+<p><img alt="overview" src="../img/plotCounts.png" /></p>
+<p>In our example, post-treatment, we observe a significant increase in the expression of the ENSG00000142192 gene, highlighting its responsiveness to the experimental conditions.</p>
+<p>To gain a comprehensive overview of the transcriptional profile, the volcano plot represents a highly informative tool.</p>
+<p><img alt="overview" src="../img/volcanoplot.png" /></p>
+<p>The treatment induced differential expression in five genes, with one downregulated and four upregulated. This plot visually represents the numerical results reported in the table above.</p>
+<p>Finally, we can create a heatmap using the normalized expression counts of genes identified as significantly differentially expressed. The resulting heatmap visualizes how the expression of significant genes varies across samples. Each row represents a gene, and each column represents a sample. The color intensity in the heatmap reflects the normalized expression levels: red colors indicate higher expression, while blue colors indicate lower expression.</p>
+<p><img alt="overview" src="../img/heatmap_de_genes.png" /></p>
+<p>By examining the heatmap, we can visually identify the expression patterns of our five significant differentially expressed genes. This visualization allows us to identify how these genes respond to the treatment. The heatmap provides a clear and intuitive way to explore gene expression dynamics and can guide further investigation into the <em>DESEq</em> processes underlying observed changes.</p>
+<h2 id="over-representation-analysis-ora">Over Representation Analysis (ORA)<a class="headerlink" href="#over-representation-analysis-ora" title="Permanent link">&para;</a></h2>
+<p>Finally, we can attempt to assign biological significance to our differentially expressed genes through Enrichment Analysis (ORA). The ORA analysis identifies specific biological pathways, molecular functions, and cellular processes that are enriched with our differentially expressed genes.</p>
+<p><img alt="overview" src="../img/enrichment_plot.png" /></p>
+<p>Based on the results of the ORA, we identified two differentially expressed genes that appear to be involved in redox reduction, specifically in the reduction of carbonyl groups. Furthermore, these genes seem to play a role in the endoplasmic reticulum during clathrin-mediated endocytosis and endosome recycling. This suggests that they may be involved in metabolic pathways related to detoxification and/or xenobiotic metabolism.</p>
+<p>Note that this analysis is based on simulated data and serves only as a demonstration to illustrate the classical workflow of the analysis.</p>
 <h2 id="conclusions">Conclusions<a class="headerlink" href="#conclusions" title="Permanent link">&para;</a></h2>
+<p>In this tutorial, we have walked through the steps of performing differential expression analysis using DESeq2, from preparing the data to interpreting the results. We have seen how to identify differentially expressed genes, visualize the results, and perform enrichment analysis to gain insights into the biological significance of the results. By following this tutorial, you should now be able to perform differential expression analysis using DESeq2 and interpret the results in the context of your own research question. Remember to always carefully evaluate the quality of your data and the assumptions of the analysis, and to consider the biological relevance of the results in the context of your research.</p>
 
 
 
@@ -635,7 +654,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../de_rstudio/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Diffential Analysis with DESeq2">
+          <a href="../de_rstudio/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Differential Analysis with DESeq2">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -645,7 +664,7 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Diffential Analysis with DESeq2
+                Differential Analysis with DESeq2
               </div>
             </div>
           </a>
@@ -679,7 +698,7 @@
     <script id="__config" type="application/json">{"base": "..", "features": ["content.action.edit", "content.code.annotate", "content.code.copy", "navigation.footer", "navigation.tabs", "navigation.top", "navigation.tracking", "search.share", "toc.follow"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.dd8806f2.min.js"></script>
+      <script src="../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
       
         <script src="../javascripts/mathjax.js"></script>
       
