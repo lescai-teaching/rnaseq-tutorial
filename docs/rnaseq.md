@@ -116,5 +116,5 @@ nextflow run nf-core/rnaseq -r 3.12.0 \
 --skip_qualimap
 ```
 
-Notice that we will run the pipeline with STAR as aligner and Salmon in alignment-based mode to quantify gene expression. We will also run the pipeline with Salmon in mapping-based mode to perform a lightweight alignment and quantification. Users could check the consistency between the results.
+Notice that we will run the pipeline with STAR as aligner and Salmon in alignment-based mode to quantify gene expression. We will also run the pipeline with Salmon in mapping-based mode to perform a lightweight alignment and quantification.
 The `skip` parameters were inserted to reduce the running time.
