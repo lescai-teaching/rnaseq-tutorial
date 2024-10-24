@@ -9,18 +9,18 @@ The first plot we will examine is the Principal Component Analysis (PCA) plot. S
 
 ![overview](./img/PCA.png)
 
-By plotting the PCA on the PC1 and PC2 axes, using ```condition``` as the main variable of interest, we can quickly identify the primary source of variation in our data. By accounting for this variation in our design model, we should be able to detect more differentially expressed genes related to ```condition```. When working with real data, it's often useful to plot the data using different variables to explore how much variation is explained by the first two PCs. Depending on the results, it may be informative to examine variation on additional PC axes, such as PC3 and PC4, to gain a more comprehensive understanding of the data.
+By plotting the PCA on the PC1 and PC2 axes, using `condition` as the main variable of interest, we can quickly identify the primary source of variation in our data. By accounting for this variation in our design model, we should be able to detect more differentially expressed genes related to `condition`. When working with real data, it's often useful to plot the data using different variables to explore how much variation is explained by the first two PCs. Depending on the results, it may be informative to examine variation on additional PC axes, such as PC3 and PC4, to gain a more comprehensive understanding of the data.
 
 Next, we will examine the hierarchical clustering plot to explore the relationships between samples based on their gene expression profiles. The heatmap is organized such that samples with similar expression profiles are close to each other, allowing us to identify patterns in the data.
 
 ![overview](./img/hierarchical_clustering.png)
 
-Remember that to create this plot, we utilized the ```dist()``` function, so in the legend on the right, a value of 0 corresponds to high correlation, while a value of 5 corresponds to very low correlation. Similar to PCA, we can see that samples tend to cluster together according to ```condition```, indeed we can observe a high degree of correlation between the three control samples and between the three treated samples. 
+Remember that to create this plot, we utilized the `dist()` function, so in the legend on the right, a value of 0 corresponds to high correlation, while a value of 5 corresponds to very low correlation. Similar to PCA, we can see that samples tend to cluster together according to `condition`, indeed we can observe a high degree of correlation between the three control samples and between the three treated samples. 
 
 Overall, the integration of these plots suggests that we are working with high-quality data and we can confidently proceed to the differential expression analysis.
 
 From this point, we will examine plots that are generated after the differential expression analysis. These plots are not quality control (QC) plots, but rather plots that help us to interpret the results. 
-After running the ```results()``` function, a good way to start to have an idea about the results is to look at the MA plot. 
+After running the `results()` function, a good way to start to have an idea about the results is to look at the MA plot. 
 
 ![overview](./img/MA_plot.png)
 
@@ -43,7 +43,7 @@ To gain a comprehensive overview of the transcriptional profile, the volcano plo
 
 The treatment induced differential expression in five genes, with one downregulated and four upregulated. This plot visually represents the numerical results reported in the table above.
 
-After the identification of DE genes, it's informative to visualise the expression of specific genes of interest. The ```plotCounts()``` function applied directly on the ```dds``` object allows us to examine individual gene expression profiles without accessing the full ```res``` object.
+After the identification of DE genes, it's informative to visualise the expression of specific genes of interest. The `plotCounts()` function applied directly on the `dds` object allows us to examine individual gene expression profiles without accessing the full `res` object.
 
 ![overview](./img/plotCounts.png)
 

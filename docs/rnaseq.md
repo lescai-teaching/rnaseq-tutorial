@@ -4,7 +4,7 @@ In order to carry out a RNA-Seq analysis we will use the nf-core pipeline [rnase
 
 ## Overview
 
-The pipeline is organised following the blocks we previously described: pre-processing, alignment (or pseudoalignment) and quantification and differential expression analysis.
+The pipeline is organised following the diffent blocks: pre-processing, alignment (or lightweight alignment) and quantification, post-processing and final QC.
 
 ![rnaseq overview](./img/nf-core-rnaseq_metro_map_grey.png)
 
@@ -14,13 +14,16 @@ In each process, the users can choose among a range of different options. Import
 
 ## Experimental Design
 
-In RNA-seq experimental design, the number of reads and the number of biological replicates are two critical factors that need to be carefully considered. While it may seem intuitive that having a large number of reads is always desirable, this is not necessarily the case. In fact, having an excessive number of reads can lead to unnecessary costs and computational burdens, without providing significant improvements in data quality or biological insight. Instead, it is often more beneficial to prioritize the number of biological replicates, as these allow for the capture of natural biological variation and provide a more accurate representation of the underlying biological phenomenon. Biological replicates involve collecting and sequencing RNA from separate biological samples from different individuals, different tissues, or different time points. They are essential for identifying genuine changes in gene expression and distinguishing them from technical noise. In contrast, technical replicates involve sequencing the same RNA sample multiple times to assess the technical variability of the sequencing platform and ensure consistency in the results.
-To ensure the validity of the results, it is crucial to carefully consider the trade-off between the number of biological replicates and sequencing depth. Higher sequencing depth can improve the ability to detect lowly expressed genes and provide more precise quantification of gene expression. However, beyond a certain threshold, increasing sequencing depth yields diminishing returns in terms of data quality and biological insight, making it important to find an optimal balance. Therefore, it is often more beneficial to prioritize biological replicates over simply increasing sequencing depth or technical replicates.
-Furthermore, the number of reads and biological replicates should be estimated through a calculation of the statistical power, which takes into account the desired fold change, alpha level, and effect size. This calculation can inform the experimental design and provide a basis for setting the log2 fold change (log2FC) threshold in the subsequent differential expression (DE) analysis. By incorporating multiple biological replicates into the experimental design, optimizing sequencing depth, and estimating the required number of reads and replicates through statistical power calculations, it is possible tp increase the statistical power of the analysis, reduce the risk of false positives, and gain a more comprehensive understanding of the biological system being studied.
+The number of reads and the number of biological replicates are two critical factors that researchers need to carefully consider during the design of a RNA-seq experiment. While it may seem intuitive that having a large number of reads is always desirable, an excessive number can lead to unnecessary costs and computational burdens, without providing significant improvements in quality of the data. Instead, it is often more beneficial to prioritise the number of biological replicates, as it allows to capture the natural biological variation of the data. Biological replicates involve collecting and sequencing RNA from distinct biological samples (e.g., different individuals, tissues, or time points), helping to detect genuine changes in gene expression. 
+
+> [!NOTE]
+> This concept must not be confused with technical replicates that asses the technical variability of the sequencing platform by sequencing the same RNA sample multiple time.
+
+To obtain optimal results, it is crucial to balance the number of biological replicates and sequencing depth. While deeper sequencing improves the detection of lowly expressed genes, it reaches a plateau, beyond which no additional benefits are gained. Statistical power calculations can inform experimental design by estimating the optimal number of reads and replicates required. For instance, this approach helps establish a suitable log2 fold change (log2FC) threshold for  the DE analysis. By incorporating multiple biological replicates into the design and optimizing sequencing depth, researchers can enhance the statistical power of the analysis, reducing the number of false positive results and increasing the reliability of the findings
 
 ## Library design
 
-RNA-seq library design involves a range of critical decisions, including the choice between paired-end and single-end sequencing strategies. This choice is influenced by several key factors, such as fragment size selection, strand specificity preservation, and optimal read length determination. Paired-end sequencing, where both ends of a fragment are sequenced, provides valuable information about structural variations and transcript isoforms and can improve mapping accuracy, especially for longer transcripts and repetitive regions. In contrast, single-end sequencing, where only one end of the fragment is sequenced, can be more cost-effective while still providing high-quality data for gene expression analysis. The decision between paired-end and single-end sequencing ultimately depends on the research question and experimental goals. For instance, paired-end sequencing may be preferred if the focus is on identifying novel transcripts or characterizing transcript isoforms. However, if the primary goal is to quantify gene expression levels, single-end sequencing may be sufficient. The type of RNA being sequenced also plays a crucial role in library design, as different RNA species (e.g., mRNA, total RNA, small RNA) require distinct protocols. Additionally, the chosen read length can impact the ability to detect specific features, such as splice junctions or repeated regions. Therefore, the choice between paired-end and single-end reads in RNA-seq library design depends on the specific research goals, the nature of the RNA samples, budget constraints, alongside considerations for data analysis complexity and computational resources.
+RNA-seq library design involves critical decisions, including the choice between paired-end and single-end sequencing. Paired-end sequencing provides valuable information on structural variations and transcript isoforms, improving mapping accuracy, especially for longer transcripts and repetitive regions. In contrast, single-end sequencing, where only one end of the fragment is sequenced, can be more cost-effective while still providing high-quality data for gene expression analysis. The decision between paired-end and single-end sequencing ultimately depends on the research question and experimental goals. Paired-end sequencing is preferred for novel transcript identification or isoform characterization, while single-end sequencing is sufficient for gene expression quantification. The type of RNA (e.g., mRNA or total RNA), read length, budget and computational resources can impact the choice.
 
 ## Reference genome
 
@@ -34,26 +37,25 @@ We will follow this specific approach in this tutorial, since the data we will b
 
 ## Reference annoation
 
-The reference annotation plays a crucial role in the RNA-seq analysis. Without a high-quality reference annotation, RNA-seq analysis would be severely hindered, leading to inaccurate or incomplete results. The reference annotation provides a precise guide for aligning sequencing reads to specific genomic regions, allowing to identify the genes, transcripts and regulatory elements. This is particularly important for identifying novel transcripts and alternative splicing events.
-The reference annotation provides essential information about the structures of genes and transcripts, but it also includes information about gene ontology, pathways, and protein domains, which is essential for understanding the biological context of gene expression changes. 
+The reference annotation plays a crucial role in the RNA-seq analysis. Without a high-quality reference annotation, RNA-seq analysis would result in inaccurate or incomplete results. The reference annotation provides a precise guide for aligning sequencing reads to specific genomic regions, allowing to identify genes, transcripts and regulatory elements. This is particularly important for identifying novel transcripts and alternative splicing events.
 
 nf-core pipelines make use of the Illumina iGenomes collection also as [reference annotation](https://nf-co.re/docs/usage/reference_genomes).
 The reference annotations are vastly out of date with respect to current annotations and miss certain features. So, the general recommendation is to download a newest annotation version compatible with the genome. A user can utilize the `--gtf` or the `--gff` options to specify the annottation files of choiche, or create a config file adding a new section to the `genome` object. 
 
-Similarly to the approach utilized for the genome, in this tutorial we will follow this approach. The annotation files include only the annotated transcripts on chromosome 21 of the Human GRCh38 reference genome, and we have already prepared these files locally. The two files are `/workspace/gitpod/training/data/refs/gencode_v29_chr21.gff` and `/workspace/gitpod/training/data/refs/gencode_v29_transcripts_chr21.fa`, respectively.
+Similarly to the approach utilised for the genome, in this tutorial we will follow this approach. The annotation files include only the annotated transcripts on chromosome 21 of the Human GRCh38 reference genome and we have already prepared these files locally. The two files are `/workspace/gitpod/training/data/refs/gencode_v29_chr21.gff` and `/workspace/gitpod/training/data/refs/gencode_v29_transcripts_chr21.fa`, respectively.
 
 ## Input files
 
 The input data should be provided in a CSV file, according to a format that is largely common for nf-core pipelines.
 The format is described in the [rnaseq usage page](https://nf-co.re/rnaseq/3.14.0/docs/usage).
-The file is `/workspace/gitpod/training/data/reads/rnaseq_samplesheet.csv`.
+In the tutorial, the input file is `/workspace/gitpod/training/data/reads/rnaseq_samplesheet.csv`.
 
 ## Running nf-core/rnaseq
 
 In the following sections we will:
 - prepare our references;
 - set our computational resources in order to be able to run the pipeline on a gitpod VM;
-- edit the filtering settings;
+- edit the optional settings;
 - run the pipeline.
 
 ## Reference and annotation files
@@ -113,3 +115,6 @@ nextflow run nf-core/rnaseq -r 3.12.0 \
 --skip_rseqc \
 --skip_qualimap
 ```
+
+Notice that we will run the pipeline with STAR as aligner and Salmon in alignment-based mode to quantify gene expression. We will also run the pipeline with Salmon in mapping-based mode to perform a lightweight alignment and quantification. Users could check the consistency between the results.
+The `skip` parameters were inserted to reduce the running time.
