@@ -125,7 +125,7 @@ rownames(metadata) <- colnames(counts(dds))
 colData(dds) <- metadata
 ```
 
-Notice that with this operation we also eliminate the sizeFactors already estimated by the **nfcore DESeq2 module**.
+Notice that with this operation we also eliminate the `sizeFactors` already estimated by the **nfcore DESeq2 module**.
 
 To avoid errors in DESeq2 is essential to check that sample names match between the `colData` and the `countData`, and that the sample are in the correct order:
 
@@ -153,7 +153,7 @@ colData(dds_new) # to check the sample info
 design(dds_new) # to check the design formula
 ```
 
-Analysing the structure of the newly created dds, we can observe the differences:
+Comparing the structure of the newly created dds (`dds_new`) with the one automatically produced by the pipeline (`dds`), we can observe the differences:
 
 ![overview](./img/dds_comparison.png)
 
@@ -175,11 +175,11 @@ keep <- rowSums(counts(dds_new) >= 10) >= smallestGroupSize
 dds_filtered <- dds_new[keep,] 
 ```
 
-The next step in the DESeq2 workflow is to perform quality control (QC) analysis on our data. This analysis is crucial for identifying potential issues or biases and ensuring the data are suitable for downstream analysis. For QC analysis, it is useful to work with transformed versions of the count data. Raw count data are not suitable for these methods due to their discrete nature and the fact that their variance tends to increase with the mean. To address this, DESeq2 provides two types of transformations: variance stabilizing transformations (vst) and regularized logarithm (rlog). These transformations help to remove the dependence of the variance on the mean, making the data more suitable for visualization and exploratory analysis. While, the rlog is more robust to outliers and extreme values, vst is computationally faster and so preferred for larger dataset.
-It's important to remember that these transformations are used for visualization purposes, while DESeq2 itself operates on raw counts for differential expression analysis.
+The next step in the DESeq2 workflow is to perform quality control (QC) analysis on our data. This analysis is crucial for identifying potential issues or biases and ensuring the data are suitable for downstream analysis. For QC analysis, it is useful to work with transformed versions of the count data. Raw count data are not suitable for these methods due to their discrete nature and the fact that their variance tends to increase with the mean. To address this, DESeq2 provides two types of transformations: `variance stabilizing transformations (vst)` and `regularized logarithm (rlog)`. These transformations help to remove the dependence of the variance on the mean, making the data more suitable for visualisation and exploratory analysis. While, the rlog is more robust to outliers and extreme values, vst is computationally faster and so preferred for larger dataset.
+Notice that these transformations are used for visualisation purposes, while DESeq2 itself operates on raw counts for differential expression analysis.
 
 ```r
-#### Transform normalized counts for data viz ####
+#### Transform normalised counts for data visualisation ####
 # A user can choose among vst and rlog. In this tutorial we will work with rlog transformed data.
 
 rld <- rlog(dds_filtered, blind = TRUE)
@@ -189,8 +189,8 @@ The rlog and the vst transformations have an argument, **blind** that can be set
 - **TRUE** (default): useful for QC analysis because it re-estimates the dispersion, allowing for comparison of samples in an unbiased manner with respect to experimental conditions;
 - **FALSE**: the function utilizes the already estimated dispersion, generally applied when differences in counts are expected to be due to the experimental design.
 
-Next, we perform Principal Component Analysis (PCA) to visualize the data. DESeq2 provides a built-in function, **plotPCA**, which uses [ggplot2](https://ggplot2.tidyverse.org) for visualization, taking the **rld** object as input.
-Since the **treatment** is the principal condition of interest in our metadata, we will use the **condition** information from our metadata to plot the PCA: 
+Next, we perform Principal Component Analysis (PCA) to explore the data. DESeq2 provides a built-in function, `plotPCA()`, which uses [ggplot2](https://ggplot2.tidyverse.org) for visualisation, taking the `rld` object as input.
+Since the **treatment** is the principal condition of interest in our metadata, we will use the `condition` information from our metadata to plot the PCA: 
 
 ```r
 #### Plot PCA ####
@@ -198,8 +198,8 @@ Since the **treatment** is the principal condition of interest in our metadata, 
 plotPCA(rld, intgroup = "condition")
 ```
 
-The second essential step in QC analysis is hierarchical clustering. Although DESeq2 does not have a built-in function for this analysis, we can use the **pheatmap()** function from the **pheatmap** package.
-We will extract the matrix of rlog-transformed counts from the rld object (pheatmap input), compute pairwise correlations and plot the heatmap:
+The second essential step in QC analysis is hierarchical clustering. Although DESeq2 does not have a built-in function for this analysis, we can use the `pheatmap()` function from the **pheatmap** package.
+We will extract the matrix of rlog-transformed counts from the `rld` object (pheatmap input), compute pairwise correlations and plot the heatmap:
 
 ```r
 #### Plot sample to sample distance (hierarchical clustering) ####
@@ -232,7 +232,7 @@ pheatmap(sampleDistMatrix,
         fontsize_row = 8)
 ```
 
-Now, it is time to run the differential expression analysis with the **DESeq()** function:
+Now, it is time to run the differential expression analysis with the `DESeq()` function:
 
 ```r
 #### Run the DESeq2 analysis ####
@@ -240,14 +240,14 @@ Now, it is time to run the differential expression analysis with the **DESeq()**
 dds_final <- DESeq(dds_filtered)
 ```
 
-The **DESeq()** function is a high-level wrapper that simplifies the process of differential expression analysis by combining multiple steps into a single function call:
+The `DESeq()` function is a high-level wrapper that simplifies the process of differential expression analysis by combining multiple steps into a single function call:
 
 ![overview](./img/DESeq_function.png)
 
 This makes the workflow more user-friendly and ensures that all necessary preprocessing and statistical steps are executed in the correct order. The key functions that **DESeq2** calls include: 
-- estimateSizeFactors: to normalize the count data;
-- estimateDispersion: to estimate the dispersion;
-- nbinomWaldTest: to perform differential expression test.
+- **estimateSizeFactors**: to normalise the count data;
+- **estimateDispersion**: to estimate the dispersion;
+- **nbinomWaldTest**: to perform differential expression test.
 
 The individual functions can be carried out also singularly as shown below:
 
@@ -261,58 +261,59 @@ dds <- estimateDispersions(dds)
 dds <- nbinomWaldTest(dds)
 ```
 
-The normalized counts stored in the **dds** can be inspected with the **counts()** function and saved in our results folder:
+The normalised counts stored in the `dds` can be inspected with the `counts()` function and saved in our results folder:
 
 ```r
-#### Inspect the normalized counts ####
+#### Inspect the normalised counts ####
 
-# Convert the normalized counts from the DESeq2 object to a data frame
+# Display the first few rows of the normalised counts to inspect the data
 
-normalized_counts <- as.data.frame(counts(dds_final, normalized = TRUE))
+head(counts(dds_final, normalised = TRUE))
 
-# Add a column for gene names to the normalized counts data frame
-
-normalized_counts$gene <- rownames(counts(dds_final))
-
-# Convert the data frame to a tibble for easier manipulation and relocate the gene column to the first position
-
-normalized_counts <- as_tibble(normalized_counts) %>% 
-  relocate(gene, .before = control_rep1)
-
-# Display the first few rows of the normalized counts to inspect the data
-
-head(counts(dds_final, normalized = TRUE))
-
-# Display the first few rows of the raw counts (not normalized) to compare with the normalized counts
+# Display the first few rows of the raw counts (not normalised) to compare with the normalised counts
 
 head(counts(dds_final))
 
-# Save normalized counts 
+# Convert the normalised counts from the DESeq2 object to a data frame
 
-write.csv(normalized_counts, file = "de_results/normalized_counts.csv")
+normalised_counts <- as.data.frame(counts(dds_final, normalised = TRUE))
+
+# Add a column for gene names to the normalised counts data frame
+
+normalised_counts$gene <- rownames(counts(dds_final))
+
+# Relocate the gene column to the first position
+
+normalised_counts <- normalised_counts %>% 
+  relocate(gene, .before = control_rep1)
+
+# Save normalised counts 
+
+write.csv(normalised_counts, file = "de_results/normalised_counts.csv")
 ```
 
-The **results()** function in DESeq2 is used to extract the results of the differential expression analysis. This function takes the **dds** object as input and returns a DataFrame containing the results of the analysis:
+The `results()` function in DESeq2 is used to extract the results of the differential expression analysis. This function takes the `dds` object as input and returns a DataFrame containing the results of the analysis:
 
 - **baseMean**: the average expression level of the gene across all samples;
 - **log2FoldChange**: the log2 fold change of the gene between the condition of interest and the reference level;
 - **lfcSE**: the standard error of the log2 fold change;
 - **stat**: the Wald statistic, which is used to calculate the p-value;
-- **pvalue**: the p-value associated with the Wald test, which indicates the probability of observing the log2 fold change by chance;
-- **padj**: the adjusted p-value, which takes into account multiple testing corrections;
+- **pvalue**: the p-value from the Wald test indicates the probability of observing the measured difference in gene expression (log2 fold change) by chance, assuming no true difference exists (null hypothesis). A low p-value suggests that the observed expression change between samples is unlikely due to random chance, so we can reject the null hypothesis;
+- **padj**: the adjusted p-value, which takes into account multiple testing corrections, using the Benjamini-Hochberg method to control the false discovery rate (FDR);
 
-By default, the **results()** function returns the results for all genes in the analysis with an adjusted p-value below a specific FDR (false discovery rate) cutoff, set by the default to 0.1. This threshold can be modified with the parameter **alpha**. The **results()** function can also be customized to extract specific columns or rows of interest, and can also be used to filter the results based on certain criteria, such as a minimum log2 fold change or a maximum adjusted p-value or to set a specific contrast. The **contrast** argument in the **results()** function is used to specify the contrast of interest for which the results should be extracted. A contrast is a specific comparison between two or more levels of a factor, such as the comparison between the treatment and control groups. The order of the contrast names determines the direction of the fold change that is reported in the results. Specifically, the first level of the contrast is the condition of interest, and the second level is the reference level. Notice that in the tutorial the contrast is already correct.
+By default, the `results()` function returns the results for all genes in the analysis with an adjusted p-value below a specific FDR cutoff, set by default to 0.1. This threshold can be modified with the parameter `alpha`. The `results()` function can also be customised to extract specific columns or rows of interest and can also be used to filter the results based on certain criteria (minimum log2 fold change or a maximum adjusted p-value) or to set a specific contrast. The `contrast` argument in the `results()` function is used to specify the contrast of interest for which the results should be extracted. A contrast is a specific comparison between two or more levels of a factor, such as the comparison between the treatment and control groups. The order of the contrast names determines the direction of the fold change that is reported in the results. Specifically, the first level of the contrast is the condition of interest and the second level is the reference level. 
+Notice that in the tutorial the contrast is already correct.
 
 ```r
 #### Extract results table from the dds object ####
 
 res <- results(dds_final)
 
-# Visualize the results
+# Visualise the results
 
 head(res) 
 
- # Summarize the results showing the number of tested genes (genes with non-zero total read count), the genes up- and down-regulated at the selected threshold (alpha) and the number of genes excluded by the multiple testing due to a low mean count 
+# Summarise the results showing the number of tested genes (genes with non-zero total read count), the genes up- and down-regulated at the selected threshold (alpha) and the number of genes excluded by the multiple testing due to a low mean count 
 
 summary(res)
 
@@ -339,7 +340,7 @@ res_viz <- as_tibble(res_viz) %>% relocate(gene, .before = baseMean)
 write.csv(res_viz, file = "de_results/de_result_table.csv")
 ```
 
-In the *Experimental Design* section, we emphasized the importance of estimating the log2 fold change threshold using a statistical power calculation, rather than selecting it arbitrarily. This approach ensures that the chosen threshold is statistically appropriate and tailored to the specifics of the experiment. However, since we are working with simulated data for demonstration purposes, we will use a padj (adjusted p-value) threshold of 0.05 and consider genes with a log2 fold change greater than 1 or lower than -1 as differentially expressed.
+In the *Experimental Design* section, we emphasised the importance of estimating the log2 fold change threshold using a statistical power calculation, rather than selecting it arbitrarily. This approach ensures that the chosen threshold is statistically appropriate and tailored to the specifics of the experiment. However, since we are working with simulated data for demonstration purposes, we will use a padj threshold of 0.05 and consider genes with a log2 fold change greater than 1 or lower than -1 as differentially expressed.
 
 ```r
 #### Extract significant DE genes from the results ####
@@ -365,9 +366,9 @@ resSig
 write.csv(resSig, file = "de_results/sig_de_genes.csv")
 ```
 
-Now that we have obtained the results of the differential expression analysis, it's time to visualize the data to gain a deeper understanding of the biological processes that are affected by the experimental conditions. Visualization is a crucial step in RNA-seq analysis, as it allows us to identify patterns and trends in the data that may not be immediately apparent from the numerical results. In the following sections, we will explore different types of plots that are commonly used to visualize the results of RNA-seq analysis, including:
+Now that we have obtained the results of the differential expression analysis, it's time to visualise the data to gain a deeper understanding of the biological processes that are affected by the experimental conditions. Visualization is a crucial step in RNA-seq analysis, as it allows us to identify patterns and trends in the data that may not be immediately apparent from the numerical results. In the following sections, we will explore different types of plots that are commonly used to visualise the results of RNA-seq analysis, including:
 
-- **MA plot**: it is a type of scatter plot that is commonly used to visualize the results of differential expression analysis for all the samples. The plot displays the log2 fold change on the y-axis and the mean of the normalized counts on the x-axis. This allows for the visualization of the relationship between the magnitude of the fold change and the mean expression level of the genes. Genes that are highly differentially expressed will appear farthest from the horizontal axis, while genes with low expression levels will appear closer to the axis. MA plots are useful for identifying genes that are both highly expressed and highly differentially expressed between two conditions.
+- **MA plot**: it is a type of scatter plot that is commonly used to visualise the results of differential expression analysis for all the samples. The plot displays the log2 fold change on the y-axis and the mean of the normalised counts on the x-axis. This allows the visualisation of the relationship between the magnitude of the fold change and the mean expression level of the genes. Genes that are highly differentially expressed will appear farthest from the horizontal line, while genes with low expression levels will appear closer to the line. The MA plot is useful for identifying genes that are both highly expressed and highly differentially expressed between two conditions.
 
 ```r
 #### MA plot ####
@@ -375,7 +376,7 @@ Now that we have obtained the results of the differential expression analysis, i
 plotMA(res, ylim = c(-2,2))
 ```
  
-- **counts plot**: it plots the normalized counts for a single gene across the different conditions in your experiment. It’s particularly useful for visualizing the expression levels of specific genes of interest and comparing them across sample groups.
+- **counts plot**: it plots the normalised counts for a single gene across the different conditions in your experiment. It’s particularly useful for visualising the expression levels of specific genes of interest and comparing them across sample groups.
 
 ```r
 #### Plot a specific gene in this case ENSG00000142192, a DE gene ####
@@ -383,7 +384,7 @@ plotMA(res, ylim = c(-2,2))
 plotCounts(dds_new, gene = "ENSG00000142192")
 ```
 
-- **volcano plot**: it is a type of scatter plot that displays the log2 fold change on the x-axis and the log transformed padj on the y-axis. This allows for the visualization of both the magnitude and significance of the changes in gene expression between two conditions. Genes that are highly differentially expressed (i.e., have a large log2 fold change) and are statistically significant (i.e., have a low padj) will appear in the top-left or top-right corners of the plot, making it easy to identify the most biologically meaningful changes.
+- **volcano plot**: it is a type of scatter plot that displays the log2 fold change on the x-axis and the log transformed padj on the y-axis. This allows for the visualisation of both the magnitude and significance of the changes in gene expression between two conditions. Genes that are highly differentially expressed (i.e., have a large log2 fold change) and are statistically significant (i.e., have a low padj) will appear in the top-left or top-right corners of the plot making easier to identify the most biologically meaningful changes.
 
 ```r
 #### Volcano plot ####
@@ -432,7 +433,8 @@ ggplot(data = res_tb, aes(x = log2FoldChange, y = -log10(padj), col = diffexpres
 
 ```
 
-**heatmap**: plot of the normalized counts for all the significant genes obtained with the **pheatmap()** function. The heatmap provides insights into genes and sample relationships that may not be apparent from individual gene plots alone. 
+**heatmap**: plot of the normalised counts for all the significant genes obtained with the `pheatmap()` function. The heatmap provides insights into genes and sample relationships that may not be apparent from individual gene plots alone.
+Notiche that this plot is based on the normalised counts.
 
 ```r
 #### Heatmap ####
@@ -441,9 +443,9 @@ ggplot(data = res_tb, aes(x = log2FoldChange, y = -log10(padj), col = diffexpres
 
 significant_genes <- resSig[, 1]
 
-# Extract normalized counts for significant genes from the normalized counts matrix and convert the "gene" column to row names 
+# Extract normalised counts for significant genes from the normalised counts matrix and convert the "gene" column to row names 
 
-significant_counts <- inner_join(normalized_counts, significant_genes, by = "gene") %>% 
+significant_counts <- inner_join(normalised_counts, significant_genes, by = "gene") %>% 
   column_to_rownames("gene")
 
 # Create the heatmap using pheatmap
@@ -459,24 +461,31 @@ pheatmap(significant_counts,
 
 ## Functional analysis
 
-The output of the differential expression analysis is a list of significant differentially expressed genes (DEGs). To uncover the underlying biological mechanisms, various downstream analyses can be performed, such as functional enrichment analysis (identify overrepresented biological processes, molecular functions, or cellular components) and network analysis (group genes based on similar expression patterns and identify novel pathways or interactions). To facilitate interpretation of the resulting gene lists, a range of freely available web- and R-based tools can be employed.
+The output of the differential expression analysis is a list of significant DE genes. To uncover the underlying biological mechanisms, various downstream analyses can be performed, such as functional enrichment analysis (identify overrepresented biological processes, molecular functions, cellular components or pathways) and network analysis (group genes based on similar expression patterns to identify novel interactions). To facilitate the interpretation of the resulting list of DE genes, a range of freely available web- and R-based tools can be employed.
 
-In this tutorial we will focus on the over Representation Analysis (ORA), also known as enrichment analysis, a powerful tool for identifying biological pathways or processes that are significantly enriched with differentially expressed genes. The underlying statistic behind ORA is the hypergeometric test, which calculates the probability of observing a certain number of genes from a particular pathway or process in the list of differentially expressed genes by chance. The hypergeometric test takes into account the total number of genes in the genome, the number of genes in the pathway or process, and the number of differentially expressed genes in the list. The resulting p-value represents the probability of observing the enrichment by chance, and a low p-value indicates that the enrichment is statistically significant. By applying the hypergeometric test to multiple pathways or processes, ORA provides a comprehensive view of the biological mechanisms underlying the differentially expressed genes, allowing researchers to identify key biological processes and pathways that are affected by the condition of interest.
+In this tutorial, we will explore an enrichment analysis technique known as Over-Representation Analysis (ORA), a powerful tool for identifying biological pathways or processes that are significantly enriched with differentially expressed (DE) genes. The underlying statistic behind ORA is the **hypergeometric test**, which considers three key components:
+
+- **Universe**: the background list of genes (for example the genes annotated in a genome);
+- **Gene Set**: a subset of genes known to be involved in a specific biological pathway or process;
+- **Gene List**: the number of DE genes.
+
+The hypergeometric test calculates the probability of observing a certain number of genes from the gene set (pathway or process) within the gene list (DE genes) by chance.
+An important aspect of this analysis is the concept of **membership**. It defines the relationship between DE genes and pathways. By knowing which genes belong to which pathways, we can determine whether the observed overlap between DE genes and a particular pathway is greater than what would be expected by random chance. In essence, membership helps establish whether the enrichment of DE genes in a particular pathway is statistically significant.
 
 ```r
 #### Enrichment analysis (ORA) ####
 
 # Loading libraries
 
-# clusterProfiler: a package for enrichment analysis
+# clusterProfiler: package for enrichment analysis
 
 library(clusterProfiler)
 
-# org.Hs.eg.db: a package for the human gene annotation database
+# org.Hs.eg.db: package for the human gene annotation database
 
 library(org.Hs.eg.db)
 
-# cowplot: a package for combining multiple plots
+# cowplot: package for combining multiple plots
 
 install.packages("cowplot") # To install the package missing in the current RStudio env
 
