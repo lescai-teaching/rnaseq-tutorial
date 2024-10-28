@@ -240,9 +240,7 @@ Now, it is time to run the differential expression analysis with the `DESeq()` f
 dds_final <- DESeq(dds_filtered)
 ```
 
-The `DESeq()` function is a high-level wrapper that simplifies the process of differential expression analysis by combining multiple steps into a single function call:
-
-![overview](./img/DESeq_function.png)
+The `DESeq()` function is a high-level wrapper that simplifies the process of differential expression analysis by combining multiple steps into a single function call.
 
 This makes the workflow more user-friendly and ensures that all necessary preprocessing and statistical steps are executed in the correct order. The key functions that **DESeq2** calls include: 
 - **estimateSizeFactors**: to normalise the count data;
