@@ -25,8 +25,6 @@ sleep 2h
 
 This command will keep the gitpod session active for exactly 2 hours, providing sufficient time to complete our analysis without interruption.
 
-![overview](./img/sleep_2h.png)
-
 Now come back to our **RStudio session**.
 
 ## Differential Expression Analysis
@@ -52,7 +50,9 @@ To store our results in an organized way, we will create a folder named **de_res
 
 and save the file as **de_script.R**. From now on, each command described in the tutorial can be added to your script. The resulting working directory should look like this:
 
-![overview](./img/workdir_RStudio.png)
+<center>
+<img src="./img/workdir_RStudio.png" height="200px" width="400px">
+</center>
 
 The analysis requires several R packages. To utilise them, we need to load the following libraries:
 
@@ -160,7 +160,9 @@ design(dds_new) # to check the design formula
 
 Comparing the structure of the newly created dds (`dds_new`) with the one automatically produced by the pipeline (`dds`), we can observe the differences:
 
-![overview](./img/dds_comparison.png)
+<center>
+<img src="./img/dds_comparison.png" height="300px" width="420px">
+</center>
 
 Before running the different steps of the analysis, a good practice consists in pre-filtering the genes to remove those with very low counts. This is useful to improve computional efficiency and enhance interpretability. In general, it is reasonable to keep only genes with a sum counts of at least 10 for a minimal number of 3 samples:
 
