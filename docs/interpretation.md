@@ -57,13 +57,14 @@ By examining the heatmap, we can visually identify the expression patterns of ou
 
 ## Over Representation Analysis (ORA)
 
-Finally, we can attempt to assign biological significance to our differentially expressed genes through Enrichment Analysis (ORA). The ORA analysis identifies specific biological pathways, molecular functions, and cellular processes that are enriched with our differentially expressed genes.
+Finally, we can attempt to assign biological significance to our differentially expressed genes through Enrichment Analysis (ORA). The ORA analysis identifies specific biological pathways, molecular functions and cellular processes, according to the Gene Ontology (GO) database, that are enriched with our differentially expressed genes. 
 
 ![overview](./img/enrichment_plot.png)
 
-Based on the results of the ORA, we identified two differentially expressed genes that appear to be involved in redox reduction, specifically in the reduction of carbonyl groups. Furthermore, these genes seem to play a role in the endoplasmic reticulum during clathrin-mediated endocytosis and endosome recycling. This suggests that they may be involved in metabolic pathways related to detoxification and/or xenobiotic metabolism.
+The enrichment analysis reveals a possible involvement of cellular structures and processes, including "clathrin-coated pit", "dendritic spine", "neuron spine" and "endoplasmic reticulum lumen". These terms suggest a focus on cellular transport, structural integrity and protein processing, especially in neural contexts. This pattern points to pathways related to cellular organization and maintenance, possibly playing an important role in the biological condition under study.
 
-Note that this analysis is based on simulated data and serves only as a demonstration to illustrate the classical workflow of the analysis.
+> [!NOTE]
+> This analysis is based on simulated data and all the assumptions in the previous part only serves as a demonstration to illustrate the classical workflow of the analysis. 
 
 ## Conclusions
 
