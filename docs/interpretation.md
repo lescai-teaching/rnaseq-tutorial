@@ -54,6 +54,7 @@ Finally, we can create a heatmap using the normalised expression counts of DE ge
 ![overview](./img/heatmap_de_genes.png)
 
 By examining the heatmap, we can visually identify the expression patterns of our five significant differentially expressed genes. This visualization allows us to identify how these genes respond to the treatment. The heatmap provides a clear and intuitive way to explore gene expression dynamics.
+
 ## Over Representation Analysis (ORA)
 
 Finally, we can attempt to assign biological significance to our differentially expressed genes through Enrichment Analysis (ORA). The ORA analysis identifies specific biological pathways, molecular functions, and cellular processes that are enriched with our differentially expressed genes.
