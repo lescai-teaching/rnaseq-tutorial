@@ -129,8 +129,9 @@ rownames(metadata) <- colnames(counts(dds))
 colData(dds) <- metadata
 ```
 
-> [!NOTE] 
-> Notice that with this operation we also eliminate the `sizeFactors` already estimated by the **nfcore DESeq2 module**.
+!!! note
+
+    With this operation we also eliminate the `sizeFactors` already estimated by the **nfcore DESeq2 module**.
 
 To avoid errors in DESeq2 is essential to check that sample names match between the `colData` and the `countData`, and that the sample are in the correct order:
 

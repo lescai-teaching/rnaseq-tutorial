@@ -2,8 +2,9 @@
 
 Once DE genes have been identified, the next crucial step is to interpret the results. This involves the inspection of tables and plots generated during the analysis to understand the biological significance of the data. In this part of the tutorial, we will delve into the results by discussing the significant DE genes and we will explore various plots generated during the analysis.
 
-> [!NOTE]
-> The results illustrated in this section might show slight variations compared to your runs due to randomness in the STAR algorithm. This randomness arises from using variable seed values and parallel processing, leading to minor differences in results between runs on the same data. These small discrepancies are not biologically significant and may affect counts and subsequent plots (such as PCA and count plots). However, the overall patterns and main findings should remain consistent. While exact reproducibility is ideal, minor variations are acceptable in practice, as long as they do not impact the main conclusions of the study.
+!!! note
+
+    The results illustrated in this section might show slight variations compared to your runs due to randomness in the STAR algorithm. This randomness arises from using variable seed values and parallel processing, leading to minor differences in results between runs on the same data. These small discrepancies are not biologically significant and may affect counts and subsequent plots (such as PCA and count plots). However, the overall patterns and main findings should remain consistent. While exact reproducibility is ideal, minor variations are acceptable in practice, as long as they do not impact the main conclusions of the study.
 
 The first plot we will examine is the Principal Component Analysis (PCA) plot. Since we're working with simulated data, our metadata is relatively simple, consisting of just three variables: sample, condition and replica. In a typical RNA-seq experiment, however, metadata can be complex and encompass a wide range of variables that could contribute to sample variation, such as sex, age and developmental stage. 
 
@@ -75,10 +76,6 @@ Finally, we can attempt to assign biological significance to our differentially 
 ![enrichment plot](./img/enrichment_plot.png){ width="400" }
 
 The enrichment analysis reveals a possible involvement of cellular structures and processes, including "clathrin-coated pit", "dendritic spine", "neuron spine" and "endoplasmic reticulum lumen". These terms suggest a focus on cellular transport, structural integrity and protein processing, especially in neural contexts. This pattern points to pathways related to cellular organization and maintenance, possibly playing an important role in the biological condition under study.
-
-!!! note
-
-    This analysis is based on simulated data and all the assumptions in the previous part only serves as a demonstration to illustrate the classical workflow of the analysis. 
 
 
 ## Conclusions
