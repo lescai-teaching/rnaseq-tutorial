@@ -72,9 +72,7 @@ By examining the heatmap, we can visually identify the expression patterns of ou
 
 Finally, we can attempt to assign biological significance to our differentially expressed genes through Enrichment Analysis (ORA). The ORA analysis identifies specific biological pathways, molecular functions and cellular processes, according to the Gene Ontology (GO) database, that are enriched with our differentially expressed genes. 
 
-<center>
-<img src="./img/enrichment_plot.png" height="450px" width="400px">
-</center>
+![enrichment plot](./img/enrichment_plot.png){ width="400" }
 
 The enrichment analysis reveals a possible involvement of cellular structures and processes, including "clathrin-coated pit", "dendritic spine", "neuron spine" and "endoplasmic reticulum lumen". These terms suggest a focus on cellular transport, structural integrity and protein processing, especially in neural contexts. This pattern points to pathways related to cellular organization and maintenance, possibly playing an important role in the biological condition under study.
 
