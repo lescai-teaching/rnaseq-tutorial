@@ -685,10 +685,7 @@
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Given the central role of RNA in a wide range of cellular and molecular functions, RNA-seq has emerged as a powerful tool for measuring the presence and levels of RNA species in biological samples. The technique is based on next-generation sequencing (NGS) technologies and is now considered the gold standard in the field of transcriptomics.</p>
 <p>After RNA extraction and reverse transcription into complementary DNA (cDNA), the biological material is sequenced, generating NGS "reads" that correspond to the RNA captured in a specific cell, tissue, or organ at a given time. The sequencing data is then bioinformatically processed through a typical workflow summarised in the diagram below:</p>
-<div style="text-align: center;">
-  <img src="./img/Excalidraw_RNAseq.png" alt="Excalidraw RNAseq" style="height:200px; width:200px;">
-</div>
-
+<p><img alt="" src="../img/Excalidraw_RNAseq.png" style="height:150px;width:400px" /></p>
 <p>In the scheme, we can identify three key phases in the workflow: data pre-processing, alignment and quantification, and differential expression analysis. In the data pre-processing step, the raw reads are processed to remove adapters and contaminants, and their quality is checked. Then, reads are mapped to a reference genome, and gene abundance is estimated. The workflow can also follow an alternative route based on lightweight alignment and quantification, reducing the time required for analysis. Finally, differentially expressed genes are identified using statistical tests, annotated, and visualised.</p>
 <p>Depending on the user's needs, the workflow can include additional downstream analyses such as functional enrichment analysis, co-expression analysis, and integration with other omics data.</p>
 <h2 id="pre-processing">Pre-processing<a class="headerlink" href="#pre-processing" title="Permanent link">&para;</a></h2>
@@ -729,10 +726,10 @@
 </div>
 <h3 id="differential-expression-analysis">Differential Expression Analysis<a class="headerlink" href="#differential-expression-analysis" title="Permanent link">&para;</a></h3>
 <p>RNA-seq data typically contain a large number of genes with low expression counts, indicating that many genes are expressed at very low levels across samples. At the same time, RNA-seq data exhibit a skewed distribution with a long right tail due to the absence of an upper limit for gene expression levels. This means that while most genes have low to moderate expression levels, a small number are expressed at high levels. Accurate statistical modelling must therefore account for this distribution to avoid misleading conclusions.</p>
-<p><img alt="overview" src="../img/count_distribution.png" /></p>
+<p><img alt="" src="../img/count_distribution.png" style="height:300px;width:200px" /></p>
 <p>The analysis begins with the input data, which generally consist of a matrix obtained during the alignment and quantification step, summarising the expression levels of the different genes in each sample of the dataset. The rows of the matrix typically correspond to genes, and the columns represent the samples. Another essential prerequisite is a metadata table describing the samples.</p>
 <p>The core of the differential expression analysis is the <code>DESeq()</code> function, a wrapper that streamlines several key steps into a single command. The different functions are listed below:</p>
-<p><img alt="overview" src="../img/DESeq_function.png" /></p>
+<p><img alt="" src="../img/DESeq_function.png" style="&quot;height:300px;width:200px" /></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>While <code>DESeq()</code> combines these steps, a user could choose to perform each function separately to have more control over the whole process.</p>
@@ -752,7 +749,7 @@
 <p>While normalised counts are useful for downstream visualisation of results, they should not be used as input for DESeq2. Instead, DESeq2 requires count data in the form of a matrix of integer values.</p>
 </div>
 <p>2) <strong>Estimate dispersion and gene-wise dispersion</strong>: the dispersion is a measure of how much the variance deviates from the mean. The estimation of dispersion is essential to model the variance of the count data. Importantly, RNA-seq data are characterised by <strong>overdispersion</strong>, where the variance in gene expression levels often exceeds the mean (variance &gt; mean).</p>
-<p><img alt="overview" src="../img/overdispersion.png" /></p>
+<p><img alt="" src="../img/overdispersion.png" style="&quot;height:300px;width:200px" /></p>
 <p>DESeq2 addresses this issue by employing the <strong>negative binomial distribution</strong>, which generalises the Poisson distribution by introducing an additional dispersion parameter. This parameter quantifies the extra variability present in RNA-seq data, providing a more realistic representation than the Poisson distribution, which assumes equal mean and variance. DESeq2 starts by estimating the <strong>common dispersion</strong>, a single estimate of dispersion applicable to all genes in the dataset. This estimate provides a baseline for variability across all genes in the dataset. Next, DESeq2 estimates <strong>gene-wise dispersion</strong>, a separate estimate of dispersion for each individual gene, taking into account that different genes may exhibit varying levels of expression variability due to biological differences. The dispersion parameter (α) is related to the mean (μ) and variance of the data, as described by the equation:</p>
 <p><code>Var = μ + α ⋅ μ²</code></p>
 <p>A key feature of DESeq2's dispersion estimates is their negative correlation with the mean and positive correlation with variance. Genes with low expression have higher dispersion values, while genes with high expression tend to have lower dispersion. Additionally, genes sharing similar mean expression levels can exhibit different dispersion estimates based on their variance. To improve the accuracy of dispersion estimates, DESeq2 assumes that genes with similar expression profiles share similar dispersion patterns and leverages this information to refine the estimates.</p>
