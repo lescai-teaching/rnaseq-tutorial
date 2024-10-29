@@ -218,7 +218,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../index.md" class="md-tabs__link">
         
   
     
@@ -302,7 +302,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../index.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -476,6 +476,24 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#quality-control-plots" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quality control plots
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#differential-expression-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differential expression results
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#over-representation-analysis-ora" class="md-nav__link">
     <span class="md-ellipsis">
       Over Representation Analysis (ORA)
@@ -538,6 +556,24 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#quality-control-plots" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quality control plots
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#differential-expression-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differential expression results
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#over-representation-analysis-ora" class="md-nav__link">
     <span class="md-ellipsis">
       Over Representation Analysis (ORA)
@@ -584,6 +620,7 @@
 <p class="admonition-title">Note</p>
 <p>The results illustrated in this section might show slight variations compared to your runs due to randomness in the STAR algorithm. This randomness arises from using variable seed values and parallel processing, leading to minor differences in results between runs on the same data. These small discrepancies are not biologically significant and may affect counts and subsequent plots (such as PCA and count plots). However, the overall patterns and main findings should remain consistent. While exact reproducibility is ideal, minor variations are acceptable in practice, as long as they do not impact the main conclusions of the study.</p>
 </div>
+<h2 id="quality-control-plots">Quality control plots<a class="headerlink" href="#quality-control-plots" title="Permanent link">&para;</a></h2>
 <p>The first plot we will examine is the Principal Component Analysis (PCA) plot. Since we're working with simulated data, our metadata is relatively simple, consisting of just three variables: sample, condition and replica. In a typical RNA-seq experiment, however, metadata can be complex and encompass a wide range of variables that could contribute to sample variation, such as sex, age and developmental stage. </p>
 <p><center>
 <img src="./img/PCA.png" height="270px" width="400px">
@@ -595,6 +632,7 @@
 </center></p>
 <p>Remember that to create this plot, we utilized the <code>dist()</code> function, so in the legend on the right, a value of 0 corresponds to high correlation, while a value of 5 corresponds to very low correlation. Similar to PCA, we can see that samples tend to cluster together according to <code>condition</code>, indeed we can observe a high degree of correlation between the three control samples and between the three treated samples. </p>
 <p>Overall, the integration of these plots suggests that we are working with high-quality data and we can confidently proceed to the differential expression analysis.</p>
+<h2 id="differential-expression-results">Differential expression results<a class="headerlink" href="#differential-expression-results" title="Permanent link">&para;</a></h2>
 <p>From this point, we will examine plots that are generated after the differential expression analysis. These plots are not quality control (QC) plots, but rather plots that help us to interpret the results. 
 After running the <code>results()</code> function, a good way to start to have an idea about the results is to look at the MA plot. </p>
 <p><center>

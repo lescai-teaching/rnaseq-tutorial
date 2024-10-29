@@ -11,8 +11,6 @@
         <link rel="canonical" href="http://lescai-teaching.github.io/rnaseq-tutorial/theory/">
       
       
-        <link rel="prev" href="..">
-      
       
         <link rel="next" href="../rnaseq/">
       
@@ -220,7 +218,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../index.md" class="md-tabs__link">
         
   
     
@@ -304,7 +302,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../index.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -687,7 +685,7 @@
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <p>Given the central role of RNA in a wide range of cellular and molecular functions, RNA-seq has emerged as a powerful tool for measuring the presence and levels of RNA species in biological samples. The technique is based on next-generation sequencing (NGS) technologies and is now considered the gold standard in the field of transcriptomics.</p>
 <p>After RNA extraction and reverse transcription into complementary DNA (cDNA), the biological material is sequenced, generating NGS "reads" that correspond to the RNA captured in a specific cell, tissue, or organ at a given time. The sequencing data is then bioinformatically processed through a typical workflow summarised in the diagram below:</p>
-<p><img alt="overview" src="../img/Excalidraw_RNAseq.png" /></p>
+<p><img alt="Excalidraw RNAseq" height="100" src="../img/Excalidraw_RNAseq.png" width="200" /></p>
 <p>In the scheme, we can identify three key phases in the workflow: data pre-processing, alignment and quantification, and differential expression analysis. In the data pre-processing step, the raw reads are processed to remove adapters and contaminants, and their quality is checked. Then, reads are mapped to a reference genome, and gene abundance is estimated. The workflow can also follow an alternative route based on lightweight alignment and quantification, reducing the time required for analysis. Finally, differentially expressed genes are identified using statistical tests, annotated, and visualised.</p>
 <p>Depending on the user's needs, the workflow can include additional downstream analyses such as functional enrichment analysis, co-expression analysis, and integration with other omics data.</p>
 <h2 id="pre-processing">Pre-processing<a class="headerlink" href="#pre-processing" title="Permanent link">&para;</a></h2>
@@ -699,7 +697,7 @@
 - traditional alignment and quantification;
 - lightweight alignment and quantification.</p>
 <p>In RNA-seq analysis, traditional alignment is often performed with <strong>splice-aware aligners</strong>, which are designed to recognise the splicing process. These aligners can align reads across known splice junctions and detect novel splice sites or alternative splicing events. They use advanced algorithms and optimisation techniques, like reference genome indexing and parallel processing, to achieve accurate and fast alignment. Popular splice-aware aligners include <a href="https://github.com/alexdobin/STAR">STAR</a> and <a href="https://github.com/DaehwanKimLab/hisat2">HISAT2</a>. Once alignment is complete, the next step is quantification, which involves estimating the abundance (number of reads) associated with each gene. Tools like <a href="https://subread.sourceforge.net/featureCounts.html">featureCounts</a>, <a href="https://htseq.readthedocs.io">HTSeq</a>, <a href="http://combine-lab.github.io/salmon">Salmon</a>, and <a href="http://deweylab.github.io/RSEM">RSEM</a> are commonly used for this purpose.</p>
-<p>Traditional alignment tools are very time-consuming and require substantial computational resources, particularly in terms of memory and CPU usage. Alternatively, the method known as <strong>lightweight alignment</strong> allows for faster analysis by determining the likely origin of reads without a full, base-by-base alignment. This method is sometimes referred to as <strong>quasi-mapping</strong>. Lightweight alignment tools like <a href="https://pachterlab.github.io/kallisto/about.html">Kallisto</a>, <a href="http://www.cs.cmu.edu/~ckingsf/software/sailfish">Sailfish</a>, and <a href="https://salmon.readthedocs.io/en/latest/salmon.html">Salmon</a> avoid full-scale alignment, providing quantification estimates more quickly than traditional splice-aware algorithms, while still maintaining high accuracy. The quantification results from these tools are often called <strong>pseudocounts</strong> or <strong>abundance estimates</strong>, which can be used for downstream analysis.</p>
+<p>Traditional alignment tools are time-consuming and require substantial computational resources, particularly in terms of memory and CPU usage. Alternatively, the method known as <strong>lightweight alignment</strong> allows for faster analysis by determining the likely origin of reads without a full, base-by-base alignment. This method is sometimes referred to as <strong>quasi-mapping</strong>. Lightweight alignment tools like <a href="https://pachterlab.github.io/kallisto/about.html">Kallisto</a>, <a href="http://www.cs.cmu.edu/~ckingsf/software/sailfish">Sailfish</a>, and <a href="https://salmon.readthedocs.io/en/latest/salmon.html">Salmon</a> avoid full-scale alignment, providing quantification estimates more quickly than traditional splice-aware algorithms, while still maintaining high accuracy. The quantification results from these tools are often called <strong>pseudocounts</strong> or <strong>abundance estimates</strong>, which can be used for downstream analysis.</p>
 <h2 id="differential-expression-de-analysis-with-deseq2">Differential expression (DE) analysis with DESeq2<a class="headerlink" href="#differential-expression-de-analysis-with-deseq2" title="Permanent link">&para;</a></h2>
 <p>Differential expression analysis is a statistical method for comparing gene expression levels between different experimental conditions, such as disease vs healthy (e.g., tumour tissue vs healthy tissue), treatment vs control (e.g., a sample treated with a specific stimulus, drug, or compound vs an untreated sample), and tissue vs tissue (e.g., brain vs heart). Differential expression analysis aims to assess, for each gene, whether the observed differences in expression between groups are statistically significant, accounting for the variation observed within groups (replicates). This part of the analysis is typically performed in R using various packages that have been developed, such as <a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">DESeq2</a>, <a href="https://bioconductor.org/packages/release/bioc/html/edgeR.html">edgeR</a>, and <a href="https://bioconductor.org/packages/release/bioc/html/limma.html">limma</a>. This tutorial focuses on <strong>DESeq2</strong>, a popular R package known for its robustness. For more detailed information, see the <a href="https://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html">DESeq2 vignette</a>. A typical workflow is outlined in the flowchart below:</p>
 <h3 id="quality-control">Quality Control<a class="headerlink" href="#quality-control" title="Permanent link">&para;</a></h3>
@@ -737,7 +735,7 @@
 <p>While <code>DESeq()</code> combines these steps, a user could choose to perform each function separately to have more control over the whole process.</p>
 </div>
 <p>The different steps are explained in detail below:</p>
-<p>1) <strong>Normalisation</strong>: Since DESeq2 compares counts between sample groups for the same gene, it does not need to adjust for gene length. However, it is essential to account for variations in sequencing depth and RNA composition among samples. To normalise the data, DESeq2 utilises size factors, which correct for these variations in library sizes and RNA composition.</p>
+<p>1) <strong>Normalisation</strong>: since DESeq2 compares counts between sample groups for the same gene, it does not need to adjust for gene length. However, it is essential to account for variations in sequencing depth and RNA composition among samples. To normalise the data, DESeq2 utilises size factors, which correct for these variations in library sizes and RNA composition.</p>
 <p>The size factors are calculated using the <strong>median ratio</strong> method:</p>
 <ul>
 <li><strong>Calculate the geometric mean</strong>: For each gene, compute the geometric mean of its counts across all samples. This gives a row-wise geometric mean for each gene;</li>
@@ -750,24 +748,29 @@
 <p class="admonition-title">Note</p>
 <p>While normalised counts are useful for downstream visualisation of results, they should not be used as input for DESeq2. Instead, DESeq2 requires count data in the form of a matrix of integer values.</p>
 </div>
-<p>2) <strong>Estimate dispersion and gene-wise dispersion</strong>: The dispersion is a measure of how much the variance deviates from the mean. The estimation of dispersion is essential to model the variance of the count data. Importantly, RNA-seq data are characterised by <strong>overdispersion</strong>, where the variance in gene expression levels often exceeds the mean (variance &gt; mean).</p>
+<p>2) <strong>Estimate dispersion and gene-wise dispersion</strong>: the dispersion is a measure of how much the variance deviates from the mean. The estimation of dispersion is essential to model the variance of the count data. Importantly, RNA-seq data are characterised by <strong>overdispersion</strong>, where the variance in gene expression levels often exceeds the mean (variance &gt; mean).</p>
 <p><img alt="overview" src="../img/overdispersion.png" /></p>
 <p>DESeq2 addresses this issue by employing the <strong>negative binomial distribution</strong>, which generalises the Poisson distribution by introducing an additional dispersion parameter. This parameter quantifies the extra variability present in RNA-seq data, providing a more realistic representation than the Poisson distribution, which assumes equal mean and variance. DESeq2 starts by estimating the <strong>common dispersion</strong>, a single estimate of dispersion applicable to all genes in the dataset. This estimate provides a baseline for variability across all genes in the dataset. Next, DESeq2 estimates <strong>gene-wise dispersion</strong>, a separate estimate of dispersion for each individual gene, taking into account that different genes may exhibit varying levels of expression variability due to biological differences. The dispersion parameter (α) is related to the mean (μ) and variance of the data, as described by the equation:</p>
 <p><code>Var = μ + α ⋅ μ²</code></p>
 <p>A key feature of DESeq2's dispersion estimates is their negative correlation with the mean and positive correlation with variance. Genes with low expression have higher dispersion values, while genes with high expression tend to have lower dispersion. Additionally, genes sharing similar mean expression levels can exhibit different dispersion estimates based on their variance. To improve the accuracy of dispersion estimates, DESeq2 assumes that genes with similar expression profiles share similar dispersion patterns and leverages this information to refine the estimates.</p>
 <ul>
-<li><strong>Mean-dispersion relationship</strong>: This process, known as dispersion fitting, models the relationship between the mean expression level of a gene and its dispersion. In this process, DESeq2 identifies a trend in the dispersion estimates across genes. The fitted curve, typically a smooth curve, describes how dispersion changes as a function of the mean expression level.</li>
-<li><strong>Final dispersion estimates</strong>: DESeq2 refines the gene-wise dispersion by shrinking it towards the fitted curve. The "shrinkage" helps control for overfitting, particularly in genes with low counts or few replicates, and makes the dispersion estimates more reliable. However, genes with exceptionally high dispersion values are not shrunk because they likely deviate from the modelling assumptions, exhibiting elevated variability due to biological or technical factors. Shrinking these values could lead to false positives.</li>
+<li>
+<p><strong>Mean-dispersion relationship</strong>: this process, known as dispersion fitting, models the relationship between the mean expression level of a gene and its dispersion. In this process, DESeq2 identifies a trend in the dispersion estimates across genes. The fitted curve, typically a smooth curve, describes how dispersion changes as a function of the mean expression level.</p>
+</li>
+<li>
+<p><strong>Final dispersion estimates</strong>: DESeq2 refines the gene-wise dispersion by shrinking it towards the fitted curve. The "shrinkage" helps control for overfitting, particularly in genes with low counts or few replicates, and makes the dispersion estimates more reliable. However, genes with exceptionally high dispersion values are not shrunk because they likely deviate from the modelling assumptions, exhibiting elevated variability due to biological or technical factors. Shrinking these values could lead to false positives.</p>
+</li>
 </ul>
-<p><img alt="overview" src="../img/DESeq_dispersion_estimates.png" /></p>
-<p>3) <strong>Fitting model and testing</strong>: DESeq2 fits a generalised linear model (GLM) to the normalised counts using the calculated size factors and final dispersion estimates. A GLM is used because it provides flexibility in modelling RNA-seq data, which has unique characteristics, such as discrete counts and overdispersion (variance exceeding the mean). By using a <strong>negative binomial distribution</strong>, DESeq2's GLM can handle the additional variability in gene expression counts that often occurs in RNA-seq data, offering a more accurate representation than simpler models.</p>
-<p>In DESeq2, the GLM is fitted separately for each gene, and it accounts for various experimental factors (like treatment groups, time points, or batch effects), providing robust estimates that improve the reliability of differential expression results. The GLM fit is then used to perform hypothesis testing for differential expression using either a <strong>Wald test</strong> or a <strong>Likelihood Ratio Test (LRT)</strong>, depending on the experimental design.</p>
+<p>3) <strong>Fitting model and testing</strong>: the initial step in hypothesis testing involves defining a <strong>null hypothesis</strong> for each gene. Here, the null hypothesis states that there is no difference in expression between the two sample groups (LFC == 0). Next, DESeq applies a statistical test to assess whether the null hypothesis is true.
+DESeq2 fits a generalised linear model (GLM) to the normalised counts using the calculated size factors and final dispersion estimates. A GLM is a flexible extension of linear regression that models the relationship between a response variable (normalised counts) and predictors (e.g., condition).
+A GLM is used because it provides flexibility in modelling RNA-seq data, which has unique characteristics, such as discrete counts and overdispersion (variance exceeding the mean). By using a <strong>negative binomial distribution</strong>, DESeq2's GLM can handle the additional variability in gene expression counts that often occurs in RNA-seq data.
+Once the model is fit, coefficients are estimated for each sample group along with their standard errors. These coefficients represent the estimated log2 fold changes between groups and serve as the basis for hypothesis testing, using either a <strong>Wald test</strong> or a <strong>Likelihood Ratio Test (LRT)</strong>, depending on the experimental design:</p>
 <ul>
 <li>
 <p><strong>Wald Test</strong>: The Wald test is ideal for simpler experimental designs, such as comparing two conditions (e.g., treated vs untreated). It tests whether the estimated effect size (log2 fold change) of a predictor variable (like treatment) is significantly different from zero. This test provides direct estimates of fold changes with associated p-values, making it computationally efficient for straightforward comparisons.</p>
 </li>
 <li>
-<p><strong>Likelihood Ratio Test (LRT)</strong>: The LRT is more suitable for complex experimental designs involving multiple variables (e.g., time points, treatments, and batches). It compares the fit of two nested models—one with the factor of interest (e.g., treatment) and one without it—to assess whether including that factor significantly improves model fit. This approach allows DESeq2 to account for confounding variables and to isolate the effect of specific variables on gene expression, offering flexibility for multi-factor analyses.</p>
+<p><strong>Likelihood Ratio Test (LRT)</strong>: The LRT is more suitable for complex experimental designs involving multiple variables (e.g., time points, treatments and batches). It compares the fit of two nested models: one with the factor of interest (e.g., treatment) and one without it to assess whether including that factor significantly improves model fit. This approach allows DESeq2 to account for confounding variables and to isolate the effect of specific variables on gene expression, offering flexibility for multi-factor analyses.</p>
 </li>
 </ul>
 <p>When performing multiple tests, such as in the case of RNA-seq data where thousands of genes are tested, the risk of false positives increases. To account for this, DESeq2 employs multiple test correction methods (the Benjamini-Hochberg procedure is the default) to adjust the p-values and control the false discovery rate (FDR). The FDR is the expected proportion of false positives among the identified significant results.</p>
@@ -809,22 +812,6 @@
     
       
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
-        
-          
-          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-            </div>
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              <div class="md-ellipsis">
-                Home
-              </div>
-            </div>
-          </a>
         
         
           
