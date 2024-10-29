@@ -8,7 +8,7 @@ Given the central role of RNA in a wide range of cellular and molecular function
 
 After RNA extraction and reverse transcription into complementary DNA (cDNA), the biological material is sequenced, generating NGS "reads" that correspond to the RNA captured in a specific cell, tissue, or organ at a given time. The sequencing data is then bioinformatically processed through a typical workflow summarised in the diagram below:
 
-![RNAseq](./img/Excalidraw_RNAseq)
+![RNAseq](./img/Excalidraw_RNAseq.png)
 
 In the scheme, we can identify three key phases in the workflow: data pre-processing, alignment and quantification, and differential expression analysis. In the data pre-processing step, the raw reads are processed to remove adapters and contaminants, and their quality is checked. Then, reads are mapped to a reference genome, and gene abundance is estimated. The workflow can also follow an alternative route based on lightweight alignment and quantification, reducing the time required for analysis. Finally, differentially expressed genes are identified using statistical tests, annotated, and visualised.
 
@@ -76,13 +76,13 @@ In R, the tilde (`~`) is used in formula syntax to specify relationships between
 
 RNA-seq data typically contain a large number of genes with low expression counts, indicating that many genes are expressed at very low levels across samples. At the same time, RNA-seq data exhibit a skewed distribution with a long right tail due to the absence of an upper limit for gene expression levels. This means that while most genes have low to moderate expression levels, a small number are expressed at high levels. Accurate statistical modelling must therefore account for this distribution to avoid misleading conclusions.
 
-![](./img/count_distribution.png){: style="height:150px;width:150px"}
+![RNAseq](./img/count_distribution.png)
 
 The analysis begins with the input data, which generally consist of a matrix obtained during the alignment and quantification step, summarising the expression levels of the different genes in each sample of the dataset. The rows of the matrix typically correspond to genes, and the columns represent the samples. Another essential prerequisite is a metadata table describing the samples.
 
 The core of the differential expression analysis is the `DESeq()` function, a wrapper that streamlines several key steps into a single command. The different functions are listed below:
 
-![](./img/DESeq_function.png){: style="height:150px;width:150px"}
+![RNAseq](./img/DESeq_function.png)
 
 !!! note
 
@@ -107,7 +107,7 @@ The median ratio method assumes that not all genes are differentially expressed,
 
 2) **Estimate dispersion and gene-wise dispersion**: the dispersion is a measure of how much the variance deviates from the mean. The estimation of dispersion is essential to model the variance of the count data. Importantly, RNA-seq data are characterised by **overdispersion**, where the variance in gene expression levels often exceeds the mean (variance > mean).
 
-![](./img/overdispersion.png){: style="height:150px;width:150px"}
+![RNAseq](./img/overdispersion.png)
 
 DESeq2 addresses this issue by employing the **negative binomial distribution**, which generalises the Poisson distribution by introducing an additional dispersion parameter. This parameter quantifies the extra variability present in RNA-seq data, providing a more realistic representation than the Poisson distribution, which assumes equal mean and variance. DESeq2 starts by estimating the **common dispersion**, a single estimate of dispersion applicable to all genes in the dataset. This estimate provides a baseline for variability across all genes in the dataset. Next, DESeq2 estimates **gene-wise dispersion**, a separate estimate of dispersion for each individual gene, taking into account that different genes may exhibit varying levels of expression variability due to biological differences. The dispersion parameter (α) is related to the mean (μ) and variance of the data, as described by the equation:
 

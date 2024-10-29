@@ -37,9 +37,7 @@ As in all analysis, firstly we need to create a new project:
 
 2) Select **New Directory**, **New Project**, name the project as shown below and click on **Create Project**;
 
-<center>
-<img src="./img/project_R.png" height="200px" width="300px">
-</center>
+![RNAseq](./img/project_R.png)
 
 3) The new project will be automatically opened in RStudio
 
@@ -52,9 +50,7 @@ To store our results in an organized way, we will create a folder named **de_res
 
 and save the file as **de_script.R**. From now on, each command described in the tutorial can be added to your script. The resulting working directory should look like this:
 
-<center>
-<img src="./img/workdir_RStudio.png" height="200px" width="400px">
-</center>
+![RNAseq](./img/workdir_RStudio.png)
 
 The analysis requires several R packages. To utilise them, we need to load the following libraries:
 
@@ -163,9 +159,7 @@ design(dds_new) # to check the design formula
 
 Comparing the structure of the newly created dds (`dds_new`) with the one automatically produced by the pipeline (`dds`), we can observe the differences:
 
-<center>
-<img src="./img/dds_comparison.png" height="300px" width="420px">
-</center>
+![RNAseq](./img/dds_comparison.png)
 
 Before running the different steps of the analysis, a good practice consists in pre-filtering the genes to remove those with very low counts. This is useful to improve computional efficiency and enhance interpretability. In general, it is reasonable to keep only genes with a sum counts of at least 10 for a minimal number of 3 samples:
 
