@@ -4,7 +4,7 @@ repo_url: http://github.com/lescai-teaching/rnaseq-tutorial
 repo_name: lescai-teaching/rnaseq-tutorial
 
 nav:
-    - Home: intro.md
+    - Home: index.md
     - RNAseq Tutorial:
             - theory.md
             - rnaseq.md
