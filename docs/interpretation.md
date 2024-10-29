@@ -78,8 +78,10 @@ Finally, we can attempt to assign biological significance to our differentially 
 
 The enrichment analysis reveals a possible involvement of cellular structures and processes, including "clathrin-coated pit", "dendritic spine", "neuron spine" and "endoplasmic reticulum lumen". These terms suggest a focus on cellular transport, structural integrity and protein processing, especially in neural contexts. This pattern points to pathways related to cellular organization and maintenance, possibly playing an important role in the biological condition under study.
 
-> [!NOTE]
-> This analysis is based on simulated data and all the assumptions in the previous part only serves as a demonstration to illustrate the classical workflow of the analysis. 
+!!! note
+
+    This analysis is based on simulated data and all the assumptions in the previous part only serves as a demonstration to illustrate the classical workflow of the analysis. 
+
 
 ## Conclusions
 
