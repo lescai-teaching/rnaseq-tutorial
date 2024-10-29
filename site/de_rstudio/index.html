@@ -220,7 +220,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../index.md" class="md-tabs__link">
+      <a href="../intro/" class="md-tabs__link">
         
   
     
@@ -304,7 +304,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../index.md" class="md-nav__link">
+      <a href="../intro/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -617,18 +617,14 @@
 <p>As in all analysis, firstly we need to create a new project:</p>
 <p>1) Go to the <strong>File</strong> menu and select <strong>New Project</strong>;</p>
 <p>2) Select <strong>New Directory</strong>, <strong>New Project</strong>, name the project as shown below and click on <strong>Create Project</strong>;</p>
-<p><center>
-<img src="./img/project_R.png" height="200px" width="300px">
-</center></p>
+<p><img alt="RNAseq" src="../img/project_R.png" /></p>
 <p>3) The new project will be automatically opened in RStudio</p>
 <p>We can check whether we are in the correct working directory with <code>getwd()</code> The path <code>/workspace/gitpod/training/DE_analysis/</code> should appear on your console.
 To store our results in an organized way, we will create a folder named <strong>de_results</strong> using the <strong>New Folder</strong> button in the bottom right panel. We will save all our resulting tables and plots in this folder. Next, go to the <strong>File menu</strong>, select <strong>New File</strong> and then <strong>R Script</strong> to create a script editor in which we will save all commands required for the analysis. In the editor type:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">#### Differential expression analysis with DESeq2 ####</span>
 </code></pre></div>
 <p>and save the file as <strong>de_script.R</strong>. From now on, each command described in the tutorial can be added to your script. The resulting working directory should look like this:</p>
-<p><center>
-<img src="./img/workdir_RStudio.png" height="200px" width="400px">
-</center></p>
+<p><img alt="RNAseq" src="../img/workdir_RStudio.png" /></p>
 <p>The analysis requires several R packages. To utilise them, we need to load the following libraries:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">#### Loading libraries ####</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
@@ -715,9 +711,7 @@ To store our results in an organized way, we will create a folder named <strong>
 <a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="nf">design</span><span class="p">(</span><span class="n">dds_new</span><span class="p">)</span><span class="w"> </span><span class="c1"># to check the design formula</span>
 </code></pre></div>
 <p>Comparing the structure of the newly created dds (<code>dds_new</code>) with the one automatically produced by the pipeline (<code>dds</code>), we can observe the differences:</p>
-<p><center>
-<img src="./img/dds_comparison.png" height="300px" width="420px">
-</center></p>
+<p><img alt="RNAseq" src="../img/dds_comparison.png" /></p>
 <p>Before running the different steps of the analysis, a good practice consists in pre-filtering the genes to remove those with very low counts. This is useful to improve computional efficiency and enhance interpretability. In general, it is reasonable to keep only genes with a sum counts of at least 10 for a minimal number of 3 samples:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1">#### Pre-filtering ####</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
