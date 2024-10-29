@@ -110,8 +110,10 @@ DESeq2 addresses this issue by employing the **negative binomial distribution**,
 
 A key feature of DESeq2's dispersion estimates is their negative correlation with the mean and positive correlation with variance. Genes with low expression have higher dispersion values, while genes with high expression tend to have lower dispersion. Additionally, genes sharing similar mean expression levels can exhibit different dispersion estimates based on their variance. To improve the accuracy of dispersion estimates, DESeq2 assumes that genes with similar expression profiles share similar dispersion patterns and leverages this information to refine the estimates.
 
+
 - **Mean-dispersion relationship**: This process, known as dispersion fitting, models the relationship between the mean expression level of a gene and its dispersion. In this process, DESeq2 identifies a trend in the dispersion estimates across genes. The fitted curve, typically a smooth curve, describes how dispersion changes as a function of the mean expression level.
 - **Final dispersion estimates**: DESeq2 refines the gene-wise dispersion by shrinking it towards the fitted curve. The "shrinkage" helps control for overfitting, particularly in genes with low counts or few replicates, and makes the dispersion estimates more reliable. However, genes with exceptionally high dispersion values are not shrunk because they likely deviate from the modelling assumptions, exhibiting elevated variability due to biological or technical factors. Shrinking these values could lead to false positives.
+
 
    ![overview](./img/DESeq_dispersion_estimates.png)
 
