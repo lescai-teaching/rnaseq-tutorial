@@ -690,10 +690,10 @@ To store our results in an organized way, we will create a folder named <strong>
 <a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>
 <a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="nf">colData</span><span class="p">(</span><span class="n">dds</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">metadata</span>
 </code></pre></div>
-<blockquote>
-<p>[!NOTE] 
-Notice that with this operation we also eliminate the <code>sizeFactors</code> already estimated by the <strong>nfcore DESeq2 module</strong>.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>With this operation we also eliminate the <code>sizeFactors</code> already estimated by the <strong>nfcore DESeq2 module</strong>.</p>
+</div>
 <p>To avoid errors in DESeq2 is essential to check that sample names match between the <code>colData</code> and the <code>countData</code>, and that the sample are in the correct order:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">#### Check that sample names match in both files ####</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>

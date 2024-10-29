@@ -43,7 +43,7 @@ Now you're all set and can use the following button to launch the service:
 
 ## Credits & Copyright
 
-This training material has been written by --- and completed during the [nf-core](https://nf-co.re) Hackathon in Barcellona, 2024. The tutorial is aimed at anyone who is interested in using nf-core pipelines for their studies or research activities.
+This training material has been written and completed during the [nf-core](https://nf-co.re) Hackathon in Barcellona, 2024, by Lorenzo Sola, Francesco Lescai, Mariangela Santorsola and Victoria Cepeda. The tutorial is aimed at anyone who is interested in using nf-core pipelines for their studies or research activities.
 
 The Docker image and Gitpod environment used in this repository have been created by [Seqera](https://seqera.io) but have been made open-source ([CC BY-NC-ND](https://creativecommons.org/licenses/by-nc-nd/4.0/)) for the community.
 
