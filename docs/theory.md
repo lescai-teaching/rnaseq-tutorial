@@ -82,7 +82,7 @@ The analysis begins with the input data, which generally consist of a matrix obt
 
 The core of the differential expression analysis is the `DESeq()` function, a wrapper that streamlines several key steps into a single command. The different functions are listed below:
 
-![](./img/DESeq_function.png){: style="height:300px;width:200px}
+![](./img/DESeq_function.png){: style="height:300px;width:200px"}
 
 !!! note
 
@@ -107,7 +107,7 @@ The median ratio method assumes that not all genes are differentially expressed,
 
 2) **Estimate dispersion and gene-wise dispersion**: the dispersion is a measure of how much the variance deviates from the mean. The estimation of dispersion is essential to model the variance of the count data. Importantly, RNA-seq data are characterised by **overdispersion**, where the variance in gene expression levels often exceeds the mean (variance > mean).
 
-   ![](./img/overdispersion.png){: style="height:300px;width:200px}
+![](./img/overdispersion.png){: .center}
 
 DESeq2 addresses this issue by employing the **negative binomial distribution**, which generalises the Poisson distribution by introducing an additional dispersion parameter. This parameter quantifies the extra variability present in RNA-seq data, providing a more realistic representation than the Poisson distribution, which assumes equal mean and variance. DESeq2 starts by estimating the **common dispersion**, a single estimate of dispersion applicable to all genes in the dataset. This estimate provides a baseline for variability across all genes in the dataset. Next, DESeq2 estimates **gene-wise dispersion**, a separate estimate of dispersion for each individual gene, taking into account that different genes may exhibit varying levels of expression variability due to biological differences. The dispersion parameter (α) is related to the mean (μ) and variance of the data, as described by the equation:
 
