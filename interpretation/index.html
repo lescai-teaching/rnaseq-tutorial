@@ -580,10 +580,10 @@
 
 <h1 id="interpretation">Interpretation<a class="headerlink" href="#interpretation" title="Permanent link">&para;</a></h1>
 <p>Once DE genes have been identified, the next crucial step is to interpret the results. This involves the inspection of tables and plots generated during the analysis to understand the biological significance of the data. In this part of the tutorial, we will delve into the results by discussing the significant DE genes and we will explore various plots generated during the analysis.</p>
-<blockquote>
-<p>[!NOTE]
-The results illustrated in this section might show slight variations compared to your runs due to randomness in the STAR algorithm. This randomness arises from using variable seed values and parallel processing, leading to minor differences in results between runs on the same data. These small discrepancies are not biologically significant and may affect counts and subsequent plots (such as PCA and count plots). However, the overall patterns and main findings should remain consistent. While exact reproducibility is ideal, minor variations are acceptable in practice, as long as they do not impact the main conclusions of the study.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The results illustrated in this section might show slight variations compared to your runs due to randomness in the STAR algorithm. This randomness arises from using variable seed values and parallel processing, leading to minor differences in results between runs on the same data. These small discrepancies are not biologically significant and may affect counts and subsequent plots (such as PCA and count plots). However, the overall patterns and main findings should remain consistent. While exact reproducibility is ideal, minor variations are acceptable in practice, as long as they do not impact the main conclusions of the study.</p>
+</div>
 <p>The first plot we will examine is the Principal Component Analysis (PCA) plot. Since we're working with simulated data, our metadata is relatively simple, consisting of just three variables: sample, condition and replica. In a typical RNA-seq experiment, however, metadata can be complex and encompass a wide range of variables that could contribute to sample variation, such as sex, age and developmental stage. </p>
 <p><center>
 <img src="./img/PCA.png" height="270px" width="400px">
@@ -626,14 +626,8 @@ After running the <code>results()</code> function, a good way to start to have a
 <p>By examining the heatmap, we can visually identify the expression patterns of our five significant differentially expressed genes. This visualization allows us to identify how these genes respond to the treatment. The heatmap provides a clear and intuitive way to explore gene expression dynamics.</p>
 <h2 id="over-representation-analysis-ora">Over Representation Analysis (ORA)<a class="headerlink" href="#over-representation-analysis-ora" title="Permanent link">&para;</a></h2>
 <p>Finally, we can attempt to assign biological significance to our differentially expressed genes through Enrichment Analysis (ORA). The ORA analysis identifies specific biological pathways, molecular functions and cellular processes, according to the Gene Ontology (GO) database, that are enriched with our differentially expressed genes. </p>
-<p><center>
-<img src="./img/enrichment_plot.png" height="450px" width="400px">
-</center></p>
+<p><img alt="enrichment plot" src="../img/enrichment_plot.png" width="400" /></p>
 <p>The enrichment analysis reveals a possible involvement of cellular structures and processes, including "clathrin-coated pit", "dendritic spine", "neuron spine" and "endoplasmic reticulum lumen". These terms suggest a focus on cellular transport, structural integrity and protein processing, especially in neural contexts. This pattern points to pathways related to cellular organization and maintenance, possibly playing an important role in the biological condition under study.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This analysis is based on simulated data and all the assumptions in the previous part only serves as a demonstration to illustrate the classical workflow of the analysis. </p>
-</div>
 <h2 id="conclusions">Conclusions<a class="headerlink" href="#conclusions" title="Permanent link">&para;</a></h2>
 <p>In this tutorial, we have walked through the steps of performing differential expression analysis using DESeq2, from preparing the data to interpreting the results. We have seen how to identify differentially expressed genes, visualise the results and perform enrichment analysis to gain insights into the biological significance of the results. By following this tutorial, you should now be able to perform differential expression analysis using DESeq2 and interpret the results in the context of your own research question.</p>
 
