@@ -2,6 +2,7 @@
 
 In this section of the tutorial, we will guide you through the practical steps necessary to set up the RStudio environment, load the required libraries and data, and execute the DESeq2 analysis. By the end of this section, you will have a fully functional DESeq2 analysis pipeline set up in RStudio, ready to uncover the differentially expressed genes in your dataset.
 
+
 ## Launching the RStudio environment
 
 Once the nf-core/rnaseq pipeline is terminated, the resulting data are stored in the folder `results_star_salmon`. Now, we can analyse the results by running DESeq2 on RStudio. First of all, we need to launch it:
@@ -26,6 +27,7 @@ sleep 2h
 This command will keep the gitpod session active for exactly 2 hours, providing sufficient time to complete our analysis without interruption.
 
 Now come back to our **RStudio session**.
+
 
 ## Differential Expression Analysis
 
@@ -467,6 +469,7 @@ ggplot(data = res_tb, aes(x = log2FoldChange, y = -log10(padj), col = diffexpres
   xlim(-3,5)
 
 ```
+
 
 ## Functional analysis
 
