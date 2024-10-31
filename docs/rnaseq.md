@@ -7,7 +7,7 @@ In order to carry out a RNA-Seq analysis we will use the nf-core pipeline [rnase
 
 The pipeline is organised following the diffent blocks: pre-processing, alignment (or lightweight alignment) and quantification, post-processing and final QC.
 
-![RNAseq](./img/nf-core-rnaseq_metro_map_grey.png)
+![Metromap](./img/nf-core-rnaseq_metro_map_grey.png)
 
 In each process, the users can choose among a range of different options. Importantly, the users can decide to follow one of the two different routes in the alignment and quantification step:
 - alignment and quantification (stage 2);
