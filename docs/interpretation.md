@@ -65,7 +65,7 @@ By examining the heatmap, we can visually identify the expression patterns of ou
 
 ## Over Representation Analysis (ORA)
 
-Finally, we can attempt to assign biological significance to our differentially expressed genes through Enrichment Analysis (ORA). The ORA analysis identifies specific biological pathways, molecular functions and cellular processes, according to the Gene Ontology (GO) database, that are enriched with our differentially expressed genes. 
+Finally, we can attempt to assign biological significance to our differentially expressed genes through **Enrichment Analysis (ORA)**. The ORA analysis identifies specific biological pathways, molecular functions and cellular processes, according to the **Gene Ontology (GO)** database, that are enriched within our differentially expressed genes. 
 
 ![Enrichment](./img/enrichment_plot.png)
 
