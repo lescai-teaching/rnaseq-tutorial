@@ -8,7 +8,7 @@ In this section of the tutorial, we will guide you through the practical steps n
 Once the nf-core/rnaseq pipeline is terminated, the resulting data are stored in the folder `results_star_salmon`. Now, we can analyse the results by running DESeq2 on RStudio. First of all, we need to launch it:
 
 ```bash
-sudo rstudio-server start
+sudo rstudio-server start && sleep 5000
 ```
 
 A pop-up will appear and by clicking on **Open**, we will be redirected to the RStudio login page. By inserting the username and the password reported below, we will be able to connect to RStudio:
@@ -18,15 +18,9 @@ Username: gitpod
 Password: pass
 ```
 
-To prevent losing connection, go back to gitpod and type on the **Terminal**:
+!!! note
 
-```bash
-sleep 2h
-```
-
-This command will keep the gitpod session active for exactly 2 hours, providing sufficient time to complete our analysis without interruption.
-
-Now come back to our **RStudio session**.
+    Using `sleep` will keep the Gitpod session active, preventing disconnection and providing enough time to complete our analysis without interruptions
 
 
 ## Differential Expression Analysis
@@ -37,7 +31,9 @@ As in all analysis, firstly we need to create a new project:
 
 2) Select **New Directory**, **New Project**, name the project as shown below and click on **Create Project**;
 
-![R_project](./img/project_R.png)
+<figure markdown="span">
+  ![r_project](./img/project_R.png){ width="400" }
+</figure>
 
 3) The new project will be automatically opened in RStudio.
 
@@ -50,7 +46,9 @@ To store our results in an organized way, we will create a folder named **de_res
 
 and save the file as **de_script.R**. From now on, each command described in the tutorial can be added to your script. The resulting working directory should look like this:
 
-![Workdir](./img/workdir_RStudio.png)
+<figure markdown="span">
+  ![work_dir](./img/workdir_RStudio.png){ width="600" }
+</figure>
 
 The analysis requires several R packages. To utilise them, we need to load the following libraries:
 
@@ -164,7 +162,9 @@ design(dds_new) # to check the design formula
 
 Comparing the structure of the newly created dds (`dds_new`) with the one automatically produced by the pipeline (`dds`), we can observe the differences:
 
-![Comparison_dds](./img/dds_comparison.png)
+<figure markdown="span">
+  ![comparison_dds](./img/dds_comparison.png){ width="400" }
+</figure>
 
 Before running the different steps of the analysis, a good practice consists in pre-filtering the genes to remove those with very low counts. This is useful to improve computional efficiency and enhance interpretability. In general, it is reasonable to keep only genes with a sum counts of at least 10 for a minimal number of 3 samples:
 
