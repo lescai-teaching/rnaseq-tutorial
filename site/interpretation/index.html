@@ -649,12 +649,12 @@ After running the <code>results()</code> function, a good way to start to have a
 </code></pre></div>
 <p>To gain a comprehensive overview of the transcriptional profile, the volcano plot represents a highly informative tool.</p>
 <figure>
-  <img alt="volcano_plot" height="600" src="../img/volcanoplot.png" width="400" />
+  <img alt="volcano_plot" src="../img/volcanoplot.png" width="400" />
 </figure>
 <p>The treatment induced differential expression in five genes: one downregulated and four upregulated. This plot visually represents the numerical results reported in the table above.</p>
 <p>After the identification of DE genes, it's informative to visualise the expression of specific genes of interest. The <code>plotCounts()</code> function applied directly on the <code>dds</code> object allows us to examine individual gene expression profiles without accessing the full <code>res</code> object.</p>
 <figure>
-  <img alt="counts" height="600" src="../img/plotCounts.png" width="400" />
+  <img alt="counts" src="../img/plotCounts.png" width="400" />
 </figure>
 <p>In our example, post-treatment, we observe a significant increase in the expression of the <em>ENSG00000142192</em> gene, highlighting its responsiveness to the experimental conditions.</p>
 <p>Finally, we can create a heatmap using the normalised expression counts of DE genes. The resulting heatmap visualises how the expression of significant genes varies across samples. Each row represents a gene, and each column represents a sample. The color intensity in the heatmap reflects the normalised expression levels: red colors indicate higher expression, while blue colors indicate lower expression.</p>
