@@ -12,15 +12,18 @@ Once DE genes have been identified, the next crucial step is to interpret the re
 The first plot we will examine is the Principal Component Analysis (PCA) plot. Since we're working with simulated data, our metadata is relatively simple, consisting of just three variables: `sample`, `condition`, and `replica`. In a typical RNA-seq experiment, however, metadata can be complex and encompass a wide range of variables that could contribute to sample variation, such as sex, age, and developmental stage. 
 
 <figure markdown="span">
-  ![PCA](./img/pca_plot.png){ width="100" }
-  <figcaption>Image caption</figcaption>
+  ![pca](./img/pca_plot.png){ width="400" }
+  <figcaption>PCA plot</figcaption>
 </figure>
 
 By plotting the PCA on the PC1 and PC2 axes, using `condition` as the main variable of interest, we can quickly identify the primary source of variation in our data. By accounting for this variation in our design model, we should be able to detect more differentially expressed genes related to `condition`. When working with real data, it's often useful to plot the data using different variables to explore how much variation is explained by the first two PCs. Depending on the results, it may be informative to examine variation on additional PC axes, such as PC3 and PC4, to gain a more comprehensive understanding of the data.
 
 Next, we will examine the hierarchical clustering plot to explore the relationships between samples based on their gene expression profiles. The heatmap is organized such that samples with similar expression profiles are close to each other, allowing us to identify patterns in the data.
 
-![Cluster](./img/hierarchical_clustering.png)
+<figure markdown="span">
+  ![cluster](./img/hierarchical_clustering.png){ width="400" }
+  <figcaption>PCA plot</figcaption>
+</figure>
 
 Remember that to create this plot, we utilized the `dist()` function, so in the legend on the right, a value of 0 corresponds to high correlation, while a value of 5 corresponds to very low correlation. Similar to PCA, we can see that samples tend to cluster together according to `condition`, indeed we can observe a high degree of correlation between the three control samples and between the three treated samples. 
 
