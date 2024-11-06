@@ -53,7 +53,7 @@ ENSG00000156282     481.7624        1.095272           0.2969594      3.688289  
 To gain a comprehensive overview of the transcriptional profile, the volcano plot represents a highly informative tool.
 
 <figure markdown="span">
-  ![volcano_plot](./img/volcano_plot.png){ width="400" height="600"}
+  ![volcano_plot](./img/volcano_plot.png){ width="400"}
 </figure>
 
 The treatment induced differential expression in five genes: one downregulated and four upregulated. This plot visually represents the numerical results reported in the table above.
@@ -68,20 +68,24 @@ In our example, post-treatment, we observe a significant increase in the express
 
 Finally, we can create a heatmap using the normalised expression counts of DE genes. The resulting heatmap visualises how the expression of significant genes varies across samples. Each row represents a gene, and each column represents a sample. The color intensity in the heatmap reflects the normalised expression levels: red colors indicate higher expression, while blue colors indicate lower expression.
 
-![Heatmap](./img/heatmap_de_genes.png)
+<figure markdown="span">
+  ![heatmap](./img/heatmap_de_genes.png){ width="400" }
+</figure>
 
-By examining the heatmap, we can visually identify the expression patterns of our five significant differentially expressed genes. This visualization allows us to identify how these genes respond to the treatment. The heatmap provides a clear and intuitive way to explore gene expression dynamics.
+By examining the heatmap, we can visually identify the expression patterns of our five significant differentially expressed genes. This visualisation allows us to identify how these genes respond to the treatment. The heatmap provides a clear and intuitive way to explore gene expression dynamics.
 
 
 ## Over Representation Analysis (ORA)
 
-Finally, we can attempt to assign biological significance to our differentially expressed genes through **Enrichment Analysis (ORA)**. The ORA analysis identifies specific biological pathways, molecular functions and cellular processes, according to the **Gene Ontology (GO)** database, that are enriched within our differentially expressed genes. 
+Finally, we can attempt to assign biological significance to our differentially expressed genes through **Over Representation Analysis (ORA)**. The ORA analysis identifies specific biological pathways, molecular functions and cellular processes, according to the **Gene Ontology (GO)** database, that are enriched within our differentially expressed genes. 
 
-![Enrichment](./img/enrichment_plot.png)
+<figure markdown="span">
+  ![enrichment](./img/enrichment_plot.png){ width="400" }
+</figure>
 
 The enrichment analysis reveals a possible involvement of cellular structures and processes, including "clathrin-coated pit", "dendritic spine", "neuron spine" and "endoplasmic reticulum lumen". These terms suggest a focus on cellular transport, structural integrity and protein processing, especially in neural contexts. This pattern points to pathways related to cellular organization and maintenance, possibly playing an important role in the biological condition under study.
 
 
 ## Conclusions
 
-In this tutorial, we have walked through the steps of performing differential expression analysis using DESeq2, from preparing the data to interpreting the results. We have seen how to identify differentially expressed genes, visualise the results and perform enrichment analysis to gain insights into the biological significance of the results. By following this tutorial, you should now be able to perform differential expression analysis using DESeq2 and interpret the results in the context of your own research question.
+In this tutorial, we have walked through the steps of the RNA-seq analysis, from launching the nfcore/rnaseq pipeline to interpreting differential expression results. You learned how the data are generated, identified differentially expressed genes, and conducted enrichment analysis. By following this tutorial, you should now be able to use the nfcore/rnaseq pipeline and perform differential expression analysis with DESeq2, interpreting the results within the context of your research.
