@@ -1,6 +1,6 @@
 # Interpretation
 
-Once DE genes have been identified, the next crucial step is to interpret the results. This involves the inspection of tables and plots generated during the analysis to understand the biological significance of the data. In this part of the tutorial, we will delve into the results by discussing the significant DE genes and we will explore various plots generated during the analysis.
+Once DE genes have been identified, the next crucial step is to interpret the results. This involves the inspection of tables and plots generated during the analysis to understand the biological significance of the data. In this part of the tutorial, we will explore the results by discussing the significant DE genes and we will examine various plots generated during the analysis.
 
 !!! note
 
@@ -9,10 +9,10 @@ Once DE genes have been identified, the next crucial step is to interpret the re
 
 ## Quality control plots
 
-The first plot we will examine is the Principal Component Analysis (PCA) plot. Since we're working with simulated data, our metadata is relatively simple, consisting of just three variables: sample, condition and replica. In a typical RNA-seq experiment, however, metadata can be complex and encompass a wide range of variables that could contribute to sample variation, such as sex, age and developmental stage. 
+The first plot we will examine is the Principal Component Analysis (PCA) plot. Since we're working with simulated data, our metadata is relatively simple, consisting of just three variables: `sample`, `condition`, and `replica`. In a typical RNA-seq experiment, however, metadata can be complex and encompass a wide range of variables that could contribute to sample variation, such as sex, age, and developmental stage. 
 
 <figure markdown="span">
-  ![PCA](./img/PCA.png){ width="300" }
+  ![PCA](./img/pca_plot.png){ width="100" }
   <figcaption>Image caption</figcaption>
 </figure>
 
@@ -38,7 +38,7 @@ By default, genes are coloured in blue if the padj is less than 0.1 and the log2
 
 After filtering our genes of interest according to our threshold, let's have a look to our significatnt genes:
 
-```bash
+```tsv
 gene                baseMean        log2FoldChange     lfcSE          stat            pvalue              padj
 ENSG00000205726     121645.5908     2.894480           0.1515387      19.100600       2.496005e-81        5.840651e-79
 ENSG00000142192     51065.3192      3.025489           0.1891258      15.997230       1.335883e-57        1.562983e-55
