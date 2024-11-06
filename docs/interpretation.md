@@ -61,7 +61,7 @@ The treatment induced differential expression in five genes: one downregulated a
 After the identification of DE genes, it's informative to visualise the expression of specific genes of interest. The `plotCounts()` function applied directly on the `dds` object allows us to examine individual gene expression profiles without accessing the full `res` object.
 
 <figure markdown="span">
-  ![counts](./img/plotCounts.png){ width="400" }
+  ![heatmap](./img/plotCounts.png){ width="400" }
 </figure>
 
 In our example, post-treatment, we observe a significant increase in the expression of the *ENSG00000142192* gene, highlighting its responsiveness to the experimental conditions.

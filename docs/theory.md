@@ -10,7 +10,7 @@ Given the central role of RNA in a wide range of molecular functions, RNA-seq ha
 After RNA extraction and reverse transcription into complementary DNA (cDNA), the biological material is sequenced, generating NGS "reads" that correspond to the RNA captured in a specific cell, tissue, or organ at a given time. The sequencing data is then bioinformatically processed through a typical workflow summarised in the diagram below:
 
 <figure markdown="span">
-  ![excalidraw_RNAseq](./img/Excalidraw_RNAseq.png){ width="1000" }
+  ![excalidraw](./img/Excalidraw_RNAseq.png){ width="1000" }
 </figure>
 
 In the scheme, we can identify three key phases in the workflow: 
