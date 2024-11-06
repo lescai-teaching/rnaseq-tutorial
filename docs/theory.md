@@ -14,7 +14,11 @@ After RNA extraction and reverse transcription into complementary DNA (cDNA), th
 In the scheme, we can identify three key phases in the workflow: 
 
 - **data pre-processing**: raw reads are handled to remove adapters or contaminants enhancing their quality;
+
+
 - **traditional or lightweight alignment and quantification**: reads are mapped to a reference genome, and gene abundance is estimated. The workflow can also follow an alternative route based on lightweight alignment and quantification, reducing the time required for the analysis.
+
+
 - **differential expression analysis**: differentially expressed genes are identified using statistical tests, annotated, and visualised.
 
 Depending on the user's needs, the workflow can include additional downstream analyses such as functional enrichment analysis, co-expression analysis, and integration with other omics data.
@@ -34,6 +38,8 @@ Errors, gaps, regions of poor sequence quality, insertions/deletions (INDELs), a
 The alignment and quantification steps can follow two different approaches depending on user preferences:
 
 - traditional alignment and quantification;
+
+
 - lightweight alignment and quantification.
 
 In RNA-seq analysis, traditional alignment is often performed with **splice-aware aligners**, which are designed to recognise the splicing process. These aligners can align reads across known splice junctions and detect novel splice sites or alternative splicing events. Popular splice-aware aligners include [STAR](https://github.com/alexdobin/STAR), and [HISAT2](https://github.com/DaehwanKimLab/hisat2). Once alignment is complete, the following step is quantification, which involves estimating the abundance (number of reads) associated with each gene. Tools like [featureCounts](https://subread.sourceforge.net/featureCounts.html), [HTSeq](https://htseq.readthedocs.io), [Salmon](http://combine-lab.github.io/salmon), and [RSEM](http://deweylab.github.io/RSEM) are commonly used for this purpose.
@@ -93,11 +99,15 @@ The results will not be affected by the order of variables but the common practi
 
 RNA-seq data typically contain a large number of genes with low expression counts, indicating that many genes are expressed at very low levels across samples. At the same time, RNA-seq data exhibit a skewed distribution with a long right tail due to the absence of an upper limit for gene expression levels. This means that while most genes have low to moderate expression levels, a small number are expressed at high levels. Accurate statistical modelling must therefore account for this distribution to avoid misleading conclusions.
 
-![RNAseq](./img/count_distribution.png)
+<figure markdown="span">
+  ![count_distribution](./img/count_distribution.png){ width="400"}
+</figure>
 
 The core of the differential expression analysis is the `DESeq()` function, a wrapper that streamlines several key steps into a single command. The different functions are listed below:
 
-![DEseq_function](./img/DESeq_function.png)
+<figure markdown="span">
+  ![deseq2_function](./img/DESeq_function.png){ width="400"}
+</figure>
 
 !!! note
 
@@ -110,8 +120,14 @@ The different steps are explained in detail below:
 The size factors are calculated using the **median ratio** method:
 
 - **Calculate the geometric mean**: for each gene, compute the geometric mean of its counts across all samples. This gives a row-wise geometric mean for each gene;
+
+
 - **Calculate ratios**: divide each gene's count by its geometric mean to obtain a ratio for each sample;
+
+
 - **Determine size factors**: for each sample, take the median of these ratios (column-wise) to derive the size factors;
+
+
 - **Normalise counts**: divide each raw count by the corresponding sample size factor to generate normalised counts.
 
 !!! note
@@ -120,7 +136,9 @@ The size factors are calculated using the **median ratio** method:
 
 2) **Estimate dispersion and gene-wise dispersion**: the dispersion is a measure of how much the variance deviates from the mean. The dispersion estimates indicate the variance in gene expression at a specific mean expression level. Importantly, RNA-seq data are characterised by **overdispersion**, where the variance in gene expression levels often exceeds the mean (variance > mean).
 
-![overdispersion](./img/overdispersion.png)
+<figure markdown="span">
+  ![overdispersion](./img/overdispersion.png){ width="400"}
+</figure>
 
 DESeq2 addresses this issue by employing the **negative binomial distribution**, which generalises the Poisson distribution by introducing an additional dispersion parameter. This parameter quantifies the extra variability present in RNA-seq data, providing a more realistic representation than the Poisson distribution, which assumes mean = variance. DESeq2 starts by estimating the **common dispersion**, a single estimate of dispersion applicable to all genes in the dataset. This estimate provides a baseline for variability across all genes in the dataset. Next, DESeq2 estimates **gene-wise dispersion**, a separate estimate of dispersion for each individual gene, taking into account that different genes may exhibit varying levels of expression variability due to biological differences.
 The dispersion parameter (α) is related to the mean (μ), and variance of the data, as described by the equation:
@@ -133,7 +151,9 @@ A key feature of DESeq2's dispersion estimates is their negative correlation wit
 
 4) **Final dispersion estimates**: DESeq2 refines the gene-wise dispersion by shrinking it towards the fitted curve. The "shrinkage" helps control for overfitting, and makes the dispersion estimates more reliable. The strength of the shrinkage depends on the sample size (more samples = less shrinkage), and how close the initial estimates are to the fitted curve.
 
-![dispersion](./img/dispersion_estimates.png)
+<figure markdown="span">
+  ![dispersion](./img/dispersion_estimates.png){ width="400"}
+</figure>
 
 The initial estimates (black dots) are shrunk toward the fitted curve (red line) to obtain the final estimates (blue dots). However, genes with exceptionally high dispersion values are not shrunk, as they likely deviate from the model assumptions exhibiting elevated variability due to biological or technical factors. Shrinking these values could lead to false positives.
 

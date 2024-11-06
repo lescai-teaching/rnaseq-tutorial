@@ -53,7 +53,7 @@ ENSG00000156282     480.4678        1.091362           0.2969594      3.6749156 
 To gain a comprehensive overview of the transcriptional profile, the volcano plot represents a highly informative tool.
 
 <figure markdown="span">
-  ![volcano_plot](./img/volcanoplot.png){ width="400" height="600"}
+  ![volcano_plot](./img/volcanoplot.png){ width="400"}
 </figure>
 
 The treatment induced differential expression in five genes: one downregulated and four upregulated. This plot visually represents the numerical results reported in the table above.
@@ -61,7 +61,7 @@ The treatment induced differential expression in five genes: one downregulated a
 After the identification of DE genes, it's informative to visualise the expression of specific genes of interest. The `plotCounts()` function applied directly on the `dds` object allows us to examine individual gene expression profiles without accessing the full `res` object.
 
 <figure markdown="span">
-  ![counts](./img/plotCounts.png){ width="400" height="600"}
+  ![counts](./img/plotCounts.png){ width="400" }
 </figure>
 
 In our example, post-treatment, we observe a significant increase in the expression of the *ENSG00000142192* gene, highlighting its responsiveness to the experimental conditions.

@@ -7,11 +7,15 @@ In order to carry out a RNA-Seq analysis we will use the nf-core pipeline [rnase
 
 The pipeline is organised following the diffent blocks shown below: pre-processing, traditional alignment (or lightweight alignment) and quantification, post-processing and final QC.
 
-![Metromap](./img/nf-core-rnaseq_metro_map_grey.png)
+<figure markdown="span">
+  ![metromap](./img/nf-core-rnaseq_metro_map_grey.png){ width="1000"}
+</figure>
 
 In each process, the users can choose among a range of different options. Importantly, the users can decide to follow one of the two different routes in the alignment and quantification step:
 
 - traditional alignment and quantification (stage 2);
+
+
 - lightweight alignment and quantification (stage 3).
 
 
@@ -69,8 +73,14 @@ The input file is `/workspace/gitpod/training/data/reads/rnaseq_samplesheet.csv`
 In the following sections we will:
 
 - prepare our references;
+
+
 - set our computational resources in order to be able to run the pipeline on a gitpod VM;
+
+
 - edit the optional settings;
+
+
 - run the pipeline.
 
 
