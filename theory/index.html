@@ -690,9 +690,15 @@
 <p><img alt="Excalidraw_RNAseq" src="../img/Excalidraw_RNAseq.png" /></p>
 <p>In the scheme, we can identify three key phases in the workflow: </p>
 <ul>
-<li><strong>data pre-processing</strong>: raw reads are handled to remove adapters or contaminants enhancing their quality;</li>
-<li><strong>traditional or lightweight alignment and quantification</strong>: reads are mapped to a reference genome, and gene abundance is estimated. The workflow can also follow an alternative route based on lightweight alignment and quantification, reducing the time required for the analysis.</li>
-<li><strong>differential expression analysis</strong>: differentially expressed genes are identified using statistical tests, annotated, and visualised.</li>
+<li>
+<p><strong>data pre-processing</strong>: raw reads are handled to remove adapters or contaminants enhancing their quality;</p>
+</li>
+<li>
+<p><strong>traditional or lightweight alignment and quantification</strong>: reads are mapped to a reference genome, and gene abundance is estimated. The workflow can also follow an alternative route based on lightweight alignment and quantification, reducing the time required for the analysis.</p>
+</li>
+<li>
+<p><strong>differential expression analysis</strong>: differentially expressed genes are identified using statistical tests, annotated, and visualised.</p>
+</li>
 </ul>
 <p>Depending on the user's needs, the workflow can include additional downstream analyses such as functional enrichment analysis, co-expression analysis, and integration with other omics data.</p>
 <h2 id="pre-processing">Pre-processing<a class="headerlink" href="#pre-processing" title="Permanent link">&para;</a></h2>
@@ -702,8 +708,12 @@
 <p>Errors, gaps, regions of poor sequence quality, insertions/deletions (INDELs), as well as duplicated, and repetitive regions in the reference sequence, make this step challenging. Addressing these issues by choosing a high-quality reference and an appropriate aligner is essential for accurate results. A crucial component in the alignment step is the <a href="https://www.ncbi.nlm.nih.gov/genbank/genomes_gff">annotation</a> file, which can be in General Feature Format (GFF) or Gene Transfer Format (GTF). These files contain key information about the location, and structure of genes and transcripts, playing an essential role in accurate mapping and gene expression quantification. Additionally, RNA-seq data often includes reads that span exon-exon junctions, and the annotation files provide information about splice junctions, allowing for the detection of different isoforms.</p>
 <p>The alignment and quantification steps can follow two different approaches depending on user preferences:</p>
 <ul>
-<li>traditional alignment and quantification;</li>
-<li>lightweight alignment and quantification.</li>
+<li>
+<p>traditional alignment and quantification;</p>
+</li>
+<li>
+<p>lightweight alignment and quantification.</p>
+</li>
 </ul>
 <p>In RNA-seq analysis, traditional alignment is often performed with <strong>splice-aware aligners</strong>, which are designed to recognise the splicing process. These aligners can align reads across known splice junctions and detect novel splice sites or alternative splicing events. Popular splice-aware aligners include <a href="https://github.com/alexdobin/STAR">STAR</a>, and <a href="https://github.com/DaehwanKimLab/hisat2">HISAT2</a>. Once alignment is complete, the following step is quantification, which involves estimating the abundance (number of reads) associated with each gene. Tools like <a href="https://subread.sourceforge.net/featureCounts.html">featureCounts</a>, <a href="https://htseq.readthedocs.io">HTSeq</a>, <a href="http://combine-lab.github.io/salmon">Salmon</a>, and <a href="http://deweylab.github.io/RSEM">RSEM</a> are commonly used for this purpose.</p>
 <p>Traditional alignment tools are time-consuming and require substantial computational resources, particularly in terms of memory, and CPU usage. Alternatively, methods based on <strong>lightweight alignment</strong> allows for faster analysis by determining the likely origin of reads without a full, base-by-base alignment. Lightweight alignment tools like <a href="https://pachterlab.github.io/kallisto/about.html">Kallisto</a>, <a href="http://www.cs.cmu.edu/~ckingsf/software/sailfish">Sailfish</a>, and <a href="https://salmon.readthedocs.io/en/latest/salmon.html">Salmon</a> avoid full-scale alignment, providing quantification estimates more quickly than traditional splice-aware algorithms, while still maintaining high accuracy. The quantification results from these tools are often called <strong>pseudocounts</strong> or <strong>abundance estimates</strong>, which can be used for downstream analysis.</p>
@@ -740,9 +750,13 @@
 <p>The results will not be affected by the order of variables but the common practice is to specify the main source of variation in the last position of the design formula.</p>
 <h3 id="differential-expression-analysis">Differential Expression Analysis<a class="headerlink" href="#differential-expression-analysis" title="Permanent link">&para;</a></h3>
 <p>RNA-seq data typically contain a large number of genes with low expression counts, indicating that many genes are expressed at very low levels across samples. At the same time, RNA-seq data exhibit a skewed distribution with a long right tail due to the absence of an upper limit for gene expression levels. This means that while most genes have low to moderate expression levels, a small number are expressed at high levels. Accurate statistical modelling must therefore account for this distribution to avoid misleading conclusions.</p>
-<p><img alt="RNAseq" src="../img/count_distribution.png" /></p>
+<figure>
+  <img alt="count_distribution" src="../img/count_distribution.png" width="400" />
+</figure>
 <p>The core of the differential expression analysis is the <code>DESeq()</code> function, a wrapper that streamlines several key steps into a single command. The different functions are listed below:</p>
-<p><img alt="DEseq_function" src="../img/DESeq_function.png" /></p>
+<figure>
+  <img alt="deseq2_function" src="../img/DESeq_function.png" width="400" />
+</figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>While <code>DESeq()</code> combines these steps, a user could choose to perform each function separately to have more control over the whole process.</p>
@@ -751,24 +765,36 @@
 <p>1) <strong>Normalisation</strong>: since DESeq2 compares counts between sample groups for the same gene, it does not need to adjust for gene length. However, it is essential to account for variations in sequencing depth and RNA composition among samples. To normalise the data, DESeq2 utilises <strong>size factors</strong>.</p>
 <p>The size factors are calculated using the <strong>median ratio</strong> method:</p>
 <ul>
-<li><strong>Calculate the geometric mean</strong>: for each gene, compute the geometric mean of its counts across all samples. This gives a row-wise geometric mean for each gene;</li>
-<li><strong>Calculate ratios</strong>: divide each gene's count by its geometric mean to obtain a ratio for each sample;</li>
-<li><strong>Determine size factors</strong>: for each sample, take the median of these ratios (column-wise) to derive the size factors;</li>
-<li><strong>Normalise counts</strong>: divide each raw count by the corresponding sample size factor to generate normalised counts.</li>
+<li>
+<p><strong>Calculate the geometric mean</strong>: for each gene, compute the geometric mean of its counts across all samples. This gives a row-wise geometric mean for each gene;</p>
+</li>
+<li>
+<p><strong>Calculate ratios</strong>: divide each gene's count by its geometric mean to obtain a ratio for each sample;</p>
+</li>
+<li>
+<p><strong>Determine size factors</strong>: for each sample, take the median of these ratios (column-wise) to derive the size factors;</p>
+</li>
+<li>
+<p><strong>Normalise counts</strong>: divide each raw count by the corresponding sample size factor to generate normalised counts.</p>
+</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>While normalised counts are useful for downstream visualisation of results, they should not be used as input for DESeq2. Instead, DESeq2 requires raw count data in the form of a matrix of integer values.</p>
 </div>
 <p>2) <strong>Estimate dispersion and gene-wise dispersion</strong>: the dispersion is a measure of how much the variance deviates from the mean. The dispersion estimates indicate the variance in gene expression at a specific mean expression level. Importantly, RNA-seq data are characterised by <strong>overdispersion</strong>, where the variance in gene expression levels often exceeds the mean (variance &gt; mean).</p>
-<p><img alt="overdispersion" src="../img/overdispersion.png" /></p>
+<figure>
+  <img alt="overdispersion" src="../img/overdispersion.png" width="400" />
+</figure>
 <p>DESeq2 addresses this issue by employing the <strong>negative binomial distribution</strong>, which generalises the Poisson distribution by introducing an additional dispersion parameter. This parameter quantifies the extra variability present in RNA-seq data, providing a more realistic representation than the Poisson distribution, which assumes mean = variance. DESeq2 starts by estimating the <strong>common dispersion</strong>, a single estimate of dispersion applicable to all genes in the dataset. This estimate provides a baseline for variability across all genes in the dataset. Next, DESeq2 estimates <strong>gene-wise dispersion</strong>, a separate estimate of dispersion for each individual gene, taking into account that different genes may exhibit varying levels of expression variability due to biological differences.
 The dispersion parameter (α) is related to the mean (μ), and variance of the data, as described by the equation:</p>
 <p><code>Var = μ + α ⋅ μ²</code></p>
 <p>A key feature of DESeq2's dispersion estimates is their negative correlation with the mean, and positive correlation with the variance. Genes with low expression tend to have higher dispersion values, while genes with high expression tend to have lower dispersion. </p>
 <p>3) <strong>Mean-dispersion relationship</strong>: this process, known as dispersion fitting, models the relationship between the mean expression level of a gene, and its dispersion. DESeq2 assumes that genes with similar expression profiles share similar dispersion patterns, and leverages this information to refine the estimates identifying a trend in the dispersion estimates across genes. The fitted curve, typically a smooth curve, describes how dispersion changes as a function of the mean expression level.</p>
 <p>4) <strong>Final dispersion estimates</strong>: DESeq2 refines the gene-wise dispersion by shrinking it towards the fitted curve. The "shrinkage" helps control for overfitting, and makes the dispersion estimates more reliable. The strength of the shrinkage depends on the sample size (more samples = less shrinkage), and how close the initial estimates are to the fitted curve.</p>
-<p><img alt="dispersion" src="../img/dispersion_estimates.png" /></p>
+<figure>
+  <img alt="dispersion" src="../img/dispersion_estimates.png" width="400" />
+</figure>
 <p>The initial estimates (black dots) are shrunk toward the fitted curve (red line) to obtain the final estimates (blue dots). However, genes with exceptionally high dispersion values are not shrunk, as they likely deviate from the model assumptions exhibiting elevated variability due to biological or technical factors. Shrinking these values could lead to false positives.</p>
 <p>5) <strong>Fitting model and testing</strong>: the initial step in hypothesis testing involves defining a <strong>null hypothesis</strong> for each gene. In DESeq2, The null hypothesis states that there is no difference in expression between the sample groups (log2 fold change == 0). Next, DESeq applies a statistical test to assess whether the null hypothesis is true.
 DESeq2 fits a <strong>generalised linear model (GLM)</strong> to the normalised counts using the calculated size factors and final dispersion estimates. A GLM is a flexible extension of linear regression that models the relationship between a response variable (normalised counts), and predictors (e.g., condition).
