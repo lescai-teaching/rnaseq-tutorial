@@ -34,7 +34,7 @@ In this part of the tutorial, we will examine plots that are generated after the
 After running the `results()` function, a good way to start to have an idea about the results is to look at the MA plot. 
 
 <figure markdown="span">
-  ![ma_plot](./img/MA_plot.png){ width="600" }
+  ![ma_plot](./img/MA_plot.png){ width="500" }
 </figure>
 
 By default, genes are coloured in blue if the padj is less than 0.1 and the log2 fold change greater than or less than 0. Genes that fall outside the plotting region are represented as open triangles. At this stage, we have not yet applied a filter to select only significant DE genes, which we define as those with a padj value less than 0.5 and a log2 fold change of at least 1 or -1.
@@ -43,17 +43,17 @@ After filtering our genes of interest according to our threshold, let's have a l
 
 ```tsv
 gene                baseMean        log2FoldChange     lfcSE          stat            pvalue              padj
-ENSG00000205726     121645.5908     2.894480           0.1515387      19.100600       2.496005e-81        5.840651e-79
-ENSG00000142192     51065.3192      3.025489           0.1891258      15.997230       1.335883e-57        1.562983e-55
-ENSG00000142156     20805.8078      2.977705           0.2159277      13.790287       2.915972e-43        2.274458e-41
-ENSG00000159231     458.9277        -1.194777          0.3058100      -3.906926       9.347790e-05        5.468457e-03
-ENSG00000156282     481.7624        1.095272           0.2969594      3.688289        2.257672e-04        1.056590e-02
+ENSG00000205726     121425.1998     2.897479           0.1515387      18.799694       7.595298e-79        1.777299e-76
+ENSG00000142192     50927.0995      3.023220           0.1891258      15.888480       7.615069e-57        8.909631e-55
+ENSG00000142156     20736.4845      2.974452           0.2159277      13.855016       1.186288e-43        9.253051e-42
+ENSG00000159231     457.7498        -1.198950          0.3058100      -3.934544       8.335457e-05        4.876242e-03
+ENSG00000156282     480.4678        1.091362           0.2969594      3.6749156       2.379280e-04        1.113503e-02
 ```
 
 To gain a comprehensive overview of the transcriptional profile, the volcano plot represents a highly informative tool.
 
 <figure markdown="span">
-  ![volcano_plot](./img/volcano_plot.png){ width="400"}
+  ![volcano_plot](./img/volcanoplot.png){ width="400" height="600"}
 </figure>
 
 The treatment induced differential expression in five genes: one downregulated and four upregulated. This plot visually represents the numerical results reported in the table above.

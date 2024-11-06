@@ -649,7 +649,7 @@ After running the <code>results()</code> function, a good way to start to have a
 </code></pre></div>
 <p>To gain a comprehensive overview of the transcriptional profile, the volcano plot represents a highly informative tool.</p>
 <figure>
-  <img alt="volcano_plot" height="600" src="./img/volcano_plot.png" width="400" />
+  <img alt="volcano_plot" src="./img/volcano_plot.png" width="400" />
 </figure>
 <p>The treatment induced differential expression in five genes: one downregulated and four upregulated. This plot visually represents the numerical results reported in the table above.</p>
 <p>After the identification of DE genes, it's informative to visualise the expression of specific genes of interest. The <code>plotCounts()</code> function applied directly on the <code>dds</code> object allows us to examine individual gene expression profiles without accessing the full <code>res</code> object.</p>
@@ -658,14 +658,18 @@ After running the <code>results()</code> function, a good way to start to have a
 </figure>
 <p>In our example, post-treatment, we observe a significant increase in the expression of the <em>ENSG00000142192</em> gene, highlighting its responsiveness to the experimental conditions.</p>
 <p>Finally, we can create a heatmap using the normalised expression counts of DE genes. The resulting heatmap visualises how the expression of significant genes varies across samples. Each row represents a gene, and each column represents a sample. The color intensity in the heatmap reflects the normalised expression levels: red colors indicate higher expression, while blue colors indicate lower expression.</p>
-<p><img alt="Heatmap" src="../img/heatmap_de_genes.png" /></p>
-<p>By examining the heatmap, we can visually identify the expression patterns of our five significant differentially expressed genes. This visualization allows us to identify how these genes respond to the treatment. The heatmap provides a clear and intuitive way to explore gene expression dynamics.</p>
+<figure>
+  <img alt="heatmap" src="../img/heatmap_de_genes.png" width="400" />
+</figure>
+<p>By examining the heatmap, we can visually identify the expression patterns of our five significant differentially expressed genes. This visualisation allows us to identify how these genes respond to the treatment. The heatmap provides a clear and intuitive way to explore gene expression dynamics.</p>
 <h2 id="over-representation-analysis-ora">Over Representation Analysis (ORA)<a class="headerlink" href="#over-representation-analysis-ora" title="Permanent link">&para;</a></h2>
-<p>Finally, we can attempt to assign biological significance to our differentially expressed genes through <strong>Enrichment Analysis (ORA)</strong>. The ORA analysis identifies specific biological pathways, molecular functions and cellular processes, according to the <strong>Gene Ontology (GO)</strong> database, that are enriched within our differentially expressed genes. </p>
-<p><img alt="Enrichment" src="../img/enrichment_plot.png" /></p>
+<p>Finally, we can attempt to assign biological significance to our differentially expressed genes through <strong>Over Representation Analysis (ORA)</strong>. The ORA analysis identifies specific biological pathways, molecular functions and cellular processes, according to the <strong>Gene Ontology (GO)</strong> database, that are enriched within our differentially expressed genes. </p>
+<figure>
+  <img alt="enrichment" src="../img/enrichment_plot.png" width="400" />
+</figure>
 <p>The enrichment analysis reveals a possible involvement of cellular structures and processes, including "clathrin-coated pit", "dendritic spine", "neuron spine" and "endoplasmic reticulum lumen". These terms suggest a focus on cellular transport, structural integrity and protein processing, especially in neural contexts. This pattern points to pathways related to cellular organization and maintenance, possibly playing an important role in the biological condition under study.</p>
 <h2 id="conclusions">Conclusions<a class="headerlink" href="#conclusions" title="Permanent link">&para;</a></h2>
-<p>In this tutorial, we have walked through the steps of performing differential expression analysis using DESeq2, from preparing the data to interpreting the results. We have seen how to identify differentially expressed genes, visualise the results and perform enrichment analysis to gain insights into the biological significance of the results. By following this tutorial, you should now be able to perform differential expression analysis using DESeq2 and interpret the results in the context of your own research question.</p>
+<p>In this tutorial, we have walked through the steps of the RNA-seq analysis, from launching the nfcore/rnaseq pipeline to interpreting differential expression results. You learned how the data are generated, identified differentially expressed genes, and conducted enrichment analysis. By following this tutorial, you should now be able to use the nfcore/rnaseq pipeline and perform differential expression analysis with DESeq2, interpreting the results within the context of your research.</p>
 
 
 
