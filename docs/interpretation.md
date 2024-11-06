@@ -13,7 +13,6 @@ The first plot we will examine is the Principal Component Analysis (PCA) plot. S
 
 <figure markdown="span">
   ![pca](./img/pca_plot.png){ width="400" }
-  <figcaption>PCA plot</figcaption>
 </figure>
 
 By plotting the PCA on the PC1 and PC2 axes, using `condition` as the main variable of interest, we can quickly identify the primary source of variation in our data. By accounting for this variation in our design model, we should be able to detect more differentially expressed genes related to `condition`. When working with real data, it's often useful to plot the data using different variables to explore how much variation is explained by the first two PCs. Depending on the results, it may be informative to examine variation on additional PC axes, such as PC3 and PC4, to gain a more comprehensive understanding of the data.
@@ -22,7 +21,6 @@ Next, we will examine the hierarchical clustering plot to explore the relationsh
 
 <figure markdown="span">
   ![cluster](./img/hierarchical_clustering.png){ width="400" }
-  <figcaption>PCA plot</figcaption>
 </figure>
 
 Remember that to create this plot, we utilized the `dist()` function, so in the legend on the right, a value of 0 corresponds to high correlation, while a value of 5 corresponds to very low correlation. Similar to PCA, we can see that samples tend to cluster together according to `condition`, indeed we can observe a high degree of correlation between the three control samples and between the three treated samples. 
@@ -32,12 +30,14 @@ Overall, the integration of these plots suggests that we are working with high-q
 
 ## Differential expression results
 
-From this point, we will examine plots that are generated after the differential expression analysis. These plots are not quality control (QC) plots, but rather plots that help us to interpret the results. 
+In this part of the tutorial, we will examine plots that are generated after the differential expression analysis. These plots are not quality control plots, but rather plots that help us to interpret the results. 
 After running the `results()` function, a good way to start to have an idea about the results is to look at the MA plot. 
 
-![RNAseq](./img/MA_plot.png)
+<figure markdown="span">
+  ![ma_plot](./img/MA_plot.png){ width="600" }
+</figure>
 
-By default, genes are coloured in blue if the padj is less than 0.1 and the log2foldchange greater than or less than 0. Genes that fall outside the plotting region are represented as open triangles. Note that we have not yet applied a filter to select only significant, which we define as those with a padj value less than 0.5 and a log2 fold change of at least 1 or -1.
+By default, genes are coloured in blue if the padj is less than 0.1 and the log2 fold change greater than or less than 0. Genes that fall outside the plotting region are represented as open triangles. At this stage, we have not yet applied a filter to select only significant DE genes, which we define as those with a padj value less than 0.5 and a log2 fold change of at least 1 or -1.
 
 After filtering our genes of interest according to our threshold, let's have a look to our significatnt genes:
 
@@ -52,13 +52,17 @@ ENSG00000156282     481.7624        1.095272           0.2969594      3.688289  
 
 To gain a comprehensive overview of the transcriptional profile, the volcano plot represents a highly informative tool.
 
-![Volcano_plot](./img/volcanoplot.png)
+<figure markdown="span">
+  ![volcano_plot](./img/volcano_plot.png){ width="400" height="600"}
+</figure>
 
-The treatment induced differential expression in five genes, with one downregulated and four upregulated. This plot visually represents the numerical results reported in the table above.
+The treatment induced differential expression in five genes: one downregulated and four upregulated. This plot visually represents the numerical results reported in the table above.
 
 After the identification of DE genes, it's informative to visualise the expression of specific genes of interest. The `plotCounts()` function applied directly on the `dds` object allows us to examine individual gene expression profiles without accessing the full `res` object.
 
-![Counts](./img/plotCounts.png)
+<figure markdown="span">
+  ![counts](./img/plotCounts.png){ width="400" height="600"}
+</figure>
 
 In our example, post-treatment, we observe a significant increase in the expression of the *ENSG00000142192* gene, highlighting its responsiveness to the experimental conditions.
 
