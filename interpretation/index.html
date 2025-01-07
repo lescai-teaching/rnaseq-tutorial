@@ -638,7 +638,7 @@ After running the <code>results()</code> function, a good way to start to have a
 <figure>
   <img alt="ma_plot" src="../img/MA_plot.png" width="500" />
 </figure>
-<p>By default, genes are coloured in blue if the padj is less than 0.1 and the log2 fold change greater than or less than 0. Genes that fall outside the plotting region are represented as open triangles. At this stage, we have not yet applied a filter to select only significant DE genes, which we define as those with a padj value less than 0.5 and a log2 fold change of at least 1 or -1.</p>
+<p>By default, genes are coloured in blue if the padj is less than 0.1 and the log2 fold change greater than or less than 0. Genes that fall outside the plotting region are represented as open triangles. At this stage, we have not yet applied a filter to select only significant DE genes, which we define as those with a padj value less than 0.05 and a log2 fold change of at least 1 or -1.</p>
 <p>After filtering our genes of interest according to our threshold, let's have a look to our significatnt genes:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>gene                baseMean        log2FoldChange     lfcSE          stat            pvalue              padj
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ENSG00000205726     121425.1998     2.897479           0.1515387      18.799694       7.595298e-79        1.777299e-76
